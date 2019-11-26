@@ -1,0 +1,13 @@
+{
+  "name": "hokage",
+  "version": "0.0.1",
+  "description": "Manga translation app.",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build"
+  },
+  "dependencies": {
+    "nuxt": "^2.10.2"
+  }
+}
