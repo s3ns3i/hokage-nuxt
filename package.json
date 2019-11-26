@@ -8,6 +8,13 @@
     "build": "nuxt build"
   },
   "dependencies": {
-    "nuxt": "^2.10.2"
+    "@feathersjs/authentication-client": "^4.3.11",
+    "@feathersjs/feathers": "^4.3.11",
+    "@feathersjs/socketio-client": "^4.3.11",
+    "cookie-storage": "^5.0.3",
+    "feathers-hooks-common": "^4.20.7",
+    "feathers-vuex": "^2.2.5",
+    "nuxt": "^2.10.2",
+    "socket.io-client": "^2.3.0"
   }
 }
