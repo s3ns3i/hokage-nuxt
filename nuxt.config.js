@@ -7,5 +7,6 @@ export default {
   ],
   router: {
     middleware: ['auth']
-  }
+  },
+  plugins: ['~/plugins/feathers-vuex']
 }
