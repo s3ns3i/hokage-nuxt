@@ -42,7 +42,7 @@ const createStore = () => {
       makeAuthPlugin({
         userService: 'users',
         state: {
-          publicPages: ['login']
+          publicPages: ['login', 'first-user']
         }
       })
     ]

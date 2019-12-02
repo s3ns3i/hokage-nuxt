@@ -1,19 +1,19 @@
 <template>
   <nuxt-link to="/">
-    <blank />
+    <login />
   </nuxt-link>
 </template>
 
 <script>
-import Blank from "@/layouts/blank.vue";
+import Login from "@/layouts/login.vue";
 
 export default {
   name: "Index",
   components: {
-    Blank
+    Login
   },
   data() {
     return {};
-  },
+  }
 };
 </script>
