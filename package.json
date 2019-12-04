@@ -16,5 +16,8 @@
     "feathers-vuex": "^2.2.5",
     "nuxt": "^2.10.2",
     "socket.io-client": "^2.3.0"
+  },
+  "devDependencies": {
+    "@nuxtjs/vuetify": "^1.9.0"
   }
 }
