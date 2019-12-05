@@ -4,18 +4,24 @@ export default async function (context) {
   const { auth } = store.state
 
 
-  // If any user tries to access this page 
-  if (route.name === 'first-user') {
+  if (!auth.payload) {
     const usersNo = await store.dispatch("first-use/find");
+    console.log(usersNo.total)
     if (!usersNo.total) {
-      return
-    } else {
+      console.log(usersNo)
+      return redirect('/first-user')
+    }
+    if (route.name === 'first-user') {
       return redirect('/login')
     }
-  }
-  // If user is not logged in and tries to access the main page
-  // If user is not logged in and tries to access restricted resource
-  if ((!auth.publicPages.includes(route.name) || route.name === '/') && !auth.payload) {
-    return redirect('/login')
+    // If user is not logged in and tries to access the main page
+    // If user is not logged in and tries to access restricted resource
+    if ((!auth.publicPages.includes(route.name) || route.name === '/') && !auth.payload) {
+      return redirect('/login')
+    }
+  } else {
+    if (route.name === 'first-user') {
+      return redirect('/')
+    }
   }
 }
