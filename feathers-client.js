@@ -1,6 +1,6 @@
 import feathers from '@feathersjs/feathers'
 import socketio from '@feathersjs/socketio-client'
-import auth from '@feathersjs/authentication-client'
+import auth, { MemoryStorage } from '@feathersjs/authentication-client'
 import { CookieStorage } from 'cookie-storage'
 import io from 'socket.io-client'
 import { iff, discard } from 'feathers-hooks-common'
@@ -10,7 +10,10 @@ const socket = io('http://localhost:3030', { transports: ['websocket'] })
 
 const feathersClient = feathers()
   .configure(socketio(socket))
-  .configure(auth({ storage: new CookieStorage() }))
+  .configure(auth({
+    storage: process.server
+      ? new MemoryStorage() : new CookieStorage()
+  }))
   .hooks({
     before: {
       all: [

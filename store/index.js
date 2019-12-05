@@ -1,8 +1,8 @@
 import Vuex from 'vuex'
-import feathersClient from '../feathers-client'
-import feathersVuex, { initAuth } from 'feathers-vuex'
+import feathersClient, { makeAuthPlugin } from '../feathers-client'
+import { initAuth } from 'feathers-vuex'
 
-const { makeAuthPlugin } = feathersVuex(feathersClient)
+// const { makeAuthPlugin } = feathersVuex(feathersClient)
 
 const requireModule = require.context(
   // The path where the service modules live

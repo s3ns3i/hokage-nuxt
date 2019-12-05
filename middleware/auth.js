@@ -6,9 +6,7 @@ export default async function (context) {
 
   if (!auth.payload) {
     const usersNo = await store.dispatch("first-use/find");
-    console.log(usersNo.total)
     if (!usersNo.total) {
-      console.log(usersNo)
       return redirect('/first-user')
     }
     if (route.name === 'first-user') {
@@ -21,6 +19,9 @@ export default async function (context) {
     }
   } else {
     if (route.name === 'first-user') {
+      return redirect('/')
+    }
+    if (route.name === 'login') {
       return redirect('/')
     }
   }
