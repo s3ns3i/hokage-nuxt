@@ -1,32 +1,51 @@
 <template>
-  <v-col>
-    <v-row>
-      <h1>hokage</h1>
-    </v-row>
-    <v-row>
-      <h2>
-        This is the first launch of the application. You need to set an admin
-        password to continue.
-      </h2>
-    </v-row>
-    <v-row>
-      <v-form>
-        <v-text-field v-model="clone.email" label="E-mail" type="email" />
-        <v-text-field v-model="clone.nickname" label="Nickname" type="text" />
-        <v-text-field
-          v-model="clone.password"
-          label="Password"
-          type="password"
-        />
-        <v-text-field
-          v-model="clone.confirmPassword"
-          label="Confirm password"
-          type="password"
-        />
-        <v-btn @click="createUser">Create admin account</v-btn>
-      </v-form>
-    </v-row>
-  </v-col>
+  <v-app if="hokage_first-user">
+    <v-content>
+      <v-container fluid class="fill-height">
+        <v-row align="center" justify="center">
+          <v-col cols="12" sm="8" md="5">
+            <v-card class="elevation-12">
+              <v-toolbar color="primary" dark>
+                <v-toolbar-title>hokage</v-toolbar-title>
+              </v-toolbar>
+              <v-card-title>
+                This is the first launch of the application. You need to set an
+                admin password to continue.
+              </v-card-title>
+              <v-card-text>
+                <v-form>
+                  <v-text-field
+                    v-model="clone.email"
+                    label="E-mail"
+                    type="email"
+                  />
+                  <v-text-field
+                    v-model="clone.nickname"
+                    label="Nickname"
+                    type="text"
+                  />
+                  <v-text-field
+                    v-model="clone.password"
+                    label="Password"
+                    type="password"
+                  />
+                  <v-text-field
+                    v-model="clone.confirmPassword"
+                    label="Confirm password"
+                    type="password"
+                  />
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer />
+                <v-btn @click="createUser">Create admin account</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
