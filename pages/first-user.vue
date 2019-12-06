@@ -77,6 +77,12 @@ export default {
     async createUser() {
       try {
         const user = await this.clone.save();
+        await this.$store.dispatch("auth/authenticate", {
+          strategy: "local",
+          email: this.clone.email,
+          password: this.clone.password
+        });
+        this.$router.push("/");
       } catch (error) {
         console.error(error);
       }
