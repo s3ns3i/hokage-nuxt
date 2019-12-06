@@ -1,25 +1,37 @@
 <template>
-  <v-col>
-    <v-row>
-      <h1>hokage</h1>
-    </v-row>
-    <v-row>
-      <h2>
-        Hello, let's login, so we can start work!
-      </h2>
-    </v-row>
-    <v-row>
-      <v-form>
-        <v-text-field v-model="clone.email" label="E-mail" type="email" />
-        <v-text-field
-          v-model="clone.password"
-          label="Password"
-          type="password"
-        />
-        <v-btn @click="onLogin">Login</v-btn>
-      </v-form>
-    </v-row>
-  </v-col>
+  <v-app if="hokage_login">
+    <v-content>
+      <v-container fluid class="fill-height">
+        <v-row align="center" justify="center">
+          <v-col cols="12" sm="8" md="5">
+            <v-card class="elevation-12">
+              <v-toolbar color="primary" dark>
+                <v-toolbar-title>hokage</v-toolbar-title>
+              </v-toolbar>
+              <v-card-text>
+                <v-form>
+                  <v-text-field
+                    v-model="clone.email"
+                    label="E-mail"
+                    type="email"
+                  />
+                  <v-text-field
+                    v-model="clone.password"
+                    label="Password"
+                    type="password"
+                  />
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer />
+                <v-btn color="primary" @click="onLogin">Login</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
@@ -50,12 +62,12 @@ export default {
   methods: {
     async onLogin() {
       try {
-        const payload = await this.$store.dispatch("auth/authenticate", {
+        await this.$store.dispatch("auth/authenticate", {
           strategy: "local",
           email: this.clone.email,
           password: this.clone.password
         });
-        console.debug(payload);
+        this.$router.push("/");
       } catch (error) {
         console.error(error);
       }
