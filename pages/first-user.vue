@@ -69,8 +69,8 @@ export default {
     }
   },
   created() {
-    const { User } = this.$FeathersVuex.api;
-    this.user = new User({});
+    const FirstUser = this.$FeathersVuex.api.byServicePath["first-user"];
+    this.user = new FirstUser({});
     this.clone = this.user.clone();
   },
   methods: {

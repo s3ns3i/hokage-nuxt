@@ -5,7 +5,7 @@ export default async function (context) {
 
 
   if (!auth.payload) {
-    const usersNo = await store.dispatch("first-use/find");
+    const usersNo = await store.dispatch("first-user/find");
     if (!usersNo.total) {
       return redirect('/first-user')
     }

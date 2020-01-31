@@ -2,8 +2,6 @@ import Vuex from 'vuex'
 import feathersClient, { makeAuthPlugin } from '../feathers-client'
 import { initAuth } from 'feathers-vuex'
 
-// const { makeAuthPlugin } = feathersVuex(feathersClient)
-
 const requireModule = require.context(
   // The path where the service modules live
   './services',
@@ -38,7 +36,6 @@ const createStore = () => {
     },
     plugins: [
       ...servicePlugins,
-      // service('courses'),
       makeAuthPlugin({
         userService: 'users',
         state: {
