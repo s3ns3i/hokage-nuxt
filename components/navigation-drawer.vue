@@ -15,9 +15,6 @@
             <v-list-item-title class="title">Sandra Adams</v-list-item-title>
             <v-list-item-subtitle>sandra_a88@gmail.com</v-list-item-subtitle>
           </v-list-item-content>
-          <v-list-item-action>
-            <v-icon>mdi-menu-down</v-icon>
-          </v-list-item-action>
         </v-list-item>
       </v-list>
     </template>
@@ -37,12 +34,31 @@
         </v-list-item-icon>
         <v-list-item-title>Shared with me</v-list-item-title>
       </v-list-item>
-      <v-list-item link>
-        <v-list-item-icon>
-          <v-icon>mdi-star</v-icon>
-        </v-list-item-icon>
-        <v-list-item-title>Starred</v-list-item-title>
-      </v-list-item>
+      <v-list-group prepend-icon="mdi-settings" no-action>
+        <template v-slot:activator>
+          <v-list-item-content>
+            <v-list-item-title>Ustawienia</v-list-item-title>
+          </v-list-item-content>
+        </template>
+        <v-list-item link nuxt to="/settings/users">
+          <v-list-item-content>
+            <v-list-item-title>Użytkownicy</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-group>
     </v-list>
   </v-navigation-drawer>
 </template>
+
+<script>
+import { makeFindMixin } from "feathers-vuex";
+
+export default {
+  name: "NavigationDrawer",
+  data() {
+    return {
+      nickname: ""
+    };
+  }
+};
+</script>
