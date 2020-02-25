@@ -5,15 +5,17 @@ class FirstUser extends BaseModel {
     super(data, options)
   }
   // Required for $FeathersVuex plugin to work after production transpile.
-  static modelName = 'FirstUser'
+  static modelName = 'User'
   // Define default properties here
   static instanceDefaults() {
     return {
-      total: '',
+      email: '',
+      password: '',
+      nickname: ''
     }
   }
 }
-const servicePath = 'first-user'
+const servicePath = 'users/first-user'
 const servicePlugin = makeServicePlugin({
   Model: FirstUser,
   service: feathersClient.service(servicePath),

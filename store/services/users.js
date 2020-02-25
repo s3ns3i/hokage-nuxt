@@ -17,7 +17,6 @@ class User extends BaseModel {
 
   // Mapping roles to the user.
   static setupInstance(data, { models }) {
-    console.log(data.roles)
     if (data.roles) {
       data.roles = data.roles.map(role => new models.api.Role(role))
     }
