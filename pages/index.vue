@@ -5,17 +5,6 @@
 <script>
 export default {
   name: "Index",
-  data() {
-    return {
-      users: []
-    };
-  },
-  mounted() {
-    this.$store
-      .dispatch("users/find")
-      .then(result => (this.users = result))
-      .catch(error => console.error(error));
-  },
   methods: {
     async onLogout() {
       try {

@@ -22,17 +22,11 @@
     <v-divider></v-divider>
 
     <v-list nav dense>
-      <v-list-item link>
+      <v-list-item link nuxt to="/translations">
         <v-list-item-icon>
           <v-icon>mdi-folder</v-icon>
         </v-list-item-icon>
-        <v-list-item-title>My Files</v-list-item-title>
-      </v-list-item>
-      <v-list-item link>
-        <v-list-item-icon>
-          <v-icon>mdi-account-multiple</v-icon>
-        </v-list-item-icon>
-        <v-list-item-title>Shared with me</v-list-item-title>
+        <v-list-item-title>Tłumaczenia</v-list-item-title>
       </v-list-item>
       <v-list-group prepend-icon="mdi-settings" no-action>
         <template v-slot:activator>
@@ -40,6 +34,11 @@
             <v-list-item-title>Ustawienia</v-list-item-title>
           </v-list-item-content>
         </template>
+        <v-list-item link nuxt to="/settings/roles">
+          <v-list-item-content>
+            <v-list-item-title>Role</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item link nuxt to="/settings/users">
           <v-list-item-content>
             <v-list-item-title>Użytkownicy</v-list-item-title>

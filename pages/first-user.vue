@@ -53,6 +53,7 @@ import { makeFindMixin } from "feathers-vuex";
 
 export default {
   name: "FirstUser",
+  layout: "login",
   mixins: [makeFindMixin({ service: "users", watch: true })],
   data() {
     return {
