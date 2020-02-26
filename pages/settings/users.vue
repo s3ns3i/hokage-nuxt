@@ -2,10 +2,14 @@
   <v-container fluid>
     <v-row>
       <v-col>
-        <v-btn color="primary" @click="overlay = true">Dodaj użytkownika</v-btn>
-        <v-overlay :value="overlay">
-          <v-btn @click="overlay = false">Zamknij modal</v-btn>
-        </v-overlay>
+        <v-dialog v-model="dialog" persistent max-width="600">
+          <template v-slot:activator="{ on }">
+            <v-btn color="primary" @click="dialog = true" v-on="on">
+              Dodaj użytkownika
+            </v-btn>
+          </template>
+          <users-modal @close="dialog = false" />
+        </v-dialog>
       </v-col>
     </v-row>
     <v-row>
@@ -41,14 +45,15 @@
 
 <script>
 import { makeFindMixin } from "feathers-vuex";
+import UsersModal from "@/components/users-modal.vue";
 
 export default {
   name: "Users",
-  layout: "default",
+  components: { UsersModal },
   mixins: [makeFindMixin({ service: "users" })],
   data() {
     return {
-      overlay: false
+      dialog: false
     };
   },
   computed: {
