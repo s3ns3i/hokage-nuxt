@@ -14,7 +14,9 @@
           :rules="emailRules"
           label="E-mail"
           required
-        /><v-select
+        />
+        <v-text-field v-model="clone.password" label="Password" required />
+        <v-select
           v-model="clone.roles"
           :items="roles"
           :rules="[v => !!v || 'Role są wymagane!']"
@@ -31,8 +33,8 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn text @click="$emit('close')">Anuluj</v-btn>
-      <v-btn color="primary" @click="createUser()">
+      <v-btn text @click="closeModal()">Anuluj</v-btn>
+      <v-btn :disabled="!valid" color="primary" @click="createUser()">
         Zapisz
       </v-btn>
     </v-card-actions>
@@ -40,19 +42,20 @@
 </template>
 
 <script>
-import { makeFindMixin } from "feathers-vuex";
+import { mapGetters } from "vuex";
+// import { makeFindMixin } from "feathers-vuex";
 
 export default {
   name: "UsersModal",
-  mixins: [makeFindMixin({ service: "roles" })],
+  // mixins: [makeFindMixin({ service: "roles" })],
   data() {
     return {
       user: null,
       clone: null,
       valid: false,
       emailRules: [
-        v => !!v || "E-mail is required",
-        v => /.+@.+\..+/.test(v) || "E-mail must be valid"
+        v => !!v || "E-mail jest wymagany!",
+        v => /.+@.+\..+/.test(v) || "E-mail jest wymagany!"
       ]
     };
   },
@@ -60,24 +63,34 @@ export default {
     this.resetForm();
   },
   computed: {
-    rolesParams() {
-      return { query: {}, paginate: false };
+    ...mapGetters("roles", { findRolesInStore: "find" }),
+    roles() {
+      return this.findRolesInStore({ query: {} }).data;
     }
+    // rolesParams() {
+    //   return { query: {}, paginate: false };
+    // }
   },
   methods: {
     async createUser() {
-      try {
-        const user = await this.clone.save();
-        this.resetForm();
-        this.$emit("close");
-      } catch (error) {
-        console.error(error);
+      if (this.valid) {
+        try {
+          const user = await this.clone.save();
+          this.resetForm();
+          this.$emit("close");
+        } catch (error) {
+          console.error(error);
+        }
       }
     },
     resetForm() {
       const User = this.$FeathersVuex.api.byServicePath.users;
       this.user = new User({});
       this.clone = this.user.clone();
+    },
+    closeModal() {
+      this.resetForm();
+      this.$emit("close");
     }
   }
 };

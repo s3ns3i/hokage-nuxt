@@ -44,22 +44,28 @@
 </template>
 
 <script>
-import { makeFindMixin } from "feathers-vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 import UsersModal from "@/components/users-modal.vue";
 
 export default {
   name: "Users",
   components: { UsersModal },
-  mixins: [makeFindMixin({ service: "users" })],
   data() {
     return {
       dialog: false
     };
   },
   computed: {
-    usersParams() {
-      return { query: {}, paginate: false };
+    ...mapState("users", { isLoading: "isFindPending" }),
+    ...mapGetters("users", { findUsersInStore: "find" }),
+    query() {
+      return {};
+    },
+    users() {
+      return this.findUsersInStore({ query: this.query }).data;
     }
-  }
+  },
+  methods: { ...mapActions("users", { findUsers: "find" }) },
+  mounted() {}
 };
 </script>

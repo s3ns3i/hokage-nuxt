@@ -42,22 +42,27 @@
 </template>
 
 <script>
-import { makeFindMixin } from "feathers-vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 import RolesModal from "@/components/roles-modal.vue";
 
 export default {
   name: "Roles",
   components: { RolesModal },
-  mixins: [makeFindMixin({ service: "roles" })],
   data() {
     return {
       dialog: false
     };
   },
   computed: {
-    rolesParams() {
-      return { query: {}, paginate: false };
+    ...mapState("roles", { isLoading: "isFindPending" }),
+    ...mapGetters("roles", { findRolesInStore: "find" }),
+    query() {
+      return {};
+    },
+    roles() {
+      return this.findRolesInStore({ query: this.query }).data;
     }
-  }
+  },
+  methods: { ...mapActions("roles", { findRoles: "find" }) }
 };
 </script>

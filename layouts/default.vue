@@ -19,9 +19,11 @@
   </v-app>
 </template>
 <script>
+import { mapActions } from "vuex";
 import NavigationDrawer from "@/components/navigation-drawer.vue";
 
 export default {
+  name: "DefaultLayout",
   layout: "default",
   components: {
     NavigationDrawer
@@ -38,6 +40,10 @@ export default {
         console.error(error);
       }
     }
+  },
+  created() {
+    this.$store.dispatch("users/find", { query: {} });
+    this.$store.dispatch("roles/find", { query: {} });
   }
 };
 </script>

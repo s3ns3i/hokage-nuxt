@@ -13,32 +13,40 @@
                 admin password to continue.
               </v-card-title>
               <v-card-text>
-                <v-form>
+                <v-form v-model="valid">
                   <v-text-field
                     v-model="clone.email"
+                    :rules="emailRules"
                     label="E-mail"
                     type="email"
+                    required
                   />
                   <v-text-field
                     v-model="clone.nickname"
-                    label="Nickname"
+                    label="Ksywka"
                     type="text"
+                    required
                   />
                   <v-text-field
                     v-model="clone.password"
-                    label="Password"
+                    :rules="[v => !!v || 'Hasło jest wymagane!']"
+                    label="Hasło"
                     type="password"
+                    required
                   />
                   <v-text-field
                     v-model="clone.confirmPassword"
-                    label="Confirm password"
+                    label="Potwierdź hasło"
                     type="password"
+                    required
                   />
                 </v-form>
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
-                <v-btn @click="createUser">Create admin account</v-btn>
+                <v-btn color="primary" :disabled="!valid" @click="createUser"
+                  >Utwórz konto administratora</v-btn
+                >
               </v-card-actions>
             </v-card>
           </v-col>
@@ -58,7 +66,12 @@ export default {
   data() {
     return {
       user: null,
-      clone: null
+      clone: null,
+      valid: false,
+      emailRules: [
+        v => !!v || "E-mail is required",
+        v => /.+@.+\..+/.test(v) || "E-mail must be valid"
+      ]
     };
   },
   computed: {
@@ -76,16 +89,18 @@ export default {
   },
   methods: {
     async createUser() {
-      try {
-        const user = await this.clone.save();
-        await this.$store.dispatch("auth/authenticate", {
-          strategy: "local",
-          email: this.clone.email,
-          password: this.clone.password
-        });
-        this.$router.push("/");
-      } catch (error) {
-        console.error(error);
+      if (this.valid) {
+        try {
+          const user = await this.clone.save();
+          await this.$store.dispatch("auth/authenticate", {
+            strategy: "local",
+            email: this.clone.email,
+            password: this.clone.password
+          });
+          this.$router.push("/");
+        } catch (error) {
+          console.error(error);
+        }
       }
     }
   }

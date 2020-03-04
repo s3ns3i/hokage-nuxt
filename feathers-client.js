@@ -33,7 +33,8 @@ const { makeServicePlugin, makeAuthPlugin, BaseModel, models, FeathersVuex } = f
   {
     serverAlias: 'api', // optional for working with multiple APIs (this is the default value)
     idField: '_id', // Must match the id field in your database table/collection
-    whitelist: ['$regex', '$options']
+    whitelist: ['$regex', '$options'],
+    enableEvents: process.client
   }
 )
 
