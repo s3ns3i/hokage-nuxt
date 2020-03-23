@@ -8,21 +8,28 @@
           :counter="50"
           label="Ksywka"
           required
+          autofocus
         />
         <v-text-field
           v-model="clone.email"
           :rules="emailRules"
           label="E-mail"
+          type="email"
           required
         />
-        <v-text-field v-model="clone.password" label="Password" required />
+        <v-text-field
+          v-model="clone.password"
+          label="Hasło"
+          type="password"
+          required
+        />
         <v-select
           v-model="clone.roles"
           :items="roles"
           :rules="[v => !!v || 'Role są wymagane!']"
           item-text="name"
-          item-value="code"
-          label="Role"
+          item-value="id"
+          label="Rola"
           return-object
           multiple
           chips
@@ -43,11 +50,9 @@
 
 <script>
 import { mapGetters } from "vuex";
-// import { makeFindMixin } from "feathers-vuex";
 
 export default {
   name: "UsersModal",
-  // mixins: [makeFindMixin({ service: "roles" })],
   data() {
     return {
       user: null,
@@ -67,9 +72,6 @@ export default {
     roles() {
       return this.findRolesInStore({ query: {} }).data;
     }
-    // rolesParams() {
-    //   return { query: {}, paginate: false };
-    // }
   },
   methods: {
     async createUser() {

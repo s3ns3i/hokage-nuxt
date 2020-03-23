@@ -58,14 +58,12 @@ export default {
   computed: {
     ...mapState("users", { isLoading: "isFindPending" }),
     ...mapGetters("users", { findUsersInStore: "find" }),
-    query() {
-      return {};
-    },
     users() {
-      return this.findUsersInStore({ query: this.query }).data;
+      return this.findUsersInStore({ query: {} }).data;
     }
   },
-  methods: { ...mapActions("users", { findUsers: "find" }) },
-  mounted() {}
+  created() {
+    this.$store.dispatch("users/find", { query: {} });
+  }
 };
 </script>

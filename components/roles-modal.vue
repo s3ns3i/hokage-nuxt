@@ -3,7 +3,6 @@
     <v-card-title class="headline">Dodaj rolę</v-card-title>
     <v-card-text>
       <v-form v-model="valid">
-        <v-text-field v-model="clone.code" :counter="20" label="Kod" required />
         <v-text-field
           v-model="clone.name"
           :counter="50"

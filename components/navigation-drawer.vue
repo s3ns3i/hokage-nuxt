@@ -44,6 +44,11 @@
             <v-list-item-title>Użytkownicy</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item link nuxt to="/settings/projects">
+          <v-list-item-content>
+            <v-list-item-title>Projekty</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list-group>
     </v-list>
   </v-navigation-drawer>

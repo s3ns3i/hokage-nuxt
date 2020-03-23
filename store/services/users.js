@@ -15,13 +15,13 @@ class User extends BaseModel {
     }
   }
 
-  // Mapping roles to the user.
-  static setupInstance(data, { models }) {
-    if (data.roles) {
-      data.roles = data.roles.map(role => new models.api.Role(role))
-    }
-    return data
-  }
+  // // Mapping roles to the user.
+  // static setupInstance(data, { models }) {
+  //   if (data.roles) {
+  //     data.roles = data.roles.map(role => new models.api.Role(role))
+  //   }
+  //   return data
+  // }
 }
 const servicePath = 'users'
 const servicePlugin = makeServicePlugin({
