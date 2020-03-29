@@ -62,7 +62,7 @@ import { makeFindMixin } from "feathers-vuex";
 export default {
   name: "FirstUser",
   layout: "login",
-  mixins: [makeFindMixin({ service: "users", watch: true })],
+  mixins: [makeFindMixin({ name: "users", service: "user", watch: true })],
   data() {
     return {
       user: null,
@@ -83,7 +83,7 @@ export default {
     }
   },
   created() {
-    const FirstUser = this.$FeathersVuex.api.byServicePath["users/first-user"];
+    const FirstUser = this.$FeathersVuex.api.byServicePath["user/first-user"];
     this.user = new FirstUser({});
     this.clone = this.user.clone();
   },

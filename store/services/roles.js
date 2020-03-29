@@ -10,7 +10,6 @@ class Role extends BaseModel {
   static instanceDefaults() {
     return {
       name: '',
-      code: '',
     }
   }
 
@@ -22,7 +21,7 @@ class Role extends BaseModel {
   //   return data
   // }
 }
-const servicePath = 'roles'
+const servicePath = 'role'
 const servicePlugin = makeServicePlugin({
   Model: Role,
   service: feathersClient.service(servicePath),

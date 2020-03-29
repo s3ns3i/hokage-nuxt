@@ -68,7 +68,7 @@ export default {
     this.resetForm();
   },
   computed: {
-    ...mapGetters("roles", { findRolesInStore: "find" }),
+    ...mapGetters("role", { findRolesInStore: "find" }),
     roles() {
       return this.findRolesInStore({ query: {} }).data;
     }
@@ -86,7 +86,7 @@ export default {
       }
     },
     resetForm() {
-      const User = this.$FeathersVuex.api.byServicePath.users;
+      const User = this.$FeathersVuex.api.byServicePath.user;
       this.user = new User({});
       this.clone = this.user.clone();
     },

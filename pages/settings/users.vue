@@ -30,7 +30,7 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.projectsNo }}</td>
                 <td>
-                  <v-chip v-for="role in user.roles" :key="role.code">
+                  <v-chip v-for="role in user.roles" :key="role.id">
                     {{ role.name }}
                   </v-chip>
                 </td>
@@ -56,14 +56,14 @@ export default {
     };
   },
   computed: {
-    ...mapState("users", { isLoading: "isFindPending" }),
-    ...mapGetters("users", { findUsersInStore: "find" }),
+    ...mapState("user", { isLoading: "isFindPending" }),
+    ...mapGetters("user", { findUsersInStore: "find" }),
     users() {
       return this.findUsersInStore({ query: {} }).data;
     }
   },
   created() {
-    this.$store.dispatch("users/find", { query: {} });
+    this.$store.dispatch("user/find", { query: {} });
   }
 };
 </script>

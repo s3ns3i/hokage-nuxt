@@ -23,7 +23,7 @@ class User extends BaseModel {
   //   return data
   // }
 }
-const servicePath = 'users'
+const servicePath = 'user'
 const servicePlugin = makeServicePlugin({
   Model: User,
   service: feathersClient.service(servicePath),

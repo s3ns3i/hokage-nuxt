@@ -45,7 +45,7 @@ export default {
       }
     },
     resetForm() {
-      const Role = this.$FeathersVuex.api.byServicePath.roles;
+      const Role = this.$FeathersVuex.api.byServicePath.role;
       this.role = new Role({});
       this.clone = this.role.clone();
     }

@@ -52,7 +52,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("roles", { findRolesInStore: "find" }),
+    ...mapGetters("role", { findRolesInStore: "find" }),
     query() {
       return {};
     },
@@ -61,7 +61,7 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("roles/find", { query: {} });
+    this.$store.dispatch("role/find", { query: {} });
   }
 };
 </script>

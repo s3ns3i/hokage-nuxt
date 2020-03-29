@@ -42,8 +42,8 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("users/find", { query: {} });
-    this.$store.dispatch("roles/find", { query: {} });
+    this.$store.dispatch("user/find", { query: {} });
+    this.$store.dispatch("role/find", { query: {} });
   }
 };
 </script>

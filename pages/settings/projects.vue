@@ -61,10 +61,10 @@ export default {
     };
   },
   computed: {
-    ...mapState("users", { isLoading: "isFindPending" }),
-    ...mapGetters("projects", { findProjectsInStore: "find" }),
-    ...mapGetters("users", { findUsersInStore: "find" }),
-    ...mapGetters("roles", { findRolesInStore: "find" }),
+    ...mapState("user", { isLoading: "isFindPending" }),
+    ...mapGetters("project", { findProjectsInStore: "find" }),
+    ...mapGetters("user", { findUsersInStore: "find" }),
+    ...mapGetters("role", { findRolesInStore: "find" }),
     projects() {
       return this.findProjectsInStore({ query: {} }).data;
     },
