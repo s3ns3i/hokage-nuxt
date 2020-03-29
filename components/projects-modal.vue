@@ -13,10 +13,10 @@
         />
         <v-text-field v-model="clone.volumesNo" label="Liczba tomów" />
         <!-- create a select with roles and disabled multiselect with filtered users on the right -->
-        <v-row v-for="n in clone.roles.length" :key="n">
+        <v-row v-for="n in tempRoles.length" :key="n">
           <v-col align-self="center">
             <v-select
-              v-model="clone.roles[n - 1]"
+              v-model="tempRoles[n - 1]"
               :items="roles"
               :rules="[v => !!v || 'Role są wymagane!']"
               item-text="name"
@@ -28,10 +28,9 @@
           </v-col>
           <v-col align-self="center">
             <v-select
-              v-model="clone.users[n - 1]"
-              :items="clone.roles[n - 1] && clone.roles[n - 1].users"
+              v-model="tempUsers[n - 1]"
+              :items="tempRoles[n - 1].users"
               :rules="[v => !!v || 'Trzeba przypisać użytkownika!']"
-              :disabled="clone.roles[n - 1] && !clone.roles.length"
               item-text="nickname"
               item-value="id"
               label="Użytkownicy"
@@ -81,26 +80,31 @@ export default {
   },
   created() {
     this.resetForm();
+    this.$store.dispatch("role/find", { query: {} });
   },
   computed: {
     ...mapGetters("role", { findRolesInStore: "find" }),
-    ...mapGetters("user", { findUsersInStore: "find" }),
     roles() {
       return this.findRolesInStore({ query: {} }).data.filter(
         item => item.id !== 1
       );
     },
-    users() {
-      return this.findUsersInStore({ query: {} }).data;
-    },
-    rolesNo() {
-      return this.clone.roles.length ? this.clone.roles.length + 1 : 1;
+    isUsersDisabled() {
+      return n => {
+        console.log(n);
+        console.log(this.tempRoles[n - 1]);
+        return this.tempRoles[n - 1] && !this.tempRoles[n - 1].id;
+      };
     }
   },
   methods: {
     async createProject() {
       if (this.valid) {
         try {
+          this.clone.roles = this.tempRoles;
+          this.clone.roles.forEach(
+            (role, index) => (role.users = this.tempUsers[index])
+          );
           const project = await this.clone.save();
           this.resetForm();
           this.$emit("close");
@@ -113,18 +117,10 @@ export default {
       const Project = this.$FeathersVuex.api.byServicePath.project;
       this.project = new Project({});
       this.clone = this.project.clone();
-      this.clone.roles = [];
-      this.clone.users = [];
-      this.tempRoles.addElement = function() {
-        this.push({
-          value: {}
-        });
-      };
-      this.tempUsers.addElement = function() {
-        this.push({
-          value: []
-        });
-      };
+      this.tempRoles = [];
+      this.tempUsers = [];
+      // this.clone.roles = [];
+      // this.clone.users = [];
       this.onAddRow();
     },
     closeModal() {
@@ -132,17 +128,22 @@ export default {
       this.$emit("close");
     },
     onAddRow() {
-      this.clone.roles.push({});
-      this.clone.users.push([]);
-      // this.tempRoles.addElement();
-      // this.tempUsers.addElement();
+      this.tempRoles.push({});
+      this.tempUsers.push([]);
+      // this.clone.roles.push({});
+      // this.clone.users.push([]);
     },
     onRemoveRow(index) {
-      this.clone.roles.splice(index, 1);
+      this.tempRoles.splice(index, 1);
+      this.tempUsers.splice(index, 1);
+      // this.clone.roles.splice(index, 1);
     },
-    isRoleRequired(index) {
-      console.log(index);
-      return index !== this.clone.roles.length && this.clone.roles.length !== 1;
+    onRoleInput(event) {
+      console.log(event);
+    },
+    onRoleChange(item, i) {
+      console.log(item);
+      console.log(i);
     }
   }
 };
