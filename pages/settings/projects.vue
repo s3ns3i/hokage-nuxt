@@ -61,9 +61,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("user", { isLoading: "isFindPending" }),
     ...mapGetters("project", { findProjectsInStore: "find" }),
-    ...mapGetters("user", { findUsersInStore: "find" }),
     ...mapGetters("role", { findRolesInStore: "find" }),
     projects() {
       return this.findProjectsInStore({ query: {} }).data;
