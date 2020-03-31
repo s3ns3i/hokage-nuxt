@@ -25,17 +25,17 @@
                   {{ role.name }}
                 </th>
               </tr>
-              {{
-                projects
-              }}
             </thead>
             <tbody>
               <tr v-for="project in projects" :key="project.name">
                 <td>{{ project.name }}</td>
                 <td>{{ project.volumesNo }}</td>
-                <td>{{ project.suspended }}</td>
-                <td>
-                  <v-chip v-for="user in project.users" :key="user.email">
+                <td>{{ project.suspended ? "Tak" : "Nie" }}</td>
+                <td v-for="role in roles" :key="role.id">
+                  <v-chip
+                    v-for="user in getUsersByProjectRole(project, role)"
+                    :key="user.email"
+                  >
                     {{ user.nickname }}
                   </v-chip>
                 </td>
@@ -68,11 +68,18 @@ export default {
     projects() {
       return this.findProjectsInStore({ query: {} }).data;
     },
-    users() {
-      return this.findUsersInStore({ query: {} }).data;
-    },
     roles() {
       return this.findRolesInStore({ query: { id: { $ne: 1 } } }).data;
+    },
+    created() {
+      this.$store.dispatch("project/find", { query: {} });
+    }
+  },
+  methods: {
+    getUsersByProjectRole(project, role) {
+      return project.project_roles.find(
+        projectRole => projectRole.roleId === role.id
+      ).users;
     }
   }
 };
