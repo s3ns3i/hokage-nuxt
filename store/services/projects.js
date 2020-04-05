@@ -11,7 +11,8 @@ class Project extends BaseModel {
     return {
       name: '',
       volumesNo: 0,
-      suspended: false
+      suspended: false,
+      project_roles: []
     }
   }
 

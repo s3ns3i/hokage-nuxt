@@ -101,10 +101,17 @@ export default {
     async createProject() {
       if (this.valid) {
         try {
-          this.clone.roles = this.tempRoles;
-          this.clone.roles.forEach(
-            (role, index) => (role.users = this.tempUsers[index])
-          );
+          // this.clone.project_roles = this.tempRoles;
+          this.tempRoles.forEach((role, index) => {
+            this.clone.project_roles.push({
+              order: index + 1,
+              role: role,
+              users: this.tempUsers[index]
+            });
+          });
+          // this.clone.roles.forEach(
+          //   (role, index) => (role.users = this.tempUsers[index])
+          // );
           const project = await this.clone.save();
           this.resetForm();
           this.$emit("close");
