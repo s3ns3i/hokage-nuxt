@@ -2,18 +2,12 @@
   <v-navigation-drawer app overflow permanent>
     <template v-slot:prepend>
       <v-list>
-        <v-list-item>
-          <v-list-item-avatar>
-            <v-img
-              src="https://randomuser.me/api/portraits/women/85.jpg"
-            ></v-img>
-          </v-list-item-avatar>
-        </v-list-item>
-
-        <v-list-item link two-line>
+        <v-list-item two-line>
           <v-list-item-content>
-            <v-list-item-title class="title">Sandra Adams</v-list-item-title>
-            <v-list-item-subtitle>sandra_a88@gmail.com</v-list-item-subtitle>
+            <v-list-item-title class="title">{{
+              user.nickname
+            }}</v-list-item-title>
+            <v-list-item-subtitle>{{ user.email }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -65,15 +59,20 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { makeFindMixin } from "feathers-vuex";
 import TasksModal from "@/components/tasks-modal.vue";
 
 export default {
   name: "NavigationDrawer",
   components: { TasksModal },
+  computed: {
+    user() {
+      return this.$store.state.auth.user;
+    }
+  },
   data() {
     return {
-      nickname: "",
       dialog: false
     };
   }
