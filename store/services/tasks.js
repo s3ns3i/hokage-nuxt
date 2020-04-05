@@ -12,7 +12,7 @@ class Task extends BaseModel {
       name: '',
       chapterNo: 0,
       translation: '',
-      projectId: null,
+      project: {}
     }
   }
 }
