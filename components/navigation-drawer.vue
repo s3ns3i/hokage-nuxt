@@ -21,7 +21,17 @@
 
     <v-divider></v-divider>
 
-    <v-list nav dense>
+    <v-list nav>
+      <v-list-item>
+        <v-dialog v-model="dialog" persistent max-width="600">
+          <template v-slot:activator="{ on }">
+            <v-btn color="primary" block tile v-on="on" @click="dialog = true"
+              >Dodaj zadanie</v-btn
+            >
+          </template>
+          <tasks-modal @close="dialog = false" />
+        </v-dialog>
+      </v-list-item>
       <v-list-item link nuxt to="/translations">
         <v-list-item-icon>
           <v-icon>mdi-folder</v-icon>
@@ -56,12 +66,15 @@
 
 <script>
 import { makeFindMixin } from "feathers-vuex";
+import TasksModal from "@/components/tasks-modal.vue";
 
 export default {
   name: "NavigationDrawer",
+  components: { TasksModal },
   data() {
     return {
-      nickname: ""
+      nickname: "",
+      dialog: false
     };
   }
 };

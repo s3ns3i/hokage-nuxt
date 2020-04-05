@@ -49,7 +49,7 @@
             >
           </v-col>
         </v-row>
-        <v-text-field v-model="clone.suspended" label="Zawieszony?" required />
+        <v-checkbox v-model="clone.suspended" label="Zawieszony?" required />
       </v-form>
     </v-card-text>
     <v-card-actions>
