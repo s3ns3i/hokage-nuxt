@@ -41,6 +41,12 @@ export default {
       }
     }
   },
+  async beforeCreate() {
+    if (!this.$store.state.auth.user) {
+      await this.$store.dispatch("auth/logout");
+      this.$router.push("/login");
+    }
+  },
   created() {
     this.$store.dispatch("user/find", { query: {} });
     this.$store.dispatch("role/find", { query: {} });
