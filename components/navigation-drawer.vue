@@ -28,12 +28,17 @@
       </v-list-item>
       <v-list-item link nuxt to="/translations">
         <v-list-item-icon>
-          <v-icon>mdi-folder</v-icon>
+          <v-icon>mdi-alphabetical</v-icon>
         </v-list-item-icon>
-        <v-list-item-title>Tłumaczenia</v-list-item-title>
+        <v-list-item-content>
+          <v-list-item-title>Tłumaczenia</v-list-item-title>
+        </v-list-item-content>
       </v-list-item>
-      <v-list-group prepend-icon="mdi-settings" no-action>
+      <v-list-group no-action>
         <template v-slot:activator>
+          <v-list-item-icon>
+            <v-icon>mdi-settings</v-icon>
+          </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>Ustawienia</v-list-item-title>
           </v-list-item-content>
@@ -42,16 +47,25 @@
           <v-list-item-content>
             <v-list-item-title>Role</v-list-item-title>
           </v-list-item-content>
+          <v-list-item-icon>
+            <v-icon>mdi-sitemap</v-icon>
+          </v-list-item-icon>
         </v-list-item>
         <v-list-item link nuxt to="/settings/users">
           <v-list-item-content>
             <v-list-item-title>Użytkownicy</v-list-item-title>
           </v-list-item-content>
+          <v-list-item-icon>
+            <v-icon>mdi-account</v-icon>
+          </v-list-item-icon>
         </v-list-item>
         <v-list-item link nuxt to="/settings/projects">
           <v-list-item-content>
             <v-list-item-title>Projekty</v-list-item-title>
           </v-list-item-content>
+          <v-list-item-icon>
+            <v-icon>mdi-briefcase</v-icon>
+          </v-list-item-icon>
         </v-list-item>
       </v-list-group>
     </v-list>
@@ -68,7 +82,9 @@ export default {
   components: { TasksModal },
   computed: {
     user() {
-      return this.$store.state.auth.user;
+      return this.$store.state.auth.user
+        ? this.$store.state.auth.user
+        : { nickname: "", email: "" };
     }
   },
   data() {
