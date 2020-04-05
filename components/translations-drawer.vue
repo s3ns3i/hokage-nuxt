@@ -8,7 +8,7 @@
       </v-list-item>
     </v-list>
     <v-divider />
-    <v-list v-model="tasks">
+    <v-list v-model="tasks" :disabled="isTaskInProgress">
       <v-list-item-group v-model="item" color="primary">
         <v-list-item
           v-for="(task, index) in tasks"
@@ -39,16 +39,21 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({ isTaskInProgress: "getIsTaskInProgress" }),
     ...mapGetters("task", { findTasksInStore: "find" }),
     tasks() {
       return this.findTasksInStore({ query: {} }).data;
     }
   },
+  watch: {
+    tasks() {
+      if (this.tasks.length) {
+        this.$router.push(`/translations/${this.tasks[0].id}`);
+      }
+    }
+  },
   created() {
     this.$store.dispatch("task/find", { query: {} });
-    if (this.tasks.length) {
-      this.$router.push(`/translations/${this.tasks[0].id}`);
-    }
   }
 };
 </script>

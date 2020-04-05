@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 import ProjectsModal from "@/components/projects-modal.vue";
 
 export default {

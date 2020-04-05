@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vue-editor v-model="translation" :disabled="false" />
+    <vue-editor v-model="translation" :disabled="isTaskInProgress" />
   </div>
 </template>
 
@@ -21,6 +21,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({ isTaskInProgress: "getIsTaskInProgress" }),
     ...mapGetters("task", { getTaskFromStore: "get" }),
     task() {
       return this.getTaskFromStore(this.$route.params.id);

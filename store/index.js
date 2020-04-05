@@ -16,13 +16,21 @@ const servicePlugins = requireModule
 
 const createStore = () => {
   return new Vuex.Store({
-    state: {},
+    state: {
+      isTaskInProgress: false,
+    },
     mutations: {
       increment(state) {
         state.counter++
+      },
+      set_is_task_in_progress(state, { isTaskInProgress }) {
+        state.isTaskInProgress = isTaskInProgress;
       }
     },
     actions: {
+      setIsTaskInProgress({ commit }, payload) {
+        commit('set_is_task_in_progress', payload);
+      },
       nuxtServerInit({ commit, dispatch }, { req }) {
         return initAuth({
           commit,
@@ -33,6 +41,9 @@ const createStore = () => {
           cookieName: 'feathers-jwt'
         })
       }
+    },
+    getters: {
+      getIsTaskInProgress: state => state.isTaskInProgress
     },
     plugins: [
       ...servicePlugins,

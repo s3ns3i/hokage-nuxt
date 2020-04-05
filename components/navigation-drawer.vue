@@ -15,11 +15,17 @@
 
     <v-divider></v-divider>
 
-    <v-list nav>
+    <v-list nav :disabled="isTaskInProgress">
       <v-list-item>
         <v-dialog v-model="dialog" persistent max-width="600">
           <template v-slot:activator="{ on }">
-            <v-btn color="primary" block tile v-on="on" @click="dialog = true"
+            <v-btn
+              color="primary"
+              block
+              tile
+              v-on="on"
+              :disabled="isTaskInProgress"
+              @click="dialog = true"
               >Dodaj zadanie</v-btn
             >
           </template>
@@ -74,13 +80,13 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { makeFindMixin } from "feathers-vuex";
 import TasksModal from "@/components/tasks-modal.vue";
 
 export default {
   name: "NavigationDrawer",
   components: { TasksModal },
   computed: {
+    ...mapGetters({ isTaskInProgress: "getIsTaskInProgress" }),
     user() {
       return this.$store.state.auth.user
         ? this.$store.state.auth.user
