@@ -26,7 +26,11 @@ const servicePlugin = makeServicePlugin({
 // Setup the client-side Feathers hooks.
 feathersClient.service(servicePath).hooks({
   before: {
-    all: [],
+    all: [context => {
+      const { service } = context
+      const roles = service.FeathersVuexModel.store.state.auth.user.roles
+      context.params.query = { roleId: { $in: roles.map(role => role.id) } }
+    }],
     find: [],
     get: [],
     create: [],
