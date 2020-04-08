@@ -8,5 +8,7 @@ export default {
   router: {
     middleware: ['auth']
   },
-  plugins: ['~/plugins/feathers-vuex']
+  plugins: ['~/plugins/feathers-vuex', {
+    src: '~plugins/quill-editor.js', mode: 'client'
+  }]
 }

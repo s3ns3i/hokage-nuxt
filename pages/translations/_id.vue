@@ -1,15 +1,11 @@
 <template>
-  <div>
-    <vue-editor v-model="translation" :disabled="isTaskInProgress" />
-  </div>
+  <vue-editor v-model="translation" :disabled="!isTaskInProgress" />
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { VueEditor } from "vue2-editor";
 
 export default {
-  components: { VueEditor },
   data() {
     return {
       translation: ""
