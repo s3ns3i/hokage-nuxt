@@ -12,7 +12,6 @@
           autofocus
         />
         <v-text-field v-model="clone.volumesNo" label="Liczba tomów" />
-        <!-- create a select with roles and disabled multiselect with filtered users on the right -->
         <v-row v-for="n in tempRoles.length" :key="n">
           <v-col align-self="center">
             <v-select
@@ -91,8 +90,6 @@ export default {
     },
     isUsersDisabled() {
       return n => {
-        console.log(n);
-        console.log(this.tempRoles[n - 1]);
         return this.tempRoles[n - 1] && !this.tempRoles[n - 1].id;
       };
     }
@@ -101,7 +98,6 @@ export default {
     async createProject() {
       if (this.valid) {
         try {
-          // this.clone.project_roles = this.tempRoles;
           this.tempRoles.forEach((role, index) => {
             this.clone.project_roles.push({
               order: index + 1,
@@ -109,9 +105,6 @@ export default {
               users: this.tempUsers[index]
             });
           });
-          // this.clone.roles.forEach(
-          //   (role, index) => (role.users = this.tempUsers[index])
-          // );
           const project = await this.clone.save();
           this.resetForm();
           this.$emit("close");
@@ -126,8 +119,6 @@ export default {
       this.clone = this.project.clone();
       this.tempRoles = [];
       this.tempUsers = [];
-      // this.clone.roles = [];
-      // this.clone.users = [];
       this.onAddRow();
     },
     closeModal() {
@@ -137,21 +128,11 @@ export default {
     onAddRow() {
       this.tempRoles.push({});
       this.tempUsers.push([]);
-      // this.clone.roles.push({});
-      // this.clone.users.push([]);
     },
     onRemoveRow(index) {
       this.tempRoles.splice(index, 1);
       this.tempUsers.splice(index, 1);
-      // this.clone.roles.splice(index, 1);
     },
-    onRoleInput(event) {
-      console.log(event);
-    },
-    onRoleChange(item, i) {
-      console.log(item);
-      console.log(i);
-    }
   }
 };
 </script>

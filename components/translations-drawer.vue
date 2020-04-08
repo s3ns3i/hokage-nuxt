@@ -51,9 +51,6 @@ export default {
         this.$router.push(`/translations/${this.tasks[0].id}`);
       }
     }
-  },
-  created() {
-    this.$store.dispatch("task/find", { query: {} });
   }
 };
 </script>

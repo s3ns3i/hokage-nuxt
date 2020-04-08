@@ -70,9 +70,6 @@ export default {
       return this.findRolesInStore({ query: { id: { $ne: 1 } } }).data;
     }
   },
-  created() {
-    this.$store.dispatch("project/find", { query: {} });
-  },
   methods: {
     getUsersByProjectRole(project, role) {
       return project.project_roles.find(

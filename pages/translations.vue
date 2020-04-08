@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import TranslationsDrawer from "@/components/translations-drawer.vue";
 import TranslationsMenu from "@/components/translations-menu.vue";
 
