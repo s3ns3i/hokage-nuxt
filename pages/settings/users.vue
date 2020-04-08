@@ -28,7 +28,14 @@
               <tr v-for="user in users" :key="user.email">
                 <td>{{ user.nickname }}</td>
                 <td>{{ user.email }}</td>
-                <td>{{ user.projectsNo }}</td>
+                <td>
+                  <v-chip
+                    v-for="(project, index) in assignedProjects(user)"
+                    :key="index"
+                  >
+                    {{ project }}
+                  </v-chip>
+                </td>
                 <td>
                   <v-chip v-for="role in user.roles" :key="role.id">
                     {{ role.name }}
@@ -64,6 +71,17 @@ export default {
   },
   created() {
     this.$store.dispatch("user/find", { query: {} });
+  },
+  methods: {
+    assignedProjects(user) {
+      if (user.user_project_roles) {
+        return user.user_project_roles.map(
+          userProjectRole => userProjectRole.project_role.project.name
+        );
+      } else {
+        return [];
+      }
+    }
   }
 };
 </script>
