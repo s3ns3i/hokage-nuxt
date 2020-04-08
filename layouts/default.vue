@@ -24,9 +24,6 @@ export default {
   components: {
     NavigationDrawer
   },
-  data() {
-    return {};
-  },
   computed: {
     ...mapGetters({ isTaskInProgress: "getIsTaskInProgress" })
   },
@@ -37,18 +34,25 @@ export default {
         this.$router.push("/login");
       } catch (error) {
         console.error(error);
+        this.$router.push("/login");
       }
     }
   },
   async beforeCreate() {
     if (!this.$store.state.auth.user) {
-      await this.$store.dispatch("auth/logout");
-      this.$router.push("/login");
+      try {
+        await this.$store.dispatch("auth/logout");
+        this.$router.push("/login");
+      } catch (error) {
+        console.error(error);
+      }
     }
   },
-  created() {
-    this.$store.dispatch("user/find", { query: {} });
+  mounted() {
+    this.$store.dispatch("task/find", { query: {} });
     this.$store.dispatch("role/find", { query: {} });
+    this.$store.dispatch("user/find", { query: {} });
+    this.$store.dispatch("project/find", { query: {} });
   }
 };
 </script>
