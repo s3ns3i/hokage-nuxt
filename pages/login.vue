@@ -7,10 +7,16 @@
             <v-toolbar-title>hokage</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
-            <v-form>
-              <v-text-field v-model="clone.email" label="E-mail" type="email" />
+            <v-form v-model="valid">
+              <v-text-field
+                v-model="clone.email"
+                :rules="emailRules"
+                label="E-mail"
+                type="email"
+              />
               <v-text-field
                 v-model="clone.password"
+                :rules="passwordRules"
                 label="Password"
                 type="password"
               />
@@ -18,7 +24,9 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn color="primary" @click="onLogin">Login</v-btn>
+            <v-btn color="primary" :disabled="!valid" @click="onLogin"
+              >Login</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-col>
@@ -33,7 +41,13 @@ export default {
   data() {
     return {
       user: null,
-      clone: null
+      clone: null,
+      valid: false,
+      emailRules: [
+        v => !!v || "E-mail jest wymagany!",
+        v => /.+@.+\..+/.test(v) || "E-mail jest wymagany!"
+      ],
+      passwordRules: [v => !!v || "Hasło jest wymagane!"]
     };
   },
   computed: {
@@ -51,15 +65,17 @@ export default {
   },
   methods: {
     async onLogin() {
-      try {
-        await this.$store.dispatch("auth/authenticate", {
-          strategy: "local",
-          email: this.clone.email,
-          password: this.clone.password
-        });
-        this.$router.push("/");
-      } catch (error) {
-        console.error(error);
+      if (this.valid) {
+        try {
+          await this.$store.dispatch("auth/authenticate", {
+            strategy: "local",
+            email: this.clone.email,
+            password: this.clone.password
+          });
+          this.$router.push("/");
+        } catch (error) {
+          console.error(error);
+        }
       }
     }
   }
