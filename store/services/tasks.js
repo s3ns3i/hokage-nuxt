@@ -27,20 +27,7 @@ const servicePlugin = makeServicePlugin({
 feathersClient.service(servicePath).hooks({
   before: {
     all: [],
-    find: [context => {
-      const { service } = context
-      const { user } = service.FeathersVuexModel.store.state.auth;
-      const roleIds = user.roles.map(role => role.id)
-      const projectIds = user.user_project_roles.map(userProjectRole => {
-        return userProjectRole.project_role.projectId
-      })
-
-      context.params.query = {
-        roleId: { $in: roleIds },
-        projectId: { $in: projectIds },
-        userId: { $in: [user.id, 'null'] }
-      }
-    }],
+    find: [],
     get: [],
     create: [],
     update: [],

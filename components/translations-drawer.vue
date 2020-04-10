@@ -42,7 +42,18 @@ export default {
     ...mapGetters({ isTaskInProgress: "getIsTaskInProgress" }),
     ...mapGetters("task", { findTasksInStore: "find" }),
     tasks() {
-      return this.findTasksInStore({ query: {} }).data;
+      const { user } = this.$store.state.auth;
+      const roleIds = user.roles.map(role => role.id);
+      const projectIds = user.user_project_roles.map(userProjectRole => {
+        return userProjectRole.project_role.projectId;
+      });
+      return this.findTasksInStore({
+        query: {
+          roleId: { $in: roleIds },
+          projectId: { $in: projectIds },
+          $or: [{ userId: user.id }, { userId: null }]
+        }
+      }).data;
     }
   },
   watch: {
