@@ -30,9 +30,11 @@
 
 <script>
 import { mapGetters } from "vuex";
+import AvailableTasks from "@/mixins/available-tasks";
 
 export default {
   name: "TranslationsDrawer",
+  mixins: [AvailableTasks],
   data() {
     return {
       item: 0
@@ -42,18 +44,7 @@ export default {
     ...mapGetters({ isTaskInProgress: "getIsTaskInProgress" }),
     ...mapGetters("task", { findTasksInStore: "find" }),
     tasks() {
-      const { user } = this.$store.state.auth;
-      const roleIds = user.roles.map(role => role.id);
-      const projectIds = user.user_project_roles.map(userProjectRole => {
-        return userProjectRole.project_role.projectId;
-      });
-      return this.findTasksInStore({
-        query: {
-          roleId: { $in: roleIds },
-          projectId: { $in: projectIds },
-          $or: [{ userId: user.id }, { userId: null }]
-        }
-      }).data;
+      return this.getAvailableTasks();
     }
   },
   watch: {
