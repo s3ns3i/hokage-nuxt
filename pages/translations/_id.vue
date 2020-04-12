@@ -13,9 +13,20 @@ export default {
       translation: ""
     };
   },
+  watch: {
+    isTaskInProgress(value) {
+      if (!value) {
+        this.$store.dispatch("task/patch", [
+          this.task.id,
+          { translation: this.translation }
+        ]);
+      }
+    }
+  },
   mounted() {
     if (this.task) {
-      this.translation = this.task.translation;
+      const translations = this.task.translations;
+      this.translation = translations[translations.length - 1].translation;
     }
   },
   computed: {
