@@ -31,10 +31,10 @@ export default {
     async onLogout() {
       try {
         await this.$store.dispatch("auth/logout");
-        this.$router.push("/login");
+        this.$router.go("/login");
       } catch (error) {
         console.error(error);
-        this.$router.push("/login");
+        this.$router.go("/login");
       }
     }
   },
@@ -42,7 +42,7 @@ export default {
     if (!this.$store.state.auth.user) {
       try {
         await this.$store.dispatch("auth/logout");
-        this.$router.push("/login");
+        this.$router.go("/login");
       } catch (error) {
         console.error(error);
       }
