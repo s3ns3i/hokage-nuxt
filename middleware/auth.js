@@ -21,10 +21,13 @@ export default async function (context) {
     console.log(`somehow it passed security: ${route.name}`)
   } else {
     if (route.name === 'first-user') {
-      return redirect('/')
+      return redirect('/translations')
     }
     if (route.name === 'login') {
-      return redirect('/')
+      return redirect('/translations')
+    }
+    if (route.name === '/' || route.name === '') {
+      return redirect('/translations')
     }
   }
 }

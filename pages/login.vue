@@ -72,7 +72,7 @@ export default {
             email: this.clone.email,
             password: this.clone.password
           });
-          this.$router.push("/");
+          this.$router.push("/translations");
         } catch (error) {
           console.error(error);
         }
