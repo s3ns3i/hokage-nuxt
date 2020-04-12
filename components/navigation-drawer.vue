@@ -40,7 +40,15 @@
           <v-list-item-title>Tłumaczenia</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-group no-action>
+      <v-list-item link nuxt to="/dashboard">
+        <v-list-item-icon>
+          <v-icon>mdi-chart-bar</v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>Statystyki</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-group v-if="isAdmin()" no-action>
         <template v-slot:activator>
           <v-list-item-icon>
             <v-icon>mdi-settings</v-icon>
@@ -90,13 +98,18 @@ export default {
     user() {
       return this.$store.state.auth.user
         ? this.$store.state.auth.user
-        : { nickname: "", email: "" };
+        : { nickname: "", email: "", roles: [] };
     }
   },
   data() {
     return {
       dialog: false
     };
+  },
+  methods: {
+    isAdmin() {
+      return !!this.user.roles.find(role => `${role.id}` === "1");
+    }
   }
 };
 </script>
