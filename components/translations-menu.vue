@@ -1,6 +1,10 @@
 <template>
   <v-row class="px-3">
-    <v-btn v-if="isTaskNotTaken" class="ma-3" @click="onTakeTask"
+    <v-btn
+      v-if="isTaskNotTaken"
+      class="ma-3"
+      :disabled="!$route.params.id"
+      @click="onTakeTask"
       >Przejmij zadanie</v-btn
     >
     <v-btn
@@ -54,13 +58,15 @@
           v-on="on"
           color="error"
           class="ma-3"
-          :disabled="isTaskInProgress || isTaskNotTaken"
+          :disabled="
+            isTaskInProgress || isTaskNotTaken || !getPreviousRoles().length
+          "
           @click="dialogReject = true"
           >Odrzuć</v-btn
         >
       </template>
-      <confirmation-modal
-        message="Czy na pewno chcesz odrzucić zadanie?"
+      <rejection-modal
+        :roles="getPreviousRoles()"
         @close="dialogReject = false"
         @confirm="onRejectTask"
       />
@@ -71,11 +77,12 @@
 <script>
 import { mapGetters } from "vuex";
 import ConfirmationModal from "@/components/confirmation-modal.vue";
+import RejectionModal from "@/components/rejection-modal.vue";
 import AvailableTasks from "@/mixins/available-tasks";
 
 export default {
   name: "TranslationsMenu",
-  components: { ConfirmationModal },
+  components: { ConfirmationModal, RejectionModal },
   mixins: [AvailableTasks],
   data() {
     return {
@@ -146,19 +153,36 @@ export default {
       }
       this.dialogPass = true;
     },
+    onDialogRejectOpen() {
+      this.dialogReject = true;
+    },
     getNextRole() {
       const roles = this.$store.getters["role/find"]().data;
       console.log(roles);
-      const nextRoleId =
+      const nextRoleIndex =
         roles.findIndex(
           role =>
             role.id === this.getTaskFromStore(this.$route.params.id).roleId
         ) + 1;
-      return roles[nextRoleId];
+      return roles[nextRoleIndex];
+    },
+    getPreviousRoles() {
+      if (!this.$route.params.id) {
+        return [];
+      }
+      const roles = this.$store.getters["role/find"]().data;
+      const currentRoleIndex = roles.findIndex(
+        role => role.id === this.getTaskFromStore(this.$route.params.id).roleId
+      );
+      if (currentRoleIndex) {
+        return roles
+          .slice(1, currentRoleIndex)
+          .map(role => ({ value: role.id, text: role.name }));
+      } else {
+        return [];
+      }
     },
     onPassOnTask() {
-      // Set userId to null,
-      // Set roleId to the next role
       const nextRole = this.getNextRole();
       this.$store.dispatch("task/patch", [
         this.$route.params.id,
@@ -166,7 +190,13 @@ export default {
       ]);
       this.dialogPass = false;
     },
-    onRejectTask() {}
+    onRejectTask({ roleId }) {
+      this.$store.dispatch("task/patch", [
+        this.$route.params.id,
+        { userId: null, roleId }
+      ]);
+      this.dialogReject = false;
+    }
   }
 };
 </script>
