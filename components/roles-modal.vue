@@ -24,9 +24,17 @@
 <script>
 export default {
   name: "RolesModal",
+  props: {
+    role: {
+      type: Object,
+      required: false,
+      default() {
+        return null;
+      }
+    }
+  },
   data() {
     return {
-      role: null,
       clone: null,
       valid: false
     };
@@ -37,7 +45,7 @@ export default {
   methods: {
     async createRole() {
       try {
-        const role = await this.clone.save();
+        await this.clone.save();
         this.resetForm();
         this.$emit("close");
       } catch (error) {
@@ -46,8 +54,13 @@ export default {
     },
     resetForm() {
       const Role = this.$FeathersVuex.api.byServicePath.role;
-      this.role = new Role({});
-      this.clone = this.role.clone();
+      let roleModel = null;
+      if (this.role) {
+        roleModel = new Role(this.role);
+      } else {
+        roleModel = new Role({});
+      }
+      this.clone = roleModel.clone();
     }
   }
 };

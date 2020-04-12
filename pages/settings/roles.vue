@@ -4,11 +4,11 @@
       <v-col>
         <v-dialog v-model="dialog" persistent max-width="600">
           <template v-slot:activator="{ on }">
-            <v-btn color="primary" @click="dialog = true" v-on="on">
+            <v-btn color="primary" @click="onDialogOpen()" v-on="on">
               Dodaj rolę
             </v-btn>
           </template>
-          <roles-modal @close="dialog = false" />
+          <roles-modal v-if="dialog" :role="role" @close="onDialogClose()" />
         </v-dialog>
       </v-col>
     </v-row>
@@ -23,7 +23,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="role in roles" :key="role.id">
+              <tr
+                v-for="role in roles"
+                class="table-row"
+                :key="role.id"
+                @click="onDialogOpen(role)"
+              >
                 <td>{{ role.name }}</td>
                 <td>
                   <v-chip v-for="user in role.users" :key="user.email">
@@ -48,7 +53,8 @@ export default {
   components: { RolesModal },
   data() {
     return {
-      dialog: false
+      dialog: false,
+      role: null
     };
   },
   computed: {
@@ -62,6 +68,22 @@ export default {
   },
   created() {
     this.$store.dispatch("role/find", { query: {} });
+  },
+  methods: {
+    onDialogOpen(role) {
+      this.role = role;
+      this.dialog = true;
+    },
+    onDialogClose() {
+      this.role = null;
+      this.dialog = false;
+    }
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.table-row {
+  cursor: pointer;
+}
+</style>
