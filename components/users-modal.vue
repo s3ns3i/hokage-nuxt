@@ -53,9 +53,17 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "UsersModal",
+  props: {
+    user: {
+      type: Object,
+      required: false,
+      default() {
+        return null;
+      }
+    }
+  },
   data() {
     return {
-      user: null,
       clone: null,
       valid: false,
       emailRules: [
@@ -77,7 +85,7 @@ export default {
     async createUser() {
       if (this.valid) {
         try {
-          const user = await this.clone.save();
+          await this.clone.save();
           this.resetForm();
           this.$emit("close");
         } catch (error) {
@@ -87,8 +95,13 @@ export default {
     },
     resetForm() {
       const User = this.$FeathersVuex.api.byServicePath.user;
-      this.user = new User({});
-      this.clone = this.user.clone();
+      let userModel = null;
+      if (this.user) {
+        userModel = new User(this.user);
+      } else {
+        userModel = new User({});
+      }
+      this.clone = userModel.clone();
     },
     closeModal() {
       this.resetForm();

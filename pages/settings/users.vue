@@ -4,11 +4,11 @@
       <v-col>
         <v-dialog v-model="dialog" persistent max-width="600">
           <template v-slot:activator="{ on }">
-            <v-btn color="primary" @click="dialog = true" v-on="on">
+            <v-btn color="primary" @click="onDialogOpen()" v-on="on">
               Dodaj użytkownika
             </v-btn>
           </template>
-          <users-modal @close="dialog = false" />
+          <users-modal v-if="dialog" :user="user" @close="onDialogClose()" />
         </v-dialog>
       </v-col>
     </v-row>
@@ -25,7 +25,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="user in users" :key="user.email">
+              <tr
+                v-for="user in users"
+                class="table-row"
+                :key="user.email"
+                @click="onDialogOpen(user)"
+              >
                 <td>{{ user.nickname }}</td>
                 <td>{{ user.email }}</td>
                 <td>
@@ -59,7 +64,8 @@ export default {
   components: { UsersModal },
   data() {
     return {
-      dialog: false
+      dialog: false,
+      user: null
     };
   },
   computed: {
@@ -81,7 +87,21 @@ export default {
       } else {
         return [];
       }
+    },
+    onDialogOpen(user) {
+      this.user = user;
+      this.dialog = true;
+    },
+    onDialogClose() {
+      this.user = null;
+      this.dialog = false;
     }
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.table-row {
+  cursor: pointer;
+}
+</style>
