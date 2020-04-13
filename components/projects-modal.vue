@@ -106,7 +106,6 @@ export default {
       if (this.valid) {
         try {
           this.clone.project_roles = [];
-          console.log([...this.clone.project_roles]);
           this.tempRoles.forEach((role, index) => {
             this.clone.project_roles.push({
               order: index + 1,
@@ -114,7 +113,7 @@ export default {
               users: this.tempUsers[index]
             });
           });
-          console.log([...this.clone.project_roles]);
+          this.clone.project_roles.pop();
           await this.clone.save();
           this.resetForm();
           this.$emit("close");
@@ -141,7 +140,7 @@ export default {
         this.tempRoles = this.project.project_roles.map(projectRole => ({
           id: projectRole.role.id,
           name: projectRole.role.name,
-          users: projectRole.users
+          users: this.roles.find(role => role.id === projectRole.role.id).users
         }));
       } else {
         this.tempRoles = [];
