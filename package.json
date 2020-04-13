@@ -11,9 +11,10 @@
     "@feathersjs/authentication-client": "^4.5.2",
     "@feathersjs/feathers": "^4.5.2",
     "@feathersjs/socketio-client": "^4.5.2",
-    "cookie-storage": "^5.0.3",
-    "feathers-hooks-common": "^4.20.7",
-    "feathers-vuex": "^2.3.1",
+    "@vue/composition-api": "^0.5.0",
+    "cookie-storage": "^6.0.0",
+    "feathers-hooks-common": "^5.0.2",
+    "feathers-vuex": "^3.9.1",
     "nuxt": "^2.12.2",
     "socket.io-client": "^2.3.0",
     "vue2-editor": "^2.10.2"
