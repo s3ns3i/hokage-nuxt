@@ -67,10 +67,17 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "ProjectsModal",
-  // mixins: [makeFindMixin({ service: "roles" })],
+  props: {
+    project: {
+      type: Object,
+      required: false,
+      default() {
+        return null;
+      }
+    }
+  },
   data() {
     return {
-      project: null,
       clone: null,
       valid: false,
       tempRoles: [],
@@ -98,6 +105,8 @@ export default {
     async createProject() {
       if (this.valid) {
         try {
+          this.clone.project_roles = [];
+          console.log([...this.clone.project_roles]);
           this.tempRoles.forEach((role, index) => {
             this.clone.project_roles.push({
               order: index + 1,
@@ -105,7 +114,8 @@ export default {
               users: this.tempUsers[index]
             });
           });
-          const project = await this.clone.save();
+          console.log([...this.clone.project_roles]);
+          await this.clone.save();
           this.resetForm();
           this.$emit("close");
         } catch (error) {
@@ -115,11 +125,36 @@ export default {
     },
     resetForm() {
       const Project = this.$FeathersVuex.api.byServicePath.project;
-      this.project = new Project({});
+      let projectModel = null;
+      if (this.project) {
+        this.project = new Project(this.project);
+      } else {
+        this.project = new Project({});
+      }
       this.clone = this.project.clone();
-      this.tempRoles = [];
-      this.tempUsers = [];
+      this.initTempRoles();
+      this.initTempUsers();
       this.onAddRow();
+    },
+    initTempRoles() {
+      if (this.project) {
+        this.tempRoles = this.project.project_roles.map(projectRole => ({
+          id: projectRole.role.id,
+          name: projectRole.role.name,
+          users: projectRole.users
+        }));
+      } else {
+        this.tempRoles = [];
+      }
+    },
+    initTempUsers() {
+      if (this.project) {
+        this.tempUsers = this.project.project_roles.map(
+          projectRole => projectRole.users
+        );
+      } else {
+        this.tempUsers = [];
+      }
     },
     closeModal() {
       this.resetForm();
@@ -132,7 +167,7 @@ export default {
     onRemoveRow(index) {
       this.tempRoles.splice(index, 1);
       this.tempUsers.splice(index, 1);
-    },
+    }
   }
 };
 </script>

@@ -4,11 +4,15 @@
       <v-col>
         <v-dialog v-model="dialog" persistent max-width="600">
           <template v-slot:activator="{ on }">
-            <v-btn color="primary" @click="dialog = true" v-on="on">
+            <v-btn color="primary" @click="onDialogOpen()" v-on="on">
               Dodaj projekt
             </v-btn>
           </template>
-          <projects-modal v-if="dialog" @close="dialog = false" />
+          <projects-modal
+            v-if="dialog"
+            :project="project"
+            @close="onDialogClose()"
+          />
         </v-dialog>
       </v-col>
     </v-row>
@@ -27,7 +31,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="project in projects" :key="project.name">
+              <tr
+                v-for="project in projects"
+                class="table-row"
+                :key="project.name"
+                @click="onDialogOpen(project)"
+              >
                 <td>{{ project.name }}</td>
                 <td>{{ project.volumesNo }}</td>
                 <td>{{ project.suspended ? "Tak" : "Nie" }}</td>
@@ -57,7 +66,8 @@ export default {
   components: { ProjectsModal },
   data() {
     return {
-      dialog: false
+      dialog: false,
+      project: null
     };
   },
   computed: {
@@ -75,6 +85,14 @@ export default {
       return project.project_roles.find(
         projectRole => projectRole.roleId === role.id
       ).users;
+    },
+    onDialogOpen(project) {
+      this.project = project;
+      this.dialog = true;
+    },
+    onDialogClose() {
+      this.project = null;
+      this.dialog = false;
     }
   }
 };
