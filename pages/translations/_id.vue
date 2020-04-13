@@ -26,7 +26,9 @@ export default {
   mounted() {
     if (this.task) {
       const translations = this.task.translations;
-      this.translation = translations[translations.length - 1].translation;
+      this.translation = translations.length
+        ? translations[translations.length - 1].translation
+        : "";
     }
   },
   computed: {
