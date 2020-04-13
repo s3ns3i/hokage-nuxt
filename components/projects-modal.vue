@@ -113,7 +113,6 @@ export default {
               users: this.tempUsers[index]
             });
           });
-          this.clone.project_roles.pop();
           await this.clone.save();
           this.resetForm();
           this.$emit("close");
@@ -126,14 +125,16 @@ export default {
       const Project = this.$FeathersVuex.api.byServicePath.project;
       let projectModel = null;
       if (this.project) {
-        this.project = new Project(this.project);
+        projectModel = new Project(this.project);
       } else {
-        this.project = new Project({});
+        projectModel = new Project({});
       }
-      this.clone = this.project.clone();
+      this.clone = projectModel.clone();
       this.initTempRoles();
       this.initTempUsers();
-      this.onAddRow();
+      if (!this.tempRoles.length) {
+        this.onAddRow();
+      }
     },
     initTempRoles() {
       if (this.project) {
