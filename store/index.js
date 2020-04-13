@@ -40,7 +40,7 @@ const createStore = () => {
           moduleName: 'auth',
           cookieName: 'feathers-jwt'
         })
-      }
+      },
     },
     getters: {
       getIsTaskInProgress: state => state.isTaskInProgress
