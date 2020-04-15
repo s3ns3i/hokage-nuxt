@@ -16,5 +16,5 @@ export default {
   router: {
     middleware: ['auth']
   },
-  plugins: ['~/plugins/feathers-vuex']
+  plugins: ['~/plugins/feathers-vuex', { src: "~/plugins/vue2-editor", ssr: false }]
 }
