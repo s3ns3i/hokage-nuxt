@@ -19,16 +19,6 @@ export default {
     NavigationDrawer,
     TopMenu
   },
-  async beforeCreate() {
-    if (!this.$store.state.auth.user) {
-      try {
-        await this.$store.dispatch("auth/logout");
-        this.$router.go("/login");
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  },
   mounted() {
     this.$store.dispatch("task/find", { query: {} });
     this.$store.dispatch("role/find", { query: {} });
