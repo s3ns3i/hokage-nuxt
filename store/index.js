@@ -3,6 +3,7 @@ import { initAuth } from "feathers-vuex";
 
 const auth = makeAuthPlugin({
   userService: "user",
+  entityIdField: "id",
   state: {
     publicPages: ["login", "first-user"]
   },
@@ -39,15 +40,9 @@ const servicePlugins = requireModule
   .keys()
   .map(modulePath => requireModule(modulePath).default);
 
-export const state = () => ({
-  isTaskInProgress: false
-});
 export const mutations = {
   increment(state) {
     state.counter++;
-  },
-  set_is_task_in_progress(state, { isTaskInProgress }) {
-    state.isTaskInProgress = isTaskInProgress;
   }
 };
 export const actions = {
@@ -64,12 +59,6 @@ export const actions = {
     if (state.auth.accessToken) {
       return dispatch("auth/onInitAuth", state.auth.payload);
     }
-  },
-  setIsTaskInProgress({ commit }, payload) {
-    commit("set_is_task_in_progress", payload);
   }
-};
-export const getters = {
-  getIsTaskInProgress: state => state.isTaskInProgress
 };
 export const plugins = [...servicePlugins, auth];

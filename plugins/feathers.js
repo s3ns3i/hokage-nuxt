@@ -32,7 +32,7 @@ const {
   FeathersVuex
 } = feathersVuex(feathersClient, {
   serverAlias: "api", // optional for working with multiple APIs (this is the default value)
-  idField: "_id", // Must match the id field in your database table/collection
+  idField: "id", // Must match the id field in your database table/collection
   debug: true,
   whitelist: ["$regex", "$options"]
 });
