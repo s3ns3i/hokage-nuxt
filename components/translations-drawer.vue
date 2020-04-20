@@ -41,8 +41,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({ isTaskInProgress: "getIsTaskInProgress" }),
-    ...mapGetters("task", { findTasksInStore: "find" }),
+    ...mapGetters("task", {
+      findTasksInStore: "find",
+      isTaskInProgress: "getIsTaskInProgress"
+    }),
     tasks() {
       return this.getAvailableTasks();
     }

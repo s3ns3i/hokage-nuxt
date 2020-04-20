@@ -23,7 +23,23 @@ const servicePath = "task";
 const servicePlugin = makeServicePlugin({
   Model: Task,
   service: feathersClient.service(servicePath),
-  servicePath
+  servicePath,
+  state: {
+    isTaskInProgress: false
+  },
+  mutations: {
+    set_is_task_in_progress(state, { isTaskInProgress }) {
+      state.isTaskInProgress = isTaskInProgress;
+    }
+  },
+  actions: {
+    setIsTaskInProgress({ commit }, payload) {
+      commit("set_is_task_in_progress", payload);
+    }
+  },
+  getters: {
+    getIsTaskInProgress: state => state.isTaskInProgress
+  }
 });
 
 // Setup the client-side Feathers hooks.

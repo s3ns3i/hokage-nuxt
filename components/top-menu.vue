@@ -17,7 +17,7 @@ export default {
   name: "TopMenu",
   components: { Notifications },
   computed: {
-    ...mapGetters({ isTaskInProgress: "getIsTaskInProgress" })
+    ...mapGetters("task", { isTaskInProgress: "getIsTaskInProgress" })
   },
   methods: {
     async onLogout() {
@@ -33,5 +33,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -94,8 +94,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({ isTaskInProgress: "getIsTaskInProgress" }),
-    ...mapGetters("task", { getTaskFromStore: "get" }),
+    ...mapGetters("task", {
+      getTaskFromStore: "get",
+      isTaskInProgress: "getIsTaskInProgress"
+    }),
     isTaskNotTaken() {
       const currentTask = this.getAvailableTasks().find(
         task => `${task.id}` === this.$route.params.id
@@ -201,5 +203,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -94,7 +94,7 @@ export default {
   name: "NavigationDrawer",
   components: { TasksModal },
   computed: {
-    ...mapGetters({ isTaskInProgress: "getIsTaskInProgress" }),
+    ...mapGetters("task", { isTaskInProgress: "getIsTaskInProgress" }),
     user() {
       return this.$store.state.auth.user
         ? this.$store.state.auth.user

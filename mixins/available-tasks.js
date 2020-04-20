@@ -2,8 +2,10 @@ import { mapGetters } from "vuex";
 
 export default {
   computed: {
-    ...mapGetters({ isTaskInProgress: "getIsTaskInProgress" }),
-    ...mapGetters("task", { findTasksInStore: "find" }),
+    ...mapGetters("task", {
+      findTasksInStore: "find",
+      isTaskInProgress: "getIsTaskInProgress"
+    })
   },
   methods: {
     getAvailableTasks() {
@@ -21,7 +23,7 @@ export default {
           }
         }).data;
       }
-      return []
+      return [];
     }
   }
-}
+};
