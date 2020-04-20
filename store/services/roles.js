@@ -1,16 +1,19 @@
-import feathersClient, { makeServicePlugin, BaseModel } from '../../feathers-client'
+import feathersClient, {
+  makeServicePlugin,
+  BaseModel
+} from "~/plugins/feathers";
 
 class Role extends BaseModel {
   constructor(data, options) {
-    super(data, options)
+    super(data, options);
   }
   // Required for $FeathersVuex plugin to work after production transpile.
-  static modelName = 'Role'
+  static modelName = "Role";
   // Define default properties here
   static instanceDefaults() {
     return {
-      name: '',
-    }
+      name: ""
+    };
   }
 
   // // Mapping roles to the user.
@@ -21,12 +24,12 @@ class Role extends BaseModel {
   //   return data
   // }
 }
-const servicePath = 'role'
+const servicePath = "role";
 const servicePlugin = makeServicePlugin({
   Model: Role,
   service: feathersClient.service(servicePath),
   servicePath
-})
+});
 
 // Setup the client-side Feathers hooks.
 feathersClient.service(servicePath).hooks({
@@ -57,6 +60,6 @@ feathersClient.service(servicePath).hooks({
     patch: [],
     remove: []
   }
-})
+});
 
-export default servicePlugin
+export default servicePlugin;

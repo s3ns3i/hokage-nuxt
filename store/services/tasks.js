@@ -1,27 +1,30 @@
-import feathersClient, { makeServicePlugin, BaseModel } from '../../feathers-client'
+import feathersClient, {
+  makeServicePlugin,
+  BaseModel
+} from "~/plugins/feathers";
 
 class Task extends BaseModel {
   constructor(data, options) {
-    super(data, options)
+    super(data, options);
   }
   // Required for $FeathersVuex plugin to work after production transpile.
-  static modelName = 'Task'
+  static modelName = "Task";
   // Define default properties here
   static instanceDefaults() {
     return {
-      name: '',
+      name: "",
       chapterNo: 0,
-      translation: '',
+      translation: "",
       project: {}
-    }
+    };
   }
 }
-const servicePath = 'task'
+const servicePath = "task";
 const servicePlugin = makeServicePlugin({
   Model: Task,
   service: feathersClient.service(servicePath),
   servicePath
-})
+});
 
 // Setup the client-side Feathers hooks.
 feathersClient.service(servicePath).hooks({
@@ -52,6 +55,6 @@ feathersClient.service(servicePath).hooks({
     patch: [],
     remove: []
   }
-})
+});
 
-export default servicePlugin
+export default servicePlugin;

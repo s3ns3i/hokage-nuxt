@@ -1,4 +1,4 @@
-import Vue from 'vue'
-import { FeathersVuex } from '../feathers-client'
+import Vue from "vue";
+import { FeathersVuex } from "./feathers";
 
 Vue.use(FeathersVuex);
