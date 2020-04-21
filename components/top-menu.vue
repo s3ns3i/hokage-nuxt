@@ -6,6 +6,12 @@
     <v-btn
       class="ml-6"
       icon
+      @click="onThemeChange"
+    >
+      <v-icon>mdi-theme-light-dark</v-icon>
+    </v-btn>
+    <v-btn
+      icon
       :disabled="isTaskInProgress"
       @click="onLogout"
     >
@@ -25,6 +31,9 @@ export default {
     ...mapGetters("task", { isTaskInProgress: "getIsTaskInProgress" })
   },
   methods: {
+    onThemeChange() {
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+    },
     async onLogout() {
       try {
         await this.$store.dispatch("auth/logout");
