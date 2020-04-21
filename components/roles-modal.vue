@@ -8,6 +8,7 @@
         <v-text-field
           v-model="clone.name"
           :counter="50"
+          :rules="nameRules"
           label="Nazwa"
           required
         />
@@ -23,6 +24,7 @@
       </v-btn>
       <v-btn
         color="primary"
+        :disabled="!valid"
         @click="createRole()"
       >
         Zapisz
@@ -46,7 +48,8 @@ export default {
   data() {
     return {
       clone: null,
-      valid: false
+      valid: false,
+      nameRules: [v => !!v || "Nazwa jest wymagana!"],
     };
   },
   created() {
