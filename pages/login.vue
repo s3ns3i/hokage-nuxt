@@ -20,7 +20,10 @@
             <v-toolbar-title>hokage</v-toolbar-title>
           </v-toolbar>
           <v-card-text>
-            <v-form v-model="valid">
+            <v-form
+              ref="form"
+              v-model="valid"
+            >
               <v-text-field
                 v-model="clone.email"
                 :rules="emailRules"
@@ -45,6 +48,22 @@
               Login
             </v-btn>
           </v-card-actions>
+          <v-snackbar
+            v-model="snackbar"
+            color="error"
+            :timeout="6000"
+            bottom
+            absolute
+          >
+            {{ "Zły e-mail lub hasło!" }}
+            <v-btn
+              dark
+              text
+              @click="snackbar = false"
+            >
+              Zamknij
+            </v-btn>
+          </v-snackbar>
         </v-card>
       </v-col>
     </v-row>
@@ -64,7 +83,8 @@ export default {
         v => !!v || "E-mail jest wymagany!",
         v => /.+@.+\..+/.test(v) || "E-mail jest wymagany!"
       ],
-      passwordRules: [v => !!v || "Hasło jest wymagane!"]
+      passwordRules: [v => !!v || "Hasło jest wymagane!"],
+      snackbar: false
     };
   },
   computed: {
@@ -91,7 +111,12 @@ export default {
           });
           this.$router.push("/translations");
         } catch (error) {
-          console.error(error);
+          if(error.code === 401) {
+            this.snackbar = true;
+            this.$refs.form.reset();
+          } else {
+            console.error(error);
+          }
         }
       }
     }
