@@ -37,7 +37,7 @@
             <v-select
               v-model="tempUsers[n - 1]"
               :items="tempRoles[n - 1].users"
-              :rules="[v => !!v || 'Trzeba przypisać użytkownika!']"
+              :rules="[v => !!v.length || 'Trzeba przypisać użytkownika!']"
               item-text="nickname"
               item-value="id"
               label="Użytkownicy"
@@ -174,6 +174,7 @@ export default {
         }));
       } else {
         this.tempRoles = [];
+        this.tempRoles.push(this.roles[0]);
       }
     },
     initTempUsers() {
@@ -190,7 +191,7 @@ export default {
       this.$emit("close");
     },
     onAddRow() {
-      this.tempRoles.push({});
+      this.tempRoles.push(this.roles[0]);
       this.tempUsers.push([]);
     },
     onRemoveRow(index) {
