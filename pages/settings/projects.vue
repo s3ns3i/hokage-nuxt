@@ -2,9 +2,17 @@
   <v-container fluid>
     <v-row>
       <v-col>
-        <v-dialog v-model="dialog" persistent max-width="600">
+        <v-dialog
+          v-model="dialog"
+          persistent
+          max-width="600"
+        >
           <template v-slot:activator="{ on }">
-            <v-btn color="primary" @click="onDialogOpen()" v-on="on">
+            <v-btn
+              color="primary"
+              @click="onDialogOpen()"
+              v-on="on"
+            >
               Dodaj projekt
             </v-btn>
           </template>
@@ -22,10 +30,20 @@
           <template v-slot:default>
             <thead>
               <tr>
-                <th class="text-left">Nazwa projektu</th>
-                <th class="text-left">Liczba tomów</th>
-                <th class="text-left">Zawieszony?</th>
-                <th v-for="role in roles" :key="role.id" class="text-left">
+                <th class="text-left">
+                  Nazwa projektu
+                </th>
+                <th class="text-left">
+                  Liczba tomów
+                </th>
+                <th class="text-left">
+                  Zawieszony?
+                </th>
+                <th
+                  v-for="role in roles"
+                  :key="role.id"
+                  class="text-left"
+                >
                   {{ role.name }}
                 </th>
               </tr>
@@ -33,14 +51,17 @@
             <tbody>
               <tr
                 v-for="project in projects"
-                class="table-row"
                 :key="project.name"
+                class="table-row"
                 @click="onDialogOpen(project)"
               >
                 <td>{{ project.name }}</td>
                 <td>{{ project.volumesNo }}</td>
                 <td>{{ project.suspended ? "Tak" : "Nie" }}</td>
-                <td v-for="role in roles" :key="role.id">
+                <td
+                  v-for="role in roles"
+                  :key="role.id"
+                >
                   <v-chip
                     v-for="user in getUsersByProjectRole(project, role)"
                     :key="user.email"
@@ -82,9 +103,13 @@ export default {
   },
   methods: {
     getUsersByProjectRole(project, role) {
-      return project.project_roles.find(
+      const result = project.project_roles.find(
         projectRole => projectRole.roleId === role.id
-      ).users;
+      );
+      if(result) {
+        return result.users;
+      }
+      return []
     },
     onDialogOpen(project) {
       this.project = project;
