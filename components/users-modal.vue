@@ -8,6 +8,7 @@
         <v-text-field
           v-model="clone.nickname"
           :counter="50"
+          :rules="nicknameRules"
           label="Ksywka"
           required
           autofocus
@@ -21,6 +22,7 @@
         />
         <v-text-field
           v-model="clone.password"
+          :rules="passwordRules"
           label="Hasło"
           type="password"
           required
@@ -28,7 +30,7 @@
         <v-select
           v-model="clone.roles"
           :items="roles"
-          :rules="[v => !!v || 'Role są wymagane!']"
+          :rules="rolesRules"
           item-text="name"
           item-value="id"
           label="Rola"
@@ -77,10 +79,13 @@ export default {
     return {
       clone: null,
       valid: false,
+      nicknameRules: [v => !!v || "Ksywka jest wymagana!"],
       emailRules: [
         v => !!v || "E-mail jest wymagany!",
         v => /.+@.+\..+/.test(v) || "E-mail jest wymagany!"
-      ]
+      ],
+      passwordRules: [v => !!v || "Hasło jest wymagane!"],
+      rolesRules: [v => !!v.length || "Przynajmniej jedna rola jest wymagana!"],
     };
   },
   computed: {
