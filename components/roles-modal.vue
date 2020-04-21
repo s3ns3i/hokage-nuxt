@@ -1,6 +1,8 @@
 <template>
   <v-card>
-    <v-card-title class="headline">Dodaj rolę</v-card-title>
+    <v-card-title class="headline">
+      Dodaj rolę
+    </v-card-title>
     <v-card-text>
       <v-form v-model="valid">
         <v-text-field
@@ -12,9 +14,17 @@
       </v-form>
     </v-card-text>
     <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn text @click="$emit('close')">Anuluj</v-btn>
-      <v-btn color="primary" @click="createRole()">
+      <v-spacer />
+      <v-btn
+        text
+        @click="$emit('close')"
+      >
+        Anuluj
+      </v-btn>
+      <v-btn
+        color="primary"
+        @click="createRole()"
+      >
         Zapisz
       </v-btn>
     </v-card-actions>

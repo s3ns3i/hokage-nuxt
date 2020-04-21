@@ -1,6 +1,8 @@
 <template>
   <v-card>
-    <v-card-title class="headline">Dodaj zadanie</v-card-title>
+    <v-card-title class="headline">
+      Dodaj zadanie
+    </v-card-title>
     <v-card-text>
       <v-form v-model="valid">
         <v-autocomplete
@@ -24,9 +26,17 @@
       </v-form>
     </v-card-text>
     <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn text @click="$emit('close')">Anuluj</v-btn>
-      <v-btn color="primary" @click="createTask()">
+      <v-spacer />
+      <v-btn
+        text
+        @click="$emit('close')"
+      >
+        Anuluj
+      </v-btn>
+      <v-btn
+        color="primary"
+        @click="createTask()"
+      >
         Zapisz
       </v-btn>
     </v-card-actions>
@@ -60,7 +70,6 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("project/find", { query: {} });
     this.resetForm();
   },
   methods: {

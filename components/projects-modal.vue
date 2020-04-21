@@ -1,6 +1,8 @@
 <template>
   <v-card>
-    <v-card-title class="headline">Dodaj projekt</v-card-title>
+    <v-card-title class="headline">
+      Dodaj projekt
+    </v-card-title>
     <v-card-text>
       <v-form v-model="valid">
         <v-text-field
@@ -11,8 +13,14 @@
           required
           autofocus
         />
-        <v-text-field v-model="clone.volumesNo" label="Liczba tomów" />
-        <v-row v-for="n in tempRoles.length" :key="n">
+        <v-text-field
+          v-model="clone.volumesNo"
+          label="Liczba tomów"
+        />
+        <v-row
+          v-for="n in tempRoles.length"
+          :key="n"
+        >
           <v-col align-self="center">
             <v-select
               v-model="tempRoles[n - 1]"
@@ -40,21 +48,43 @@
             />
           </v-col>
           <v-col align-self="center">
-            <v-btn icon color="primary" @click="onAddRow"
-              ><v-icon>mdi-plus</v-icon></v-btn
+            <v-btn
+              icon
+              color="primary"
+              @click="onAddRow"
             >
-            <v-btn v-if="n > 1" icon color="primary" @click="onRemoveRow(n - 1)"
-              ><v-icon>mdi-delete</v-icon></v-btn
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+            <v-btn
+              v-if="n > 1"
+              icon
+              color="primary"
+              @click="onRemoveRow(n - 1)"
             >
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
           </v-col>
         </v-row>
-        <v-checkbox v-model="clone.suspended" label="Zawieszony?" required />
+        <v-checkbox
+          v-model="clone.suspended"
+          label="Zawieszony?"
+          required
+        />
       </v-form>
     </v-card-text>
     <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn text @click="closeModal()">Anuluj</v-btn>
-      <v-btn :disabled="!valid" color="primary" @click="createProject()">
+      <v-spacer />
+      <v-btn
+        text
+        @click="closeModal()"
+      >
+        Anuluj
+      </v-btn>
+      <v-btn
+        :disabled="!valid"
+        color="primary"
+        @click="createProject()"
+      >
         Zapisz
       </v-btn>
     </v-card-actions>
@@ -84,10 +114,6 @@ export default {
       tempUsers: []
     };
   },
-  created() {
-    this.resetForm();
-    this.$store.dispatch("role/find", { query: {} });
-  },
   computed: {
     ...mapGetters("role", { findRolesInStore: "find" }),
     roles() {
@@ -100,6 +126,9 @@ export default {
         return this.tempRoles[n - 1] && !this.tempRoles[n - 1].id;
       };
     }
+  },
+  created() {
+    this.resetForm();
   },
   methods: {
     async createProject() {

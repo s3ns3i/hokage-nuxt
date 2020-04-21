@@ -18,14 +18,6 @@ class Project extends BaseModel {
       project_roles: []
     };
   }
-
-  // // Mapping roles to the user.
-  // static setupInstance(data, { models }) {
-  //   if (data.users) {
-  //     data.users = data.users.map(user => new models.api.User(user))
-  //   }
-  //   return data
-  // }
 }
 const servicePath = "project";
 const servicePlugin = makeServicePlugin({

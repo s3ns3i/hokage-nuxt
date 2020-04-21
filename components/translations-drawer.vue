@@ -3,13 +3,21 @@
     <v-list>
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title class="title">Rozdziały</v-list-item-title>
+          <v-list-item-title class="title">
+            Rozdziały
+          </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
     <v-divider />
-    <v-list v-model="tasks" :disabled="isTaskInProgress">
-      <v-list-item-group v-model="item" color="primary">
+    <v-list
+      v-model="tasks"
+      :disabled="isTaskInProgress"
+    >
+      <v-list-item-group
+        v-model="item"
+        color="primary"
+      >
         <v-list-item
           v-for="(task, index) in tasks"
           :key="index"
@@ -44,10 +52,7 @@ export default {
     ...mapGetters("task", {
       findTasksInStore: "find",
       isTaskInProgress: "getIsTaskInProgress"
-    }),
-    tasks() {
-      return this.getAvailableTasks();
-    }
+    })
   },
   watch: {
     tasks() {

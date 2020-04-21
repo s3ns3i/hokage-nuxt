@@ -1,6 +1,8 @@
 <template>
   <v-card>
-    <v-card-title class="headline">Dodaj użytkownika</v-card-title>
+    <v-card-title class="headline">
+      Dodaj użytkownika
+    </v-card-title>
     <v-card-text>
       <v-form v-model="valid">
         <v-text-field
@@ -39,9 +41,18 @@
       </v-form>
     </v-card-text>
     <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn text @click="closeModal()">Anuluj</v-btn>
-      <v-btn :disabled="!valid" color="primary" @click="createUser()">
+      <v-spacer />
+      <v-btn
+        text
+        @click="closeModal()"
+      >
+        Anuluj
+      </v-btn>
+      <v-btn
+        :disabled="!valid"
+        color="primary"
+        @click="createUser()"
+      >
         Zapisz
       </v-btn>
     </v-card-actions>
@@ -72,14 +83,14 @@ export default {
       ]
     };
   },
-  created() {
-    this.resetForm();
-  },
   computed: {
     ...mapGetters("role", { findRolesInStore: "find" }),
     roles() {
       return this.findRolesInStore({ query: {} }).data;
     }
+  },
+  created() {
+    this.resetForm();
   },
   methods: {
     async createUser() {

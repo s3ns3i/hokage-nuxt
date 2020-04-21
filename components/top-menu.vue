@@ -3,7 +3,12 @@
     <v-toolbar-title>hokage</v-toolbar-title>
     <v-spacer />
     <notifications />
-    <v-btn class="ml-6" icon :disabled="isTaskInProgress" @click="onLogout">
+    <v-btn
+      class="ml-6"
+      icon
+      :disabled="isTaskInProgress"
+      @click="onLogout"
+    >
       <v-icon>mdi-logout</v-icon>
     </v-btn>
   </v-app-bar>

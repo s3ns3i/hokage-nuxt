@@ -1,5 +1,8 @@
 <template>
-  <vue-editor v-model="translation" :disabled="!isTaskInProgress" />
+  <vue-editor
+    v-model="translation"
+    :disabled="!isTaskInProgress"
+  />
 </template>
 
 <script>
@@ -12,6 +15,22 @@ export default {
     return {
       translation: ""
     };
+  },
+  computed: {
+    ...mapGetters("task", {
+      getTaskFromStore: "get",
+      isTaskInProgress: "getIsTaskInProgress"
+    }),
+    task() {
+      const foundTask = this.tasks.find(
+        task => `${task.id}` === this.$route.params.id
+      );
+      if (foundTask) {
+        return this.getTaskFromStore(this.$route.params.id);
+      } else {
+        return null;
+      }
+    }
   },
   watch: {
     isTaskInProgress(value) {
@@ -29,22 +48,6 @@ export default {
       this.translation = translations.length
         ? translations[translations.length - 1].translation
         : "";
-    }
-  },
-  computed: {
-    ...mapGetters("task", {
-      getTaskFromStore: "get",
-      isTaskInProgress: "getIsTaskInProgress"
-    }),
-    task() {
-      const foundTask = this.getAvailableTasks().find(
-        task => `${task.id}` === this.$route.params.id
-      );
-      if (foundTask) {
-        return this.getTaskFromStore(this.$route.params.id);
-      } else {
-        return null;
-      }
     }
   }
 };

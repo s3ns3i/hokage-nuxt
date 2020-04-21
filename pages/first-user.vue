@@ -1,59 +1,72 @@
 <template>
-  <v-app if="hokage_first-user">
-    <v-content>
-      <v-container fluid class="fill-height">
-        <v-row align="center" justify="center">
-          <v-col cols="12" sm="8" md="5">
-            <v-card class="elevation-12">
-              <v-toolbar color="primary" dark>
-                <v-toolbar-title>hokage</v-toolbar-title>
-              </v-toolbar>
-              <v-card-title>
-                This is the first launch of the application. You need to set an
-                admin password to continue.
-              </v-card-title>
-              <v-card-text>
-                <v-form v-model="valid">
-                  <v-text-field
-                    v-model="clone.email"
-                    :rules="emailRules"
-                    label="E-mail"
-                    type="email"
-                    required
-                  />
-                  <v-text-field
-                    v-model="clone.nickname"
-                    label="Ksywka"
-                    type="text"
-                    required
-                  />
-                  <v-text-field
-                    v-model="clone.password"
-                    :rules="[v => !!v || 'Hasło jest wymagane!']"
-                    label="Hasło"
-                    type="password"
-                    required
-                  />
-                  <v-text-field
-                    v-model="clone.confirmPassword"
-                    label="Potwierdź hasło"
-                    type="password"
-                    required
-                  />
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer />
-                <v-btn color="primary" :disabled="!valid" @click="createUser"
-                  >Utwórz konto administratora</v-btn
-                >
-              </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-content>
-  </v-app>
+  <v-container
+    fluid
+    class="fill-height"
+  >
+    <v-row
+      align="center"
+      justify="center"
+    >
+      <v-col
+        cols="12"
+        sm="8"
+        md="5"
+      >
+        <v-card class="elevation-12">
+          <v-toolbar
+            color="primary"
+            dark
+          >
+            <v-toolbar-title>hokage</v-toolbar-title>
+          </v-toolbar>
+          <v-card-title>
+            This is the first launch of the application. You need to set an
+            admin password to continue.
+          </v-card-title>
+          <v-card-text>
+            <v-form v-model="valid">
+              <v-text-field
+                v-model="clone.email"
+                :rules="emailRules"
+                label="E-mail"
+                type="email"
+                required
+              />
+              <v-text-field
+                v-model="clone.nickname"
+                label="Ksywka"
+                type="text"
+                required
+              />
+              <v-text-field
+                v-model="clone.password"
+                :rules="[v => !!v || 'Hasło jest wymagane!']"
+                label="Hasło"
+                type="password"
+                required
+              />
+              <v-text-field
+                v-model="clone.confirmPassword"
+                label="Potwierdź hasło"
+                type="password"
+                required
+              />
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn
+              color="primary"
+              :disabled="!valid"
+              @click="createUser"
+            >
+              Utwórz konto administratora
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
