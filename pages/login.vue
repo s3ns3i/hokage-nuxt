@@ -51,7 +51,7 @@
           <v-snackbar
             v-model="snackbar"
             color="error"
-            :timeout="6000"
+            :timeout="3000"
             bottom
             absolute
           >
@@ -113,7 +113,8 @@ export default {
         } catch (error) {
           if(error.code === 401) {
             this.snackbar = true;
-            this.$refs.form.reset();
+            this.clone.password = '';
+            this.$refs.form.resetValidation();
           } else {
             console.error(error);
           }
