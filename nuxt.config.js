@@ -15,7 +15,7 @@ export default {
   router: {
     middleware: ["auth"]
   },
-  plugins: ["~/plugins/feathers-vuex.js", "~/plugins/vue2-editor"],
+  plugins: ["~/plugins/feathers-vuex.js", "~/plugins/vue2-editor", "~/plugins/vuetify-theme-cache.js"],
   generate: {
     fallback: "/translations"
   }

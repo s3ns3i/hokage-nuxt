@@ -32,7 +32,9 @@ export default {
   },
   methods: {
     onThemeChange() {
-      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+      const isDarkTheme = !this.$vuetify.theme.dark;
+      this.$vuetify.theme.dark = isDarkTheme;
+      localStorage.setItem('hokage_theme_dark', isDarkTheme);
     },
     async onLogout() {
       try {

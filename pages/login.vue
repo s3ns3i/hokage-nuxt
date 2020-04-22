@@ -18,6 +18,14 @@
             dark
           >
             <v-toolbar-title>hokage</v-toolbar-title>
+            <v-spacer />
+            <v-btn
+              class="ml-6"
+              icon
+              @click="onThemeChange"
+            >
+              <v-icon>mdi-theme-light-dark</v-icon>
+            </v-btn>
           </v-toolbar>
           <v-card-text>
             <v-form
@@ -29,12 +37,14 @@
                 :rules="emailRules"
                 label="E-mail"
                 type="email"
+                @keyup.enter="onLogin"
               />
               <v-text-field
                 v-model="clone.password"
                 :rules="passwordRules"
                 label="Password"
                 type="password"
+                @keyup.enter="onLogin"
               />
             </v-form>
           </v-card-text>
@@ -120,7 +130,12 @@ export default {
           }
         }
       }
-    }
+    },
+    onThemeChange() {
+      const isDarkTheme = !this.$vuetify.theme.dark;
+      this.$vuetify.theme.dark = isDarkTheme;
+      localStorage.setItem('hokage_theme_dark', isDarkTheme);
+    },
   }
 };
 </script>
