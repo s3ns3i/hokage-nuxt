@@ -74,7 +74,7 @@
           color="error"
           class="ma-3"
           :disabled="
-            isTaskInProgress || isTaskNotTaken || !getPreviousRoles().length
+            isTaskInProgress || isTaskNotTaken || !getPreviousProjectRoles().length
           "
           v-on="on"
           @click="dialogReject = true"
@@ -83,7 +83,7 @@
         </v-btn>
       </template>
       <rejection-modal
-        :roles="getPreviousRoles()"
+        :roles="getPreviousProjectRoles()"
         @close="dialogReject = false"
         @confirm="onRejectTask"
       />
@@ -115,8 +115,8 @@ export default {
       getTaskFromStore: "get",
       isTaskInProgress: "getIsTaskInProgress"
     }),
+    ...mapGetters("project", { getProjectFromStore: "get" }),
     isTaskNotTaken() {
-      console.log(this.tasks)
       const currentTask = this.tasks.find(
         task => `${task.id}` === this.$route.params.id
       );
@@ -162,7 +162,7 @@ export default {
         .catch(error => console.error(error));
     },
     onDialogPassOpen() {
-      const nextRole = this.getNextRole();
+      const nextRole = this.getNextProjectRole();
       if (nextRole) {
         this.dialogHeader = `Następny: ${nextRole.name}`;
         this.dialogMessage = "Czy na pewno chcesz przekazać zadanie?";
@@ -175,34 +175,39 @@ export default {
     onDialogRejectOpen() {
       this.dialogReject = true;
     },
-    getNextRole() {
-      const roles = this.$store.getters["role/find"]().data;
-      console.log(roles);
+    async getNextProjectRole() {
+      const currentTask = await this.getTaskFromStore(this.$route.params.id)
+      const currentProject = await this.getProjectFromStore(currentTask.projectId);
       const nextRoleIndex =
-        roles.findIndex(
-          role =>
-            role.id === this.getTaskFromStore(this.$route.params.id).roleId
+        currentProject.project_roles.findIndex(
+          projectRole =>
+            projectRole.roleId === currentTask.roleId
         ) + 1;
-      return roles[nextRoleIndex];
+      return currentProject.project_roles[nextRoleIndex] ? currentProject.project_roles[nextRoleIndex].role : null;
     },
-    getPreviousRoles() {
+    async getPreviousProjectRoles() {
       if (!this.$route.params.id) {
         return [];
       }
-      const roles = this.$store.getters["role/find"]().data;
-      const currentRoleIndex = roles.findIndex(
-        role => role.id === this.getTaskFromStore(this.$route.params.id).roleId
+      const currentTask = await this.getTaskFromStore(this.$route.params.id)
+      const currentProject = await this.getProjectFromStore(currentTask.projectId);
+      const projectRoles = currentProject.project_roles.map(projectRole => ({
+        id: projectRole.role.id,
+        name: projectRole.role.name
+      }))
+      const currentRoleIndex = currentProject.project_roles.findIndex(
+        projectRole => projectRole.roleId === currentTask.roleId
       );
       if (currentRoleIndex) {
-        return roles
-          .slice(1, currentRoleIndex)
+        return projectRoles
+          .slice(0, currentRoleIndex)
           .map(role => ({ value: role.id, text: role.name }));
       } else {
         return [];
       }
     },
     onPassOnTask() {
-      const nextRole = this.getNextRole();
+      const nextRole = this.getNextProjectRole();
       this.$store.dispatch("task/patch", [
         this.$route.params.id,
         { userId: null, roleId: nextRole ? nextRole.id : null }
