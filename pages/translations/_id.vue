@@ -40,6 +40,11 @@ export default {
           { translation: this.translation }
         ]);
       }
+    },
+    task(value) {
+      if(!value) {
+        this.translation = ''
+      }
     }
   },
   mounted() {
