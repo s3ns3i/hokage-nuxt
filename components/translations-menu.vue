@@ -117,14 +117,17 @@ export default {
     }),
     ...mapGetters("project", { getProjectFromStore: "get" }),
     isTaskNotTaken() {
-      const currentTask = this.tasks.find(
-        task => `${task.id}` === this.$route.params.id
-      );
-      if (currentTask) {
-        return currentTask.userId === null;
+      if (this.currentTask) {
+        return this.currentTask.userId === null;
       } else {
         return true;
       }
+    },
+    currentTask() {
+      return this.getTaskFromStore(this.$route.params.id)
+    },
+    currentProject() {
+      return this.getProjectFromStore(this.currentTask.projectId)
     }
   },
   methods: {
@@ -175,28 +178,28 @@ export default {
     onDialogRejectOpen() {
       this.dialogReject = true;
     },
-    async getNextProjectRole() {
-      const currentTask = await this.getTaskFromStore(this.$route.params.id)
-      const currentProject = await this.getProjectFromStore(currentTask.projectId);
+    getNextProjectRole() {
       const nextRoleIndex =
-        currentProject.project_roles.findIndex(
+        this.currentProject.project_roles.findIndex(
           projectRole =>
-            projectRole.roleId === currentTask.roleId
+            projectRole.roleId === this.currentTask.roleId
         ) + 1;
-      return currentProject.project_roles[nextRoleIndex] ? currentProject.project_roles[nextRoleIndex].role : null;
+      return nextRoleIndex < this.currentProject.project_roles.length
+        ? this.currentProject.project_roles[nextRoleIndex].role
+        : null;
     },
-    async getPreviousProjectRoles() {
-      if (!this.$route.params.id) {
+    getPreviousProjectRoles() {
+      if (!this.$route.params.id || !this.currentProject) {
         return [];
       }
-      const currentTask = await this.getTaskFromStore(this.$route.params.id)
-      const currentProject = await this.getProjectFromStore(currentTask.projectId);
-      const projectRoles = currentProject.project_roles.map(projectRole => ({
+      const projectRoles = this.currentProject.project_roles
+      .map(projectRole => ({
         id: projectRole.role.id,
         name: projectRole.role.name
       }))
-      const currentRoleIndex = currentProject.project_roles.findIndex(
-        projectRole => projectRole.roleId === currentTask.roleId
+      const currentRoleIndex = this.currentProject.project_roles
+      .findIndex(
+        projectRole => projectRole.roleId === this.currentTask.roleId
       );
       if (currentRoleIndex) {
         return projectRoles
@@ -206,18 +209,37 @@ export default {
         return [];
       }
     },
-    onPassOnTask() {
+    getNextUserIdIfOne() {
+      const nextRoleIndex =
+        this.currentProject.project_roles.findIndex(
+          projectRole =>
+            projectRole.roleId === this.currentTask.roleId
+        ) + 1;
+      if(nextRoleIndex < this.currentProject.project_roles.length) {
+        if(this.currentProject.project_roles[nextRoleIndex].users.length === 1) {
+          return this.currentProject.project_roles[nextRoleIndex].users[0].id
+        }
+      }
+      return null;
+    },
+    async onPassOnTask() {
       const nextRole = this.getNextProjectRole();
       this.$store.dispatch("task/patch", [
-        this.$route.params.id,
-        { userId: null, roleId: nextRole ? nextRole.id : null }
+        this.$route.params.id, {
+          projectId: this.currentTask.projectId,
+          userId: this.getNextUserIdIfOne(),
+          roleId: nextRole ? nextRole.id : null
+        }
       ]);
       this.dialogPass = false;
     },
     onRejectTask({ roleId }) {
       this.$store.dispatch("task/patch", [
-        this.$route.params.id,
-        { userId: null, roleId }
+        this.$route.params.id, {
+          projectId: this.currentTask.projectId,
+          userId: this.getNextUserIdIfOne(),
+          roleId
+        }
       ]);
       this.dialogReject = false;
     }
