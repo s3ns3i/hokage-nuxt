@@ -28,14 +28,12 @@
       <v-list-item
         v-for="(notification, index) in notifications"
         :key="index"
-        link
-        @click="onNotificationClick(index, notification.link)"
       >
         <v-list-item-title>{{ notification.text }}</v-list-item-title>
         <v-list-item-subtitle v-if="notification.link" />
         <v-btn
           icon
-          @click="onNotificationClose(index)"
+          @click="onNotificationClose(notification.id)"
         >
           <v-icon>mdi-window-close</v-icon>
         </v-btn>
@@ -45,26 +43,21 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   name: "Notifications",
   data() {
     return {
-      menu: false,
-      notifications: [
-        {
-          text: "Hehe",
-          link: "/translations/1"
-        },
-        {
-          text: "Hehe2"
-        },
-        {
-          text: "Hehe3"
-        }
-      ]
+      menu: false
     };
   },
   computed: {
+    ...mapGetters("notification", { findNotificationsInStore: "find" }),
+    notifications() {
+      return this.findNotificationsInStore({
+         query: { userId: this.$store.getters["auth/user"].id }
+          }).data
+    },
     notificationIcon() {
       return this.notifications.length ? "mdi-bell-ring" : "mdi-bell";
     }
@@ -77,15 +70,8 @@ export default {
     }
   },
   methods: {
-    onNotificationClick(index, link) {
-      if (link) {
-        this.menu = false;
-        this.onNotificationClose(index);
-        this.$router.push(link);
-      }
-    },
-    onNotificationClose(index) {
-      this.notifications.splice(index, 1);
+    onNotificationClose(id) {
+      this.$store.dispatch("notification/remove", id)
     }
   }
 };
