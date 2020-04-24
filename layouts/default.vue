@@ -5,7 +5,12 @@
     <v-content>
       <nuxt />
     </v-content>
-    <v-footer app inset>Hokage app made by s3ns3i (2020)</v-footer>
+    <v-footer
+      app
+      inset
+    >
+      Hokage app made by s3ns3i (2020)
+    </v-footer>
   </v-app>
 </template>
 <script>
@@ -24,6 +29,7 @@ export default {
     this.$store.dispatch("role/find", { query: {} });
     this.$store.dispatch("user/find", { query: {} });
     this.$store.dispatch("project/find", { query: {} });
-  }
+    this.$store.dispatch("notification/find", { query: {userId: this.$store.getters['auth/user'].id}})
+  },
 };
 </script>

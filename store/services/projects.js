@@ -15,7 +15,8 @@ class Project extends BaseModel {
       name: "",
       volumesNo: 0,
       suspended: false,
-      project_roles: []
+      project_roles: [],
+      tasks: []
     };
   }
 }
