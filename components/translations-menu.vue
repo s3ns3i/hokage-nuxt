@@ -14,15 +14,9 @@
       :disabled="isTaskNotTaken"
       @click="onStartStopTask"
     >
-      {{
-        isTaskInProgress ? "Zatrzymaj zadanie" : "Rozpocznij zadanie"
-      }}
+      {{ isTaskInProgress ? "Zatrzymaj zadanie" : "Rozpocznij zadanie" }}
     </v-btn>
-    <v-dialog
-      v-model="dialogAbandon"
-      persistent
-      max-width="600"
-    >
+    <v-dialog v-model="dialogAbandon" persistent max-width="600">
       <template v-slot:activator="{ on }">
         <v-btn
           color="error"
@@ -41,11 +35,7 @@
       />
     </v-dialog>
     <v-spacer />
-    <v-dialog
-      v-model="dialogPass"
-      persistent
-      max-width="600"
-    >
+    <v-dialog v-model="dialogPass" persistent max-width="600">
       <template v-slot:activator="{ on }">
         <v-btn
           color="success"
@@ -64,17 +54,15 @@
         @confirm="onPassOnTask"
       />
     </v-dialog>
-    <v-dialog
-      v-model="dialogReject"
-      persistent
-      max-width="600"
-    >
+    <v-dialog v-model="dialogReject" persistent max-width="600">
       <template v-slot:activator="{ on }">
         <v-btn
           color="error"
           class="ma-3"
           :disabled="
-            isTaskInProgress || isTaskNotTaken || !getPreviousProjectRoles().length
+            isTaskInProgress ||
+              isTaskNotTaken ||
+              !getPreviousProjectRoles().length
           "
           v-on="on"
           @click="dialogReject = true"
@@ -124,10 +112,10 @@ export default {
       }
     },
     currentTask() {
-      return this.getTaskFromStore(this.$route.params.id)
+      return this.getTaskFromStore(this.$route.params.id);
     },
     currentProject() {
-      return this.getProjectFromStore(this.currentTask.projectId)
+      return this.getProjectFromStore(this.currentTask.projectId);
     }
   },
   methods: {
@@ -181,8 +169,7 @@ export default {
     getNextProjectRole() {
       const nextRoleIndex =
         this.currentProject.project_roles.findIndex(
-          projectRole =>
-            projectRole.roleId === this.currentTask.roleId
+          projectRole => projectRole.roleId === this.currentTask.roleId
         ) + 1;
       return nextRoleIndex < this.currentProject.project_roles.length
         ? this.currentProject.project_roles[nextRoleIndex].role
@@ -192,13 +179,13 @@ export default {
       if (!this.$route.params.id || !this.currentProject) {
         return [];
       }
-      const projectRoles = this.currentProject.project_roles
-      .map(projectRole => ({
-        id: projectRole.role.id,
-        name: projectRole.role.name
-      }))
-      const currentRoleIndex = this.currentProject.project_roles
-      .findIndex(
+      const projectRoles = this.currentProject.project_roles.map(
+        projectRole => ({
+          id: projectRole.role.id,
+          name: projectRole.role.name
+        })
+      );
+      const currentRoleIndex = this.currentProject.project_roles.findIndex(
         projectRole => projectRole.roleId === this.currentTask.roleId
       );
       if (currentRoleIndex) {
@@ -212,12 +199,13 @@ export default {
     getNextUserIdIfOne() {
       const nextRoleIndex =
         this.currentProject.project_roles.findIndex(
-          projectRole =>
-            projectRole.roleId === this.currentTask.roleId
+          projectRole => projectRole.roleId === this.currentTask.roleId
         ) + 1;
-      if(nextRoleIndex < this.currentProject.project_roles.length) {
-        if(this.currentProject.project_roles[nextRoleIndex].users.length === 1) {
-          return this.currentProject.project_roles[nextRoleIndex].users[0].id
+      if (nextRoleIndex < this.currentProject.project_roles.length) {
+        if (
+          this.currentProject.project_roles[nextRoleIndex].users.length === 1
+        ) {
+          return this.currentProject.project_roles[nextRoleIndex].users[0].id;
         }
       }
       return null;
@@ -225,7 +213,8 @@ export default {
     async onPassOnTask() {
       const nextRole = this.getNextProjectRole();
       this.$store.dispatch("task/patch", [
-        this.$route.params.id, {
+        this.$route.params.id,
+        {
           projectId: this.currentTask.projectId,
           userId: this.getNextUserIdIfOne(),
           roleId: nextRole ? nextRole.id : null
@@ -235,7 +224,8 @@ export default {
     },
     onRejectTask({ roleId }) {
       this.$store.dispatch("task/patch", [
-        this.$route.params.id, {
+        this.$route.params.id,
+        {
           projectId: this.currentTask.projectId,
           userId: this.getNextUserIdIfOne(),
           roleId

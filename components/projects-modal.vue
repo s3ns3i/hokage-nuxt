@@ -13,14 +13,8 @@
           required
           autofocus
         />
-        <v-text-field
-          v-model="clone.volumesNo"
-          label="Liczba tomów"
-        />
-        <v-row
-          v-for="n in tempRoles.length"
-          :key="n"
-        >
+        <v-text-field v-model="clone.volumesNo" label="Liczba tomów" />
+        <v-row v-for="n in tempRoles.length" :key="n">
           <v-col align-self="center">
             <v-select
               v-model="tempRoles[n - 1]"
@@ -48,11 +42,7 @@
             />
           </v-col>
           <v-col align-self="center">
-            <v-btn
-              icon
-              color="primary"
-              @click="onAddRow"
-            >
+            <v-btn icon color="primary" @click="onAddRow">
               <v-icon>mdi-plus</v-icon>
             </v-btn>
             <v-btn
@@ -65,26 +55,15 @@
             </v-btn>
           </v-col>
         </v-row>
-        <v-checkbox
-          v-model="clone.suspended"
-          label="Zawieszony?"
-          required
-        />
+        <v-checkbox v-model="clone.suspended" label="Zawieszony?" required />
       </v-form>
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn
-        text
-        @click="closeModal()"
-      >
+      <v-btn text @click="closeModal()">
         Anuluj
       </v-btn>
-      <v-btn
-        :disabled="!valid"
-        color="primary"
-        @click="createProject()"
-      >
+      <v-btn :disabled="!valid" color="primary" @click="createProject()">
         Zapisz
       </v-btn>
     </v-card-actions>
@@ -202,5 +181,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

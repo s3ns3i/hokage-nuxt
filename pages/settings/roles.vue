@@ -2,25 +2,13 @@
   <v-container fluid>
     <v-row>
       <v-col>
-        <v-dialog
-          v-model="dialog"
-          persistent
-          max-width="600"
-        >
+        <v-dialog v-model="dialog" persistent max-width="600">
           <template v-slot:activator="{ on }">
-            <v-btn
-              color="primary"
-              @click="onDialogOpen()"
-              v-on="on"
-            >
+            <v-btn color="primary" @click="onDialogOpen()" v-on="on">
               Dodaj rolę
             </v-btn>
           </template>
-          <roles-modal
-            v-if="dialog"
-            :role="role"
-            @close="onDialogClose()"
-          />
+          <roles-modal v-if="dialog" :role="role" @close="onDialogClose()" />
         </v-dialog>
       </v-col>
     </v-row>
@@ -47,10 +35,7 @@
               >
                 <td>{{ role.name }}</td>
                 <td>
-                  <v-chip
-                    v-for="user in role.users"
-                    :key="user.email"
-                  >
+                  <v-chip v-for="user in role.users" :key="user.email">
                     {{ user.nickname }}
                   </v-chip>
                 </td>

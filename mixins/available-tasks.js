@@ -17,16 +17,17 @@ export default {
     projectIds() {
       const result = this.user.user_project_roles.map(userProjectRole => {
         return userProjectRole.project_role.projectId;
-      })
-      return result
+      });
+      return result;
     },
     tasks() {
-      return this.findTasksInStore({query: {
-            roleId: { $in: this.roleIds },
-            projectId: { $in: this.projectIds },
-            $or: [{ userId: this.user.id }, { userId: null }],
-          }
-        }).data;
+      return this.findTasksInStore({
+        query: {
+          roleId: { $in: this.roleIds },
+          projectId: { $in: this.projectIds },
+          $or: [{ userId: this.user.id }, { userId: null }]
+        }
+      }).data;
     }
   }
 };

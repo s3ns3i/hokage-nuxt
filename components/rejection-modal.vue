@@ -7,24 +7,14 @@
       Wybierz, gdzie ma trafić zadanie:
     </v-card-text>
     <v-card-text>
-      <v-select
-        v-model="roleId"
-        :items="roles"
-        label="Wybierz rolę"
-      />
+      <v-select v-model="roleId" :items="roles" label="Wybierz rolę" />
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn
-        text
-        @click="$emit('close')"
-      >
+      <v-btn text @click="$emit('close')">
         Anuluj
       </v-btn>
-      <v-btn
-        color="primary"
-        @click="$emit('confirm', { roleId })"
-      >
+      <v-btn color="primary" @click="$emit('confirm', { roleId })">
         Odrzuć
       </v-btn>
     </v-card-actions>
@@ -32,8 +22,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-
 export default {
   name: "RejectionModal",
   props: {
@@ -50,5 +38,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

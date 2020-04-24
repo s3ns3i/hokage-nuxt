@@ -16,17 +16,10 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn
-        text
-        @click="$emit('close')"
-      >
+      <v-btn text @click="$emit('close')">
         Anuluj
       </v-btn>
-      <v-btn
-        color="primary"
-        :disabled="!valid"
-        @click="createRole()"
-      >
+      <v-btn color="primary" :disabled="!valid" @click="createRole()">
         Zapisz
       </v-btn>
     </v-card-actions>
@@ -49,7 +42,7 @@ export default {
     return {
       clone: null,
       valid: false,
-      nameRules: [v => !!v || "Nazwa jest wymagana!"],
+      nameRules: [v => !!v || "Nazwa jest wymagana!"]
     };
   },
   created() {
@@ -79,5 +72,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

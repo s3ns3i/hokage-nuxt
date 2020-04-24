@@ -27,16 +27,10 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn
-        text
-        @click="$emit('close')"
-      >
+      <v-btn text @click="$emit('close')">
         Anuluj
       </v-btn>
-      <v-btn
-        color="primary"
-        @click="createTask()"
-      >
+      <v-btn color="primary" @click="createTask()">
         Zapisz
       </v-btn>
     </v-card-actions>
@@ -77,7 +71,7 @@ export default {
       try {
         const project = this.getProjectFromStore(this.clone.projectId);
         this.clone.roleId = project.project_roles[0].role.id;
-        const task = await this.clone.save();
+        await this.clone.save();
         this.resetForm();
         this.$emit("close");
       } catch (error) {
@@ -98,7 +92,7 @@ export default {
           },
           $limit: 1
         }
-      }).data[0]
+      }).data[0];
       if (latestTask) {
         this.clone.chapterNo = Math.floor(latestTask.chapterNo) + 1;
       }
@@ -107,5 +101,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

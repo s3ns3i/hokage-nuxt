@@ -10,14 +10,8 @@
       </v-list-item>
     </v-list>
     <v-divider />
-    <v-list
-      v-model="tasks"
-      :disabled="isTaskInProgress"
-    >
-      <v-list-item-group
-        v-model="item"
-        color="primary"
-      >
+    <v-list v-model="tasks" :disabled="isTaskInProgress">
+      <v-list-item-group v-model="item" color="primary">
         <v-list-item
           v-for="(task, index) in tasks"
           :key="index"

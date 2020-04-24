@@ -1,8 +1,5 @@
 <template>
-  <vue-editor
-    v-model="translation"
-    :disabled="!isTaskInProgress"
-  />
+  <vue-editor v-model="translation" :disabled="!isTaskInProgress" />
 </template>
 
 <script>
@@ -42,8 +39,8 @@ export default {
       }
     },
     task(value) {
-      if(!value) {
-        this.translation = ''
+      if (!value) {
+        this.translation = "";
       }
     }
   },

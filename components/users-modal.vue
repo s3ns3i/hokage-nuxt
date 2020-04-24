@@ -44,17 +44,10 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      <v-btn
-        text
-        @click="closeModal()"
-      >
+      <v-btn text @click="closeModal()">
         Anuluj
       </v-btn>
-      <v-btn
-        :disabled="!valid"
-        color="primary"
-        @click="createUser()"
-      >
+      <v-btn :disabled="!valid" color="primary" @click="createUser()">
         Zapisz
       </v-btn>
     </v-card-actions>
@@ -85,7 +78,7 @@ export default {
         v => /.+@.+\..+/.test(v) || "E-mail jest wymagany!"
       ],
       passwordRules: [v => !!v || "Hasło jest wymagane!"],
-      rolesRules: [v => !!v.length || "Przynajmniej jedna rola jest wymagana!"],
+      rolesRules: [v => !!v.length || "Przynajmniej jedna rola jest wymagana!"]
     };
   },
   computed: {
@@ -127,5 +120,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -3,18 +3,10 @@
     <v-toolbar-title>hokage</v-toolbar-title>
     <v-spacer />
     <notifications />
-    <v-btn
-      class="ml-6"
-      icon
-      @click="onThemeChange"
-    >
+    <v-btn class="ml-6" icon @click="onThemeChange">
       <v-icon>mdi-theme-light-dark</v-icon>
     </v-btn>
-    <v-btn
-      icon
-      :disabled="isTaskInProgress"
-      @click="onLogout"
-    >
+    <v-btn icon :disabled="isTaskInProgress" @click="onLogout">
       <v-icon>mdi-logout</v-icon>
     </v-btn>
   </v-app-bar>
@@ -34,7 +26,7 @@ export default {
     onThemeChange() {
       const isDarkTheme = !this.$vuetify.theme.dark;
       this.$vuetify.theme.dark = isDarkTheme;
-      localStorage.setItem('hokage_theme_dark', isDarkTheme);
+      localStorage.setItem("hokage_theme_dark", isDarkTheme);
     },
     async onLogout() {
       try {

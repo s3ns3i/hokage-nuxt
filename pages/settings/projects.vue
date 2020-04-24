@@ -2,17 +2,9 @@
   <v-container fluid>
     <v-row>
       <v-col>
-        <v-dialog
-          v-model="dialog"
-          persistent
-          max-width="600"
-        >
+        <v-dialog v-model="dialog" persistent max-width="600">
           <template v-slot:activator="{ on }">
-            <v-btn
-              color="primary"
-              @click="onDialogOpen()"
-              v-on="on"
-            >
+            <v-btn color="primary" @click="onDialogOpen()" v-on="on">
               Dodaj projekt
             </v-btn>
           </template>
@@ -39,11 +31,7 @@
                 <th class="text-left">
                   Zawieszony?
                 </th>
-                <th
-                  v-for="role in roles"
-                  :key="role.id"
-                  class="text-left"
-                >
+                <th v-for="role in roles" :key="role.id" class="text-left">
                   {{ role.name }}
                 </th>
               </tr>
@@ -58,10 +46,7 @@
                 <td>{{ project.name }}</td>
                 <td>{{ project.volumesNo }}</td>
                 <td>{{ project.suspended ? "Tak" : "Nie" }}</td>
-                <td
-                  v-for="role in roles"
-                  :key="role.id"
-                >
+                <td v-for="role in roles" :key="role.id">
                   <v-chip
                     v-for="user in getUsersByProjectRole(project, role)"
                     :key="user.email"
@@ -106,10 +91,10 @@ export default {
       const result = project.project_roles.find(
         projectRole => projectRole.roleId === role.id
       );
-      if(result) {
+      if (result) {
         return result.users;
       }
-      return []
+      return [];
     },
     onDialogOpen(project) {
       this.project = project;

@@ -1,37 +1,17 @@
 <template>
-  <v-container
-    fluid
-    class="fill-height"
-  >
-    <v-row
-      align="center"
-      justify="center"
-    >
-      <v-col
-        cols="12"
-        sm="8"
-        md="5"
-      >
+  <v-container fluid class="fill-height">
+    <v-row align="center" justify="center">
+      <v-col cols="12" sm="8" md="5">
         <v-card class="elevation-12">
-          <v-toolbar
-            color="primary"
-            dark
-          >
+          <v-toolbar color="primary" dark>
             <v-toolbar-title>hokage</v-toolbar-title>
             <v-spacer />
-            <v-btn
-              class="ml-6"
-              icon
-              @click="onThemeChange"
-            >
+            <v-btn class="ml-6" icon @click="onThemeChange">
               <v-icon>mdi-theme-light-dark</v-icon>
             </v-btn>
           </v-toolbar>
           <v-card-text>
-            <v-form
-              ref="form"
-              v-model="valid"
-            >
+            <v-form ref="form" v-model="valid">
               <v-text-field
                 v-model="clone.email"
                 :rules="emailRules"
@@ -50,11 +30,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn
-              color="primary"
-              :disabled="!valid"
-              @click="onLogin"
-            >
+            <v-btn color="primary" :disabled="!valid" @click="onLogin">
               Login
             </v-btn>
           </v-card-actions>
@@ -66,11 +42,7 @@
             absolute
           >
             {{ "Zły e-mail lub hasło!" }}
-            <v-btn
-              dark
-              text
-              @click="snackbar = false"
-            >
+            <v-btn dark text @click="snackbar = false">
               Zamknij
             </v-btn>
           </v-snackbar>
@@ -121,9 +93,9 @@ export default {
           });
           this.$router.push("/translations");
         } catch (error) {
-          if(error.code === 401) {
+          if (error.code === 401) {
             this.snackbar = true;
-            this.clone.password = '';
+            this.clone.password = "";
             this.$refs.form.resetValidation();
           } else {
             console.error(error);
@@ -134,8 +106,8 @@ export default {
     onThemeChange() {
       const isDarkTheme = !this.$vuetify.theme.dark;
       this.$vuetify.theme.dark = isDarkTheme;
-      localStorage.setItem('hokage_theme_dark', isDarkTheme);
-    },
+      localStorage.setItem("hokage_theme_dark", isDarkTheme);
+    }
   }
 };
 </script>

@@ -1,22 +1,9 @@
 <template>
-  <v-container
-    fluid
-    class="fill-height"
-  >
-    <v-row
-      align="center"
-      justify="center"
-    >
-      <v-col
-        cols="12"
-        sm="8"
-        md="5"
-      >
+  <v-container fluid class="fill-height">
+    <v-row align="center" justify="center">
+      <v-col cols="12" sm="8" md="5">
         <v-card class="elevation-12">
-          <v-toolbar
-            color="primary"
-            dark
-          >
+          <v-toolbar color="primary" dark>
             <v-toolbar-title>hokage</v-toolbar-title>
           </v-toolbar>
           <v-card-title>
@@ -55,11 +42,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn
-              color="primary"
-              :disabled="!valid"
-              @click="createUser"
-            >
+            <v-btn color="primary" :disabled="!valid" @click="createUser">
               Utwórz konto administratora
             </v-btn>
           </v-card-actions>

@@ -6,16 +6,10 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col
-        md="3"
-        lg="2"
-      >
+      <v-col md="3" lg="2">
         <translations-drawer />
       </v-col>
-      <v-col
-        md="9"
-        lg="10"
-      >
+      <v-col md="9" lg="10">
         <nuxt-child :key="$route.params.id" />
       </v-col>
     </v-row>
@@ -32,5 +26,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
