@@ -90,10 +90,15 @@ export default {
       this.clone = this.task.clone();
     },
     onProjectChange() {
-      const project = this.getProjectFromStore(this.clone.projectId);
-      const latestTask = project.tasks.length
-        ? project.tasks[project.tasks.length - 1]
-        : null;
+      const latestTask = this.$store.getters["task/find"]({
+        query: {
+          projectId: this.clone.projectId,
+          $sort: {
+            createdAt: -1
+          },
+          $limit: 1
+        }
+      }).data[0]
       if (latestTask) {
         this.clone.chapterNo = Math.floor(latestTask.chapterNo) + 1;
       }
