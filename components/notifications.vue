@@ -1,35 +1,43 @@
 <template>
-  <v-menu
-    v-model="menu"
-    left
-    offset-y
-    close-on-click
-    :close-on-content-click="false"
-  >
-    <template v-slot:activator="{ on }">
-      <v-btn icon :disabled="!notifications.length" v-on="on">
-        <v-badge
-          :value="notifications.length"
-          :content="notifications.length"
-          color="error"
-          overlap
-          bottom
-          left
-        >
-          <v-icon>{{ notificationIcon }}</v-icon>
-        </v-badge>
-      </v-btn>
-    </template>
-    <v-list>
-      <v-list-item v-for="(notification, index) in notifications" :key="index">
-        <v-list-item-title>{{ notification.text }}</v-list-item-title>
-        <v-list-item-subtitle v-if="notification.link" />
-        <v-btn icon @click="onNotificationClose(notification.id)">
-          <v-icon>mdi-window-close</v-icon>
+  <div>
+    <v-menu
+      v-model="menu"
+      left
+      offset-y
+      close-on-click
+      :close-on-content-click="false"
+    >
+      <template v-slot:activator="{ on }">
+        <v-btn icon :disabled="!notifications.length" v-on="on">
+          <v-badge
+            :value="notifications.length"
+            :content="notifications.length"
+            color="error"
+            overlap
+            bottom
+            left
+          >
+            <v-icon>{{ notificationIcon }}</v-icon>
+          </v-badge>
         </v-btn>
-      </v-list-item>
-    </v-list>
-  </v-menu>
+      </template>
+      <v-list>
+        <v-list-item
+          v-for="(notification, index) in notifications"
+          :key="index"
+        >
+          <v-list-item-title>{{ notification.text }}</v-list-item-title>
+          <v-list-item-subtitle v-if="notification.link" />
+          <v-btn icon @click="onNotificationClose(notification.id)">
+            <v-icon>mdi-window-close</v-icon>
+          </v-btn>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+    <audio ref="audio">
+      <source src="@/assets/notification.wav" type="audio/mpeg" />
+    </audio>
+  </div>
 </template>
 
 <script>
@@ -59,9 +67,40 @@ export default {
       }
     }
   },
+  created() {
+    this.$FeathersVuex.api.Notification.on(
+      "created",
+      this.handleNotificationCreated
+    );
+  },
+  destroyed() {
+    this.$FeathersVuex.api.Notification.off(
+      "created",
+      this.handleNotificationCreated
+    );
+  },
   methods: {
     onNotificationClose(id) {
       this.$store.dispatch("notification/remove", id);
+    },
+    async handleNotificationCreated() {
+      const userId = this.$store.getters["auth/user"].id;
+      const newNotificationUserId = this.$store.getters["notification/find"]({
+        query: {
+          $sort: {
+            createdAt: -1
+          },
+          $limit: 1
+        }
+      }).data[0].userId;
+      if (userId === newNotificationUserId) {
+        const audio = this.$refs.audio;
+        audio.play();
+
+        audio.addEventListener("canplaythrough", () => {
+          audio.play();
+        });
+      }
     }
   }
 };
