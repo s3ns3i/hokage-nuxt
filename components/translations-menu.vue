@@ -19,6 +19,7 @@
     <v-dialog v-model="dialogAbandon" persistent max-width="600">
       <template v-slot:activator="{ on }">
         <v-btn
+          v-if="isMoreThanOneUserWithThatRole"
           color="error"
           class="ma-3"
           :disabled="isTaskInProgress || isTaskNotTaken"
@@ -111,16 +112,31 @@ export default {
         return true;
       }
     },
+    isMoreThanOneUserWithThatRole() {
+      const user = this.$store.getters["auth/user"];
+      if (user && this.currentProject) {
+        return !!this.currentProject.project_roles.find(projectRole =>
+          user.roles.find(role => role.id === projectRole.roleId)
+        ).users.length;
+      } else {
+        console.log("User is not authorized!");
+        return false;
+      }
+    },
     currentTask() {
       return this.getTaskFromStore(this.$route.params.id);
     },
     currentProject() {
-      return this.getProjectFromStore(this.currentTask.projectId);
+      if (this.currentTask) {
+        return this.getProjectFromStore(this.currentTask.projectId);
+      } else {
+        return null;
+      }
     }
   },
   methods: {
     onTakeTask() {
-      const { user } = this.$store.state.auth;
+      const user = this.$store.getters["auth/user"];
       this.$store.dispatch("task/patch", [
         this.$route.params.id,
         { userId: user.id }

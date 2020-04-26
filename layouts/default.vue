@@ -26,9 +26,14 @@ export default {
     this.$store.dispatch("role/find", { query: {} });
     this.$store.dispatch("user/find", { query: {} });
     this.$store.dispatch("project/find", { query: {} });
-    this.$store.dispatch("notification/find", {
-      query: { userId: this.$store.getters["auth/user"].id }
-    });
+    const user = this.$store.getters["auth/user"];
+    if (user) {
+      this.$store.dispatch("notification/find", {
+        query: { userId: user.id }
+      });
+    } else {
+      console.log("User is not authorized!");
+    }
   }
 };
 </script>

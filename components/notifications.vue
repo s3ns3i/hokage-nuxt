@@ -52,9 +52,15 @@ export default {
   computed: {
     ...mapGetters("notification", { findNotificationsInStore: "find" }),
     notifications() {
-      return this.findNotificationsInStore({
-        query: { userId: this.$store.getters["auth/user"].id }
-      }).data;
+      const user = this.$store.getters["auth/user"];
+      if (user) {
+        return this.findNotificationsInStore({
+          query: { userId: user.id }
+        }).data;
+      } else {
+        console.error("User is not authorized!");
+        return [];
+      }
     },
     notificationIcon() {
       return this.notifications.length ? "mdi-bell-ring" : "mdi-bell";
