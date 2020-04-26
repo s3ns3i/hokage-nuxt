@@ -10,7 +10,6 @@
           :counter="50"
           :rules="nicknameRules"
           label="Ksywka"
-          required
           autofocus
         />
         <v-text-field
@@ -18,14 +17,12 @@
           :rules="emailRules"
           label="E-mail"
           type="email"
-          required
         />
         <v-text-field
           v-model="clone.password"
           :rules="passwordRules"
           label="Hasło"
           type="password"
-          required
         />
         <v-select
           v-model="clone.roles"
@@ -38,7 +35,6 @@
           multiple
           chips
           clearable
-          required
         />
       </v-form>
     </v-card-text>
@@ -77,7 +73,15 @@ export default {
         v => !!v || "E-mail jest wymagany!",
         v => /.+@.+\..+/.test(v) || "E-mail jest wymagany!"
       ],
-      passwordRules: [v => !!v || "Hasło jest wymagane!"],
+      passwordRules: [
+        v => {
+          if (!this.clone.id) {
+            return !!v || "Hasło jest wymagane!";
+          } else {
+            return true;
+          }
+        }
+      ],
       rolesRules: [v => !!v.length || "Przynajmniej jedna rola jest wymagana!"]
     };
   },
