@@ -9,14 +9,15 @@ class Project extends BaseModel {
   }
   // Required for $FeathersVuex plugin to work after production transpile.
   static modelName = "Project";
+  static namespace = "project";
   // Define default properties here
   static instanceDefaults() {
     return {
       name: "",
-      volumesNo: 0,
-      suspended: false,
       project_roles: [],
-      tasks: []
+      suspended: false,
+      tasks: [],
+      volumesNo: 0
     };
   }
 }
@@ -24,7 +25,24 @@ const servicePath = "project";
 const servicePlugin = makeServicePlugin({
   Model: Project,
   service: feathersClient.service(servicePath),
-  servicePath
+  servicePath,
+  handleEvents: {
+    created: (item, { models }) => {
+      const { User } = models.api;
+      User.store.dispatch("user/find", { query: {} });
+      return true;
+    },
+    patched: (item, { models }) => {
+      const { User } = models.api;
+      User.store.dispatch("user/find", { query: {} });
+      return true;
+    },
+    updated: (item, { models }) => {
+      const { User } = models.api;
+      User.store.dispatch("user/find", { query: {} });
+      return true;
+    }
+  }
 });
 
 // Setup the client-side Feathers hooks.

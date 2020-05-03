@@ -9,10 +9,12 @@ class Role extends BaseModel {
   }
   // Required for $FeathersVuex plugin to work after production transpile.
   static modelName = "Role";
+  static namespace = "role";
   // Define default properties here
   static instanceDefaults() {
     return {
-      name: ""
+      name: "",
+      users: []
     };
   }
 }
@@ -20,7 +22,19 @@ const servicePath = "role";
 const servicePlugin = makeServicePlugin({
   Model: Role,
   service: feathersClient.service(servicePath),
-  servicePath
+  servicePath,
+  handleEvents: {
+    patched: (item, { models }) => {
+      const { User } = models.api;
+      User.store.dispatch("user/find", { query: {} });
+      return true;
+    },
+    updated: (item, { models }) => {
+      const { User } = models.api;
+      User.store.dispatch("user/find", { query: {} });
+      return true;
+    }
+  }
 });
 
 // Setup the client-side Feathers hooks.
