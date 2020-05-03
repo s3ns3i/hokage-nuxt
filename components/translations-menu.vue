@@ -215,15 +215,14 @@ export default {
       }
     },
     getNextUserIdIfOne() {
+      const projectRoles = this.currentProject.project_roles;
       const nextRoleIndex =
-        this.currentProject.project_roles.findIndex(
+        projectRoles.findIndex(
           projectRole => projectRole.roleId === this.currentTask.roleId
         ) + 1;
-      if (nextRoleIndex < this.currentProject.project_roles.length) {
-        if (
-          this.currentProject.project_roles[nextRoleIndex].users.length === 1
-        ) {
-          return this.currentProject.project_roles[nextRoleIndex].users[0].id;
+      if (nextRoleIndex < projectRoles.length) {
+        if (projectRoles[nextRoleIndex].users.length === 1) {
+          return projectRoles[nextRoleIndex].users[0].id;
         }
       }
       return null;
@@ -243,12 +242,21 @@ export default {
       this.$store.dispatch("task/patch", [
         this.$route.params.id,
         {
-          projectId: this.currentTask.projectId,
-          userId: this.getNextUserIdIfOne(),
+          userId: this.getUserIdIfOne(roleId),
           roleId
         }
       ]);
       this.dialogReject = false;
+    },
+    getUserIdIfOne(roleId) {
+      const projectRoles = this.currentProject.project_roles;
+      const projectRoleIndex = projectRoles.findIndex(
+        projectRole => projectRole.roleId === roleId
+      );
+      if (projectRoles[projectRoleIndex].users.length === 1) {
+        return projectRoles[projectRoleIndex].users[0].id;
+      }
+      return null;
     }
   }
 };
