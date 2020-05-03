@@ -32,9 +32,31 @@ const servicePlugin = makeServicePlugin({
       User.store.dispatch("user/find", { query: {} });
       return true;
     },
-    patched: (item, { models }) => {
+    patched: (item, { model, models }) => {
       const { User } = models.api;
       User.store.dispatch("user/find", { query: {} });
+
+      const currentUser = model.store.getters["auth/user"];
+      const roleIds = currentUser.roles.map(role => role.id);
+      const projectIds = currentUser.user_project_roles.map(userProjectRole => {
+        return userProjectRole.project_role.projectId;
+      });
+      const { Task } = models.api;
+      Task.store.dispatch("task/find", {
+        query: {
+          $and: [
+            {
+              roleId: { $in: roleIds }
+            },
+            {
+              projectId: { $in: projectIds }
+            },
+            {
+              $or: [{ userId: currentUser.id }, { userId: null }]
+            }
+          ]
+        }
+      });
       return true;
     },
     updated: (item, { models }) => {
