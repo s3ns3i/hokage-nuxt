@@ -4,10 +4,9 @@
 
 <script>
 import { mapGetters } from "vuex";
-import AvailableTasks from "@/mixins/available-tasks";
 
 export default {
-  mixins: [AvailableTasks],
+  name: "Translation",
   data() {
     return {
       translation: ""
@@ -15,9 +14,13 @@ export default {
   },
   computed: {
     ...mapGetters("task", {
+      findTasksInStore: "find",
       getTaskFromStore: "get",
       isTaskInProgress: "getIsTaskInProgress"
     }),
+    tasks() {
+      return this.findTasksInStore({ query: {} }).data;
+    },
     task() {
       const foundTask = this.tasks.find(
         task => `${task.id}` === this.$route.params.id

@@ -22,7 +22,9 @@
         >
           <v-list-item-content>
             <v-list-item-title>{{ task.name }}</v-list-item-title>
-            <v-list-item-subtitle>{{ task.project.name }}</v-list-item-subtitle>
+            <v-list-item-subtitle>{{
+              `${task.project.name} ${task.chapterNo}`
+            }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -32,11 +34,9 @@
 
 <script>
 import { mapGetters } from "vuex";
-import AvailableTasks from "@/mixins/available-tasks";
 
 export default {
   name: "TranslationsDrawer",
-  mixins: [AvailableTasks],
   data() {
     return {
       item: 0
@@ -46,7 +46,10 @@ export default {
     ...mapGetters("task", {
       findTasksInStore: "find",
       isTaskInProgress: "getIsTaskInProgress"
-    })
+    }),
+    tasks() {
+      return this.findTasksInStore({ query: {} }).data;
+    }
   },
   watch: {
     tasks() {

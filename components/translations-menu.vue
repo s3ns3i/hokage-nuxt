@@ -84,12 +84,10 @@
 import { mapGetters } from "vuex";
 import ConfirmationModal from "@/components/confirmation-modal.vue";
 import RejectionModal from "@/components/rejection-modal.vue";
-import AvailableTasks from "@/mixins/available-tasks";
 
 export default {
   name: "TranslationsMenu",
   components: { ConfirmationModal, RejectionModal },
-  mixins: [AvailableTasks],
   data() {
     return {
       dialogAbandon: false,
@@ -102,9 +100,13 @@ export default {
   computed: {
     ...mapGetters("task", {
       getTaskFromStore: "get",
+      findTasksInStore: "find",
       isTaskInProgress: "getIsTaskInProgress"
     }),
     ...mapGetters("project", { getProjectFromStore: "get" }),
+    tasks() {
+      return this.findTasksInStore({ query: {} }).data;
+    },
     isTaskNotTaken() {
       if (this.currentTask) {
         return this.currentTask.userId === null;
@@ -231,7 +233,6 @@ export default {
       this.$store.dispatch("task/patch", [
         this.$route.params.id,
         {
-          projectId: this.currentTask.projectId,
           userId: this.getNextUserIdIfOne(),
           roleId: nextRole ? nextRole.id : null
         }
