@@ -100,13 +100,9 @@ export default {
   computed: {
     ...mapGetters("task", {
       getTaskFromStore: "get",
-      findTasksInStore: "find",
       isTaskInProgress: "getIsTaskInProgress"
     }),
     ...mapGetters("project", { getProjectFromStore: "get" }),
-    tasks() {
-      return this.findTasksInStore({ query: {} }).data;
-    },
     isTaskNotTaken() {
       if (this.currentTask) {
         return this.currentTask.userId === null;
@@ -229,23 +225,31 @@ export default {
     },
     async onPassOnTask() {
       const nextRole = this.getNextProjectRole();
-      this.$store.dispatch("task/patch", [
-        this.$route.params.id,
-        {
-          userId: this.getNextUserIdIfOne(),
-          roleId: nextRole ? nextRole.id : null
-        }
-      ]);
+      this.$store
+        .dispatch("task/patch", [
+          this.$route.params.id,
+          {
+            userId: this.getNextUserIdIfOne(),
+            roleId: nextRole ? nextRole.id : null
+          }
+        ])
+        .then(() =>
+          this.$store.commit("task/removeItem", this.$route.params.id)
+        );
       this.dialogPass = false;
     },
     onRejectTask({ roleId }) {
-      this.$store.dispatch("task/patch", [
-        this.$route.params.id,
-        {
-          userId: this.getUserIdIfOne(roleId),
-          roleId
-        }
-      ]);
+      this.$store
+        .dispatch("task/patch", [
+          this.$route.params.id,
+          {
+            userId: this.getUserIdIfOne(roleId),
+            roleId
+          }
+        ])
+        .then(() =>
+          this.$store.commit("task/removeItem", this.$route.params.id)
+        );
       this.dialogReject = false;
     },
     getUserIdIfOne(roleId) {
