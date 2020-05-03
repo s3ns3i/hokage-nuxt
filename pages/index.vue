@@ -1,9 +1,10 @@
-<template>
-  <div>main page</div>
-</template>
+<template><div></div></template>
 
 <script>
 export default {
-  name: "Index"
+  name: "Index",
+  beforeCreate() {
+    this.$router.push("/translations");
+  }
 };
 </script>

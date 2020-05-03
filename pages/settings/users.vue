@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import UsersModal from "@/components/users-modal.vue";
 
 export default {

@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 import RolesModal from "@/components/roles-modal.vue";
 
 export default {
