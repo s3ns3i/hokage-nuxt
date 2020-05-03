@@ -40,16 +40,21 @@ const servicePlugin = makeServicePlugin({
       Project.store.dispatch("project/find", { query: {} });
       const user = model.store.getters["auth/user"];
       const roleIds = user.roles.map(role => role.id);
-      const projectIds = user.user_project_roles.map(userProjectRole => {
-        return userProjectRole.project_role.projectId;
-      });
+      const projectIds = user.user_project_roles.map(
+        userProjectRole => userProjectRole.project_role.projectId
+      );
       if (
         (item.userId === user.id || item.userId === null) &&
         projectIds.includes(item.projectId) &&
         roleIds.includes(item.roleId)
       ) {
+        console.log("new task belongs to user");
         return true;
       }
+      console.log("it does not");
+      // keyedById is broken
+      // it adds a record event if this returns false
+      // needs to be reported
       return false;
     },
     patched: async (item, { model, models }) => {

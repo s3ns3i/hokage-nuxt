@@ -44,11 +44,11 @@ export default {
   },
   computed: {
     ...mapGetters("task", {
-      findTasksInStore: "find",
+      listTasksFromStore: "list",
       isTaskInProgress: "getIsTaskInProgress"
     }),
     tasks() {
-      return this.findTasksInStore({ query: {} }).data;
+      return this.listTasksFromStore.filter(task => !!task);
     }
   },
   watch: {
