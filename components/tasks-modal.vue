@@ -95,6 +95,8 @@ export default {
       }).data[0];
       if (latestTask) {
         this.clone.chapterNo = Math.floor(latestTask.chapterNo) + 1;
+      } else {
+        this.clone.chapterNo = 1;
       }
     }
   }
