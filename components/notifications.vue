@@ -89,16 +89,9 @@ export default {
     onNotificationClose(id) {
       this.$store.dispatch("notification/remove", id);
     },
-    async handleNotificationCreated() {
+    async handleNotificationCreated(notification) {
       const userId = this.$store.getters["auth/user"].id;
-      const newNotificationUserId = this.$store.getters["notification/find"]({
-        query: {
-          $sort: {
-            createdAt: -1
-          },
-          $limit: 1
-        }
-      }).data[0].userId;
+      const newNotificationUserId = notification.userId;
       if (userId === newNotificationUserId) {
         const audio = this.$refs.audio;
         audio.play();
