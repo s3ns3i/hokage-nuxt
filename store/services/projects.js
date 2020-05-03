@@ -44,17 +44,13 @@ const servicePlugin = makeServicePlugin({
       const { Task } = models.api;
       Task.store.dispatch("task/find", {
         query: {
-          $and: [
-            {
-              roleId: { $in: roleIds }
-            },
-            {
-              projectId: { $in: projectIds }
-            },
-            {
-              $or: [{ userId: currentUser.id }, { userId: null }]
-            }
-          ]
+          roleId: { $in: roleIds },
+          projectId: { $in: projectIds },
+          $or: [{ userId: currentUser.id }, { userId: null }],
+          $sort: {
+            projectId: 1,
+            chapterNo: 1
+          }
         }
       });
       return true;

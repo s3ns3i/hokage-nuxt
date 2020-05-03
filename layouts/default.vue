@@ -31,10 +31,9 @@ export default {
       return this.user.roles.map(role => role.id);
     },
     projectIds() {
-      const result = this.user.user_project_roles.map(userProjectRole => {
+      return this.user.user_project_roles.map(userProjectRole => {
         return userProjectRole.project_role.projectId;
       });
-      return result;
     },
     isTaskPatchPending() {
       return this.$store.state.task.isPatchPending;
@@ -52,10 +51,9 @@ export default {
     this.$store.dispatch("role/find", { query: {} });
     this.$store.dispatch("user/find", { query: {} });
     this.$store.dispatch("project/find", { query: {} });
-    const user = this.$store.getters["auth/user"];
-    if (user) {
+    if (this.user) {
       this.$store.dispatch("notification/find", {
-        query: { userId: user.id }
+        query: { userId: this.user.id }
       });
     } else {
       console.log("User is not authorized!");
@@ -63,12 +61,16 @@ export default {
   },
   methods: {
     fetchTasks() {
-      this.$store.commit("task/clearAll");
+      // this.$store.commit("task/clearAll");
       this.$store.dispatch("task/find", {
         query: {
           roleId: { $in: this.roleIds },
           projectId: { $in: this.projectIds },
-          $or: [{ userId: this.user.id }, { userId: null }]
+          $or: [{ userId: this.user.id }, { userId: null }],
+          $sort: {
+            projectId: 1,
+            chapterNo: 1
+          }
         }
       });
     }
