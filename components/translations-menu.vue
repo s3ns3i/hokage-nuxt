@@ -1,9 +1,9 @@
 <template>
   <v-row class="px-3">
     <v-btn
-      v-if="isTaskNotTaken"
+      v-if="!isTaskTaken"
       class="ma-3"
-      :disabled="!$route.params.id"
+      :disabled="!$route.params.id || !currentTask"
       @click="onTakeTask"
     >
       Przejmij zadanie
@@ -11,7 +11,7 @@
     <v-btn
       color="primary"
       class="ma-3"
-      :disabled="isTaskNotTaken"
+      :disabled="!isTaskTaken"
       @click="onStartStopTask"
     >
       {{ isTaskInProgress ? "Zatrzymaj zadanie" : "Rozpocznij zadanie" }}
@@ -22,7 +22,7 @@
           v-if="isMoreThanOneUserWithThatRole"
           color="error"
           class="ma-3"
-          :disabled="isTaskInProgress || isTaskNotTaken"
+          :disabled="isTaskInProgress || !isTaskTaken"
           v-on="on"
           @click="dialogAbandon = true"
         >
@@ -41,7 +41,7 @@
         <v-btn
           color="success"
           class="ma-3"
-          :disabled="isTaskInProgress || isTaskNotTaken"
+          :disabled="isTaskInProgress || !isTaskTaken"
           v-on="on"
           @click="onDialogPassOpen"
         >
@@ -62,7 +62,7 @@
           class="ma-3"
           :disabled="
             isTaskInProgress ||
-              isTaskNotTaken ||
+              !isTaskTaken ||
               !getPreviousProjectRoles().length
           "
           v-on="on"
@@ -103,9 +103,9 @@ export default {
       isTaskInProgress: "getIsTaskInProgress"
     }),
     ...mapGetters("project", { getProjectFromStore: "get" }),
-    isTaskNotTaken() {
+    isTaskTaken() {
       if (this.currentTask) {
-        return this.currentTask.userId === null;
+        return this.currentTask.userId !== null;
       } else {
         return true;
       }
@@ -199,6 +199,7 @@ export default {
           name: projectRole.role.name
         })
       );
+      console.log(projectRoles);
       const currentRoleIndex = this.currentProject.project_roles.findIndex(
         projectRole => projectRole.roleId === this.currentTask.roleId
       );
