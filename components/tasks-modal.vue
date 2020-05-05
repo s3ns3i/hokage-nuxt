@@ -8,20 +8,20 @@
         <v-autocomplete
           v-model="clone.projectId"
           :items="projects"
-          required
+          :rules="projectRules"
           @change="onProjectChange"
         />
         <v-text-field
           v-model="clone.name"
           :counter="50"
+          :rules="nameRules"
           label="Tytuł rozdziału"
-          required
         />
         <v-text-field
           v-model="clone.chapterNo"
+          :rules="chapterNoRules"
           label="Numer rozdziału"
           type="number"
-          required
         />
       </v-form>
     </v-card-text>
@@ -30,7 +30,7 @@
       <v-btn text @click="$emit('close')">
         Anuluj
       </v-btn>
-      <v-btn color="primary" @click="createTask()">
+      <v-btn :disabled="!valid" color="primary" @click="createTask()">
         Zapisz
       </v-btn>
     </v-card-actions>
@@ -46,7 +46,13 @@ export default {
     return {
       task: null,
       clone: null,
-      valid: false
+      valid: false,
+      projectRules: [v => !!v || "Trzeba wybrać projekt!"],
+      nameRules: [v => !!v || "Nazwa rozdziału jest wymagana!"],
+      chapterNoRules: [
+        v => !!v || "Numer rozdziału jest wymagany!",
+        v => v >= 0 || "Numer rozdziału nie może być ujemny!"
+      ]
     };
   },
   computed: {
@@ -68,14 +74,16 @@ export default {
   },
   methods: {
     async createTask() {
-      try {
-        const project = this.getProjectFromStore(this.clone.projectId);
-        this.clone.roleId = project.project_roles[0].role.id;
-        await this.clone.save();
-        this.resetForm();
-        this.$emit("close");
-      } catch (error) {
-        console.error(error);
+      if (this.valid) {
+        try {
+          const project = this.getProjectFromStore(this.clone.projectId);
+          this.clone.roleId = project.project_roles[0].role.id;
+          await this.clone.save();
+          this.resetForm();
+          this.$emit("close");
+        } catch (error) {
+          console.error(error);
+        }
       }
     },
     resetForm() {
@@ -83,19 +91,26 @@ export default {
       this.task = new Task({});
       this.clone = this.task.clone();
     },
-    onProjectChange() {
-      const latestTask = this.$store.getters["task/find"]({
-        query: {
-          projectId: this.clone.projectId,
-          $sort: {
-            createdAt: -1
-          },
-          $limit: 1
+    async onProjectChange() {
+      try {
+        const result = await this.$store.dispatch("task/find", {
+          query: {
+            projectId: this.clone.projectId,
+            $sort: {
+              createdAt: -1
+            },
+            $limit: 1,
+            $select: ["createdAt", "chapterNo"]
+          }
+        });
+        const latestTask = result.data[0];
+        if (latestTask) {
+          this.clone.chapterNo = Math.floor(latestTask.chapterNo) + 1;
+        } else {
+          this.clone.chapterNo = 1;
         }
-      }).data[0];
-      if (latestTask) {
-        this.clone.chapterNo = Math.floor(latestTask.chapterNo) + 1;
-      } else {
+      } catch (error) {
+        console.error(error);
         this.clone.chapterNo = 1;
       }
     }
