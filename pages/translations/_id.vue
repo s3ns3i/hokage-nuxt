@@ -41,14 +41,21 @@ export default {
         ]);
       }
     },
-    task(value) {
-      if (!value) {
+    task(task) {
+      if (!task) {
         this.translation = "";
+      } else {
+        this.getLatestTranslation();
       }
     }
   },
   mounted() {
     if (this.task) {
+      this.getLatestTranslation();
+    }
+  },
+  methods: {
+    getLatestTranslation() {
       const translations = this.task.translations;
       this.translation = translations.length
         ? translations[translations.length - 1].translation

@@ -16,10 +16,14 @@
     >
       {{ isTaskInProgress ? "Zatrzymaj zadanie" : "Rozpocznij zadanie" }}
     </v-btn>
-    <v-dialog v-model="dialogAbandon" persistent max-width="600">
+    <v-dialog
+      v-if="isMoreThanOneUserWithThatRole"
+      v-model="dialogAbandon"
+      persistent
+      max-width="600"
+    >
       <template v-slot:activator="{ on }">
         <v-btn
-          v-if="isMoreThanOneUserWithThatRole"
           color="error"
           class="ma-3"
           :disabled="isTaskInProgress || !isTaskTaken"
@@ -111,13 +115,13 @@ export default {
       }
     },
     isMoreThanOneUserWithThatRole() {
-      const user = this.$store.getters["auth/user"];
-      if (user && this.currentProject) {
-        return !!this.currentProject.project_roles.find(projectRole =>
-          user.roles.find(role => role.id === projectRole.roleId)
-        ).users.length;
+      const currentRoleId = this.currentTask ? this.currentTask.roleId : null;
+      if (this.currentProject && currentRoleId) {
+        const users = this.currentProject.project_roles.find(
+          projectRole => projectRole.roleId === currentRoleId
+        ).users;
+        return users.length > 1;
       } else {
-        console.log("User is not authorized!");
         return false;
       }
     },
@@ -199,7 +203,6 @@ export default {
           name: projectRole.role.name
         })
       );
-      console.log(projectRoles);
       const currentRoleIndex = this.currentProject.project_roles.findIndex(
         projectRole => projectRole.roleId === this.currentTask.roleId
       );

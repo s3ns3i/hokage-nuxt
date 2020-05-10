@@ -47,8 +47,12 @@ export default {
       listTasksFromStore: "list",
       isTaskInProgress: "getIsTaskInProgress"
     }),
+    ...mapGetters("auth", ["user"]),
     tasks() {
-      return this.listTasksFromStore.filter(task => !!task);
+      return this.listTasksFromStore.filter(
+        task =>
+          task && (task.userId === this.user.id || this.isTaskAvailable(task))
+      );
     }
   },
   watch: {
@@ -56,6 +60,15 @@ export default {
       if (this.tasks.length) {
         this.$router.push(`/translations/${this.tasks[0].id}`);
       }
+    }
+  },
+  methods: {
+    isTaskAvailable(task) {
+      return (
+        task.userId === null &&
+        task.roleId &&
+        task.roleId === this.user.roles.find(role => role.id === task.roleId).id
+      );
     }
   }
 };
