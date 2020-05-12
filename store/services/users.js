@@ -16,6 +16,7 @@ class User extends BaseModel {
       email: "",
       password: "",
       nickname: "",
+      emailNotifications: true,
       roleIds: [],
       user_project_roles: []
     };

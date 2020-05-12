@@ -49,10 +49,18 @@
           <v-list-item-title>Statystyki</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+      <v-list-item link nuxt to="/settings">
+        <v-list-item-icon>
+          <v-icon>mdi-account-cog</v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>Ustawienia</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
       <v-list-group v-if="isAdmin()" no-action>
         <template v-slot:activator>
           <v-list-item-icon>
-            <v-icon>mdi-settings</v-icon>
+            <v-icon>mdi-key</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title>Administracja</v-list-item-title>
