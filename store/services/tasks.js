@@ -58,21 +58,23 @@ const servicePlugin = makeServicePlugin({
       return false;
     },
     patched: async (item, { model, models }) => {
-      const { Project } = models.api;
-      Project.store.dispatch("project/find", { query: {} });
-      const user = model.store.getters["auth/user"];
-      const roleIds = user.roles.map(role => role.id);
-      const projectIds = user.user_project_roles.map(userProjectRole => {
-        return userProjectRole.project_role.projectId;
-      });
-      if (
-        (item.userId === user.id || item.userId === null) &&
-        projectIds.includes(item.projectId) &&
-        roleIds.includes(item.roleId)
-      ) {
-        return true;
-      }
-      return false;
+      // const { Project } = models.api;
+      // Project.store.dispatch("project/find", { query: {} });
+      // const user = model.store.getters["auth/user"];
+      // const roleIds = user.roles.map(role => role.id);
+      // const projectIds = user.user_project_roles.map(userProjectRole => {
+      //   return userProjectRole.project_role.projectId;
+      // });
+      // if (
+      //   (item.userId === user.id || item.userId === null) &&
+      //   projectIds.includes(item.projectId) &&
+      //   roleIds.includes(item.roleId)
+      // ) {
+      return true;
+      // }
+      // console.log("do not save it in the store");
+      // model.store.commit("task/removeItem", item.id);
+      // return false;
     }
   },
   state: {

@@ -64,11 +64,10 @@ export default {
   },
   methods: {
     isTaskAvailable(task) {
-      return (
-        task.userId === null &&
-        task.roleId &&
-        task.roleId === this.user.roles.find(role => role.id === task.roleId).id
-      );
+      const role = this.user.roles.find(role => role.id === task.roleId);
+      return task.userId === null && task.roleId && task.roleId === role
+        ? role.id
+        : null;
     }
   }
 };

@@ -41,14 +41,14 @@
           <v-list-item-title>Tłumaczenia</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item link nuxt to="/dashboard">
+      <!-- <v-list-item link nuxt to="/dashboard">
         <v-list-item-icon>
           <v-icon>mdi-chart-bar</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title>Statystyki</v-list-item-title>
         </v-list-item-content>
-      </v-list-item>
+      </v-list-item> -->
       <v-list-item link nuxt to="/settings">
         <v-list-item-icon>
           <v-icon>mdi-account-cog</v-icon>
