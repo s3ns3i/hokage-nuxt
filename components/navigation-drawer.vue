@@ -55,10 +55,10 @@
             <v-icon>mdi-settings</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title>Ustawienia</v-list-item-title>
+            <v-list-item-title>Administracja</v-list-item-title>
           </v-list-item-content>
         </template>
-        <v-list-item link nuxt to="/settings/roles">
+        <v-list-item link nuxt to="/administration/roles">
           <v-list-item-content>
             <v-list-item-title>Role</v-list-item-title>
           </v-list-item-content>
@@ -66,7 +66,7 @@
             <v-icon>mdi-sitemap</v-icon>
           </v-list-item-icon>
         </v-list-item>
-        <v-list-item link nuxt to="/settings/users">
+        <v-list-item link nuxt to="/administration/users">
           <v-list-item-content>
             <v-list-item-title>Użytkownicy</v-list-item-title>
           </v-list-item-content>
@@ -74,7 +74,7 @@
             <v-icon>mdi-account</v-icon>
           </v-list-item-icon>
         </v-list-item>
-        <v-list-item link nuxt to="/settings/projects">
+        <v-list-item link nuxt to="/administration/projects">
           <v-list-item-content>
             <v-list-item-title>Projekty</v-list-item-title>
           </v-list-item-content>
