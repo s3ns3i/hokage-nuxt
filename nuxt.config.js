@@ -26,6 +26,9 @@ export default {
     lang: {
       locales: { pl },
       current: "pl"
+    },
+    icons: {
+      iconfont: "mdi"
     }
   },
   router: {
