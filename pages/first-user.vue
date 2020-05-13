@@ -17,26 +17,25 @@
                 :rules="emailRules"
                 label="E-mail"
                 type="email"
-                required
+                autofocus
               />
               <v-text-field
                 v-model="clone.nickname"
+                :rules="nicknameRules"
                 label="Ksywka"
                 type="text"
-                required
               />
               <v-text-field
                 v-model="clone.password"
-                :rules="[v => !!v || 'Hasło jest wymagane!']"
+                :rules="passwordRules"
                 label="Hasło"
                 type="password"
-                required
               />
               <v-text-field
                 v-model="clone.confirmPassword"
+                :rules="confirmPasswordRules"
                 label="Potwierdź hasło"
                 type="password"
-                required
               />
             </v-form>
           </v-card-text>
@@ -65,8 +64,16 @@ export default {
       clone: null,
       valid: false,
       emailRules: [
-        v => !!v || "E-mail is required",
-        v => /.+@.+\..+/.test(v) || "E-mail must be valid"
+        v => !!v || "E-mail jest wymagany!",
+        v => /.+@.+\..+/.test(v) || "E-mail musi być prawidłowy!"
+      ],
+      nicknameRules: [v => !!v || "Ksywka jest wymagana!"],
+      passwordRules: [
+        v => !!v || "Hasło jest wymagane!",
+        v => v.length > 6 || "Hasło musi mieć przynajmniej 6 znaków!"
+      ],
+      confirmPasswordRules: [
+        v => v === this.clone.password || "Hasła muszą być identyczne!"
       ]
     };
   },
@@ -93,7 +100,7 @@ export default {
             email: this.clone.email,
             password: this.clone.password
           });
-          this.$router.push("/");
+          this.$router.push("/translations");
         } catch (error) {
           console.error(error);
         }
