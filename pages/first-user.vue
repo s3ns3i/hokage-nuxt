@@ -7,8 +7,8 @@
             <v-toolbar-title>hokage</v-toolbar-title>
           </v-toolbar>
           <v-card-title>
-            This is the first launch of the application. You need to set an
-            admin password to continue.
+            To pierwsze uruchomienie aplikacji. Musisz utworzyć konto
+            administratora, aby kontynuować.
           </v-card-title>
           <v-card-text>
             <v-form v-model="valid">
@@ -87,7 +87,7 @@ export default {
     async createUser() {
       if (this.valid) {
         try {
-          const user = await this.clone.save();
+          await this.clone.save();
           await this.$store.dispatch("auth/authenticate", {
             strategy: "local",
             email: this.clone.email,

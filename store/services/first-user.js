@@ -9,7 +9,7 @@ class FirstUser extends BaseModel {
   }
   // Required for $FeathersVuex plugin to work after production transpile.
   static modelName = "FirstUser";
-  static namespace = "user/first-user";
+  static namespace = "first-user";
   // Define default properties here
   static instanceDefaults() {
     return {

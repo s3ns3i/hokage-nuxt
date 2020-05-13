@@ -9,21 +9,24 @@ export default async function(context) {
     } catch (error) {}
   }
   if (!auth.accessToken) {
-    console.log("no token!");
-    const { total } = await store.dispatch("first-user/find");
+    let total = 0;
+    try {
+      const result = await store.dispatch("first-user/find");
+      total = result.total;
+    } catch (error) {
+      total = 0;
+    }
     if (!total && route.name !== "first-user") {
       return redirect("/first-user");
     }
-    if (route.name === "first-user") {
+    if (total && route.name === "first-user") {
       return redirect("/login");
     }
     // If user is not logged in and tries to access the main page
     // If user is not logged in and tries to access restricted resource
     if (!auth.publicPages.includes(route.name) || route.name === "/") {
-      console.log("redirecting to login");
       return redirect("/login");
     }
-    console.log(`somehow it passed security: ${route.name}`);
   } else {
     if (route.name === "first-user") {
       return redirect("/translations");
