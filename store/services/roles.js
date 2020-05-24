@@ -25,13 +25,15 @@ const servicePlugin = makeServicePlugin({
   servicePath,
   handleEvents: {
     patched: (item, { models }) => {
-      const { User } = models.api;
+      const { User, UsersProjects } = models.api;
       User.store.dispatch("user/find", { query: {} });
+      UsersProjects.store.dispatch("users-projects/find", { query: {} });
       return true;
     },
     updated: (item, { models }) => {
-      const { User } = models.api;
+      const { User, UsersProjects } = models.api;
       User.store.dispatch("user/find", { query: {} });
+      UsersProjects.store.dispatch("users-projects/find", { query: {} });
       return true;
     }
   }

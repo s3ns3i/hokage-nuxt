@@ -28,13 +28,15 @@ const servicePlugin = makeServicePlugin({
   servicePath,
   handleEvents: {
     created: (item, { models }) => {
-      const { User } = models.api;
+      const { User, UsersProjects } = models.api;
       User.store.dispatch("user/find", { query: {} });
+      UsersProjects.store.dispatch("users-projects/find", { query: {} });
       return true;
     },
     patched: (item, { model, models }) => {
-      const { User } = models.api;
+      const { User, UsersProjects } = models.api;
       User.store.dispatch("user/find", { query: {} });
+      UsersProjects.store.dispatch("users-projects/find", { query: {} });
 
       const currentUser = model.store.getters["auth/user"];
       const roleIds = currentUser.roles.map(role => role.id);
@@ -53,11 +55,6 @@ const servicePlugin = makeServicePlugin({
           }
         }
       });
-      return true;
-    },
-    updated: (item, { models }) => {
-      const { User } = models.api;
-      User.store.dispatch("user/find", { query: {} });
       return true;
     }
   }

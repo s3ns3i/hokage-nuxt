@@ -30,11 +30,17 @@ const servicePlugin = makeServicePlugin({
   servicePath,
   handleEvents: {
     created: (item, { models }) => {
-      const { Project } = models.api;
+      const { Project, UsersProjects } = models.api;
       Project.store.dispatch("project/find", { query: {} });
+      UsersProjects.store.dispatch("users-projects/find", { query: {} });
       // keyedById is broken
       // it adds a record event if this returns false
       // needs to be reported
+      return true;
+    },
+    patched: (item, { models }) => {
+      const { UsersProjects } = models.api;
+      UsersProjects.store.dispatch("users-projects/find", { query: {} });
       return true;
     }
   },
