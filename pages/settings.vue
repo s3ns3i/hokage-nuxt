@@ -106,7 +106,6 @@ export default {
     const user = this.$store.getters["auth/user"];
     const User = this.$FeathersVuex.api.byServicePath.user;
     this.clone = new User(user).clone();
-    console.log(this.clone);
   },
   methods: {
     resetUserForm() {

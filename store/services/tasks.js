@@ -22,12 +22,6 @@ class Task extends BaseModel {
       userId: 0
     };
   }
-  // static setupInstance(data, { models }) {
-  //   if (data.project) {
-  //     data.project = new models.api.Project(data.project);
-  //   }
-  //   return data;
-  // }
 }
 const servicePath = "task";
 const servicePlugin = makeServicePlugin({
@@ -35,46 +29,13 @@ const servicePlugin = makeServicePlugin({
   service: feathersClient.service(servicePath),
   servicePath,
   handleEvents: {
-    created: (item, { model, models }) => {
+    created: (item, { models }) => {
       const { Project } = models.api;
       Project.store.dispatch("project/find", { query: {} });
-      const user = model.store.getters["auth/user"];
-      const roleIds = user.roles.map(role => role.id);
-      const projectIds = user.user_project_roles.map(
-        userProjectRole => userProjectRole.project_role.projectId
-      );
-      if (
-        (item.userId === user.id || item.userId === null) &&
-        projectIds.includes(item.projectId) &&
-        roleIds.includes(item.roleId)
-      ) {
-        console.log("new task belongs to user");
-        return true;
-      }
-      console.log("it does not");
       // keyedById is broken
       // it adds a record event if this returns false
       // needs to be reported
-      return false;
-    },
-    patched: async (item, { model, models }) => {
-      // const { Project } = models.api;
-      // Project.store.dispatch("project/find", { query: {} });
-      // const user = model.store.getters["auth/user"];
-      // const roleIds = user.roles.map(role => role.id);
-      // const projectIds = user.user_project_roles.map(userProjectRole => {
-      //   return userProjectRole.project_role.projectId;
-      // });
-      // if (
-      //   (item.userId === user.id || item.userId === null) &&
-      //   projectIds.includes(item.projectId) &&
-      //   roleIds.includes(item.roleId)
-      // ) {
       return true;
-      // }
-      // console.log("do not save it in the store");
-      // model.store.commit("task/removeItem", item.id);
-      // return false;
     }
   },
   state: {

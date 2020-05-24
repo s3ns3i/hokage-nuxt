@@ -111,7 +111,7 @@ export default {
       if (this.currentTask) {
         return this.currentTask.userId !== null;
       } else {
-        return true;
+        return false;
       }
     },
     isMoreThanOneUserWithThatRole() {

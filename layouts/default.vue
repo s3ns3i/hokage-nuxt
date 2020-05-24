@@ -47,14 +47,14 @@ export default {
     }
   },
   mounted() {
-    this.fetchTasks();
-    this.$store.dispatch("role/find", { query: {} });
-    this.$store.dispatch("user/find", { query: {} });
-    this.$store.dispatch("project/find", { query: {} });
     if (this.user) {
       this.$store.dispatch("notification/find", {
         query: { userId: this.user.id }
       });
+      this.$store.dispatch("task/find", { query: {} });
+      this.$store.dispatch("role/find", { query: {} });
+      this.$store.dispatch("user/find", { query: {} });
+      this.$store.dispatch("project/find", { query: {} });
     } else {
       console.log("User is not authorized!");
     }

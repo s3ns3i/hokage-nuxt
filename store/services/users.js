@@ -17,28 +17,9 @@ class User extends BaseModel {
       password: "",
       nickname: "",
       emailNotifications: true,
-      roleIds: [],
       user_project_roles: []
     };
   }
-  // static setupInstance(data, { models }) {
-  //   if (data.roles) {
-  //     data.roles = data.roles.map(
-  //       role =>
-  //         new models.api.Role({
-  //           id: role.id,
-  //           name: role.name
-  //         })
-  //     );
-  //   }
-  //   return data;
-  // }
-
-  // try with only ids
-  // there's a bug in feathers-vuex
-  // you need to to do it like this for now:
-  // https://vuex.feathersjs.com/composition-api.html#deferring-queries
-  // probably modify back-end so it will return array of id's for associations
 }
 
 const servicePath = "user";
