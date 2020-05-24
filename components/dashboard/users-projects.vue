@@ -1,43 +1,39 @@
 <template>
-  <v-row>
-    <v-col>
-      <v-card>
-        <v-card-title>
-          Użytkownicy
-          <v-spacer />
-          <v-text-field
-            v-model="search"
-            append-icon="mdi-magnify"
-            label="Wyszukaj"
-            single-line
-          />
-        </v-card-title>
-        <v-data-table
-          :headers="headers"
-          :items="items"
-          :items-per-page="5"
-          :search="search"
-        >
-          <template v-slot:item.latestTask="{ item }">
-            <div v-if="item.latestTask">
-              {{ new Date(item.latestTask).toLocaleDateString() }}
-            </div>
-            <div v-else>Brak aktywności</div>
-          </template>
-          <template v-slot:item.roles="{ item }">
-            <v-chip v-for="role in item.roles" :key="role.id">
-              {{ role.name }}
-            </v-chip>
-          </template>
-          <template v-slot:item.projects="{ item }">
-            <v-chip v-for="project in item.projects" :key="project.id">
-              {{ project }}
-            </v-chip>
-          </template>
-        </v-data-table>
-      </v-card>
-    </v-col>
-  </v-row>
+  <v-card>
+    <v-card-title>
+      Użytkownicy
+      <v-spacer />
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Wyszukaj"
+        single-line
+      />
+    </v-card-title>
+    <v-data-table
+      :headers="headers"
+      :items="items"
+      :items-per-page="5"
+      :search="search"
+    >
+      <template v-slot:item.latestTask="{ item }">
+        <div v-if="item.latestTask">
+          {{ new Date(item.latestTask).toLocaleDateString() }}
+        </div>
+        <div v-else>Brak aktywności</div>
+      </template>
+      <template v-slot:item.roles="{ item }">
+        <v-chip v-for="role in item.roles" :key="role.id" class="ma-1">
+          {{ role.name }}
+        </v-chip>
+      </template>
+      <template v-slot:item.projects="{ item }">
+        <v-chip v-for="project in item.projects" :key="project.id" class="ma-1">
+          {{ project }}
+        </v-chip>
+      </template>
+    </v-data-table>
+  </v-card>
 </template>
 
 <script>
