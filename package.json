@@ -17,6 +17,7 @@
     "feathers-vuex": "^3.10.1",
     "nuxt": "^2.12.2",
     "socket.io-client": "^2.3.0",
+    "vue-wcharts": "^0.4.8",
     "vue2-editor": "^2.10.2"
   },
   "devDependencies": {
