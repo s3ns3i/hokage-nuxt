@@ -1,6 +1,11 @@
 <template>
   <v-container>
     <v-row>
+      <v-col>
+        <projects />
+      </v-col>
+    </v-row>
+    <v-row>
       <projects-by-user-container />
     </v-row>
     <v-row>
@@ -20,6 +25,7 @@
 </template>
 
 <script>
+import Projects from "@/components/dashboard/projects.vue";
 import ProjectsByUserContainer from "@/components/dashboard/projects-by-user/container.vue";
 import UsersProjects from "@/components/dashboard/users-projects.vue";
 import UsersByRoles from "@/components/dashboard/users-by-roles.vue";
@@ -28,6 +34,7 @@ import ChaptersByWeek from "@/components/dashboard/chapters-by-week.vue";
 export default {
   name: "Dashboard",
   components: {
+    Projects,
     ProjectsByUserContainer,
     UsersProjects,
     UsersByRoles,
