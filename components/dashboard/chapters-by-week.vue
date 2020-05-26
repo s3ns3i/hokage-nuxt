@@ -35,7 +35,7 @@
                   'ma-2',
                   { 'red--text font-weight-bold': chaptersNo(day) === 0 }
                 ]"
-                v-on="!chaptersNo(day) || on"
+                v-on="chaptersNo(day) ? on : null"
               >
                 {{ chaptersNo(day) }}
               </div>
@@ -46,15 +46,6 @@
           </v-tooltip>
         </template>
       </v-calendar>
-      <!-- <v-sparkline
-      :value="value"
-      padding="2"
-      smooth="2"
-      label-size="8"
-      type="bar"
-      show-labels
-      auto-line-width
-    /> -->
     </div>
   </v-card>
 </template>
@@ -76,7 +67,6 @@ export default {
   },
   computed: {
     title() {
-      console.log(this.start);
       if (!this.start) {
         return "";
       }
