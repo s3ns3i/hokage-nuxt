@@ -20,8 +20,8 @@
                 v-for="(user, j) in role.users"
                 :key="user.id"
                 :class="[
-                  { 'primary lighten-4': j % 2 === 0 },
-                  { 'primary darken-1': j % 2 === 0 && $vuetify.theme.dark }
+                  { 'grey lighten-3': j % 2 === 0 },
+                  { 'grey darken-1': j % 2 === 0 && $vuetify.theme.dark }
                 ]"
               >
                 <v-list-item-content>{{ user.nickname }}</v-list-item-content>
