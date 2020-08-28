@@ -62,6 +62,7 @@
     <v-dialog v-model="dialogReject" persistent max-width="600">
       <template v-slot:activator="{ on }">
         <v-btn
+          v-if="getPreviousProjectRoles().length"
           color="error"
           class="ma-3"
           :disabled="
