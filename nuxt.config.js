@@ -1,6 +1,7 @@
 import pl from "vuetify/es5/locale/pl";
 
 export default {
+  dev: process.env.NODE_ENV !== "production",
   mode: "spa",
   build: {
     transpile: ["feathers-vuex"],
@@ -32,6 +33,7 @@ export default {
     }
   },
   router: {
+    base: "/hokage/",
     middleware: ["auth"]
   },
   plugins: [
@@ -41,5 +43,11 @@ export default {
   ],
   generate: {
     fallback: "/translations"
+  },
+  env: {
+    SOCKET_HOST: "localhost",
+    SOCKET_PORT: "3030"
+    // SOCKET_HOST: "68.66.226.86", // production
+    // SOCKET_PORT: "30001" // production
   }
 };
