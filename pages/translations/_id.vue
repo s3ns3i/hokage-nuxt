@@ -1,5 +1,7 @@
 <template>
-  <vue-editor v-model="translation" :disabled="!isTaskInProgress" />
+  <v-card flat>
+    <vue-editor v-model="translation" :disabled="!isTaskInProgress" />
+  </v-card>
 </template>
 
 <script>
