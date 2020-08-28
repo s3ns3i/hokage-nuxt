@@ -35,7 +35,7 @@
       </v-list>
     </v-menu>
     <audio ref="audio">
-      <source src="@/assets/notification.wav" type="audio/mpeg" />
+      <source src="@/static/notification.wav" type="audio/mpeg" />
     </audio>
   </div>
 </template>
