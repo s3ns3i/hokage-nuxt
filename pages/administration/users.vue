@@ -86,9 +86,11 @@ export default {
   methods: {
     assignedProjects(user) {
       if (user.user_project_roles) {
-        return user.user_project_roles.map(
-          userProjectRole => userProjectRole.project_role.project.name
-        );
+        return user.user_project_roles
+          .map(userProjectRole => userProjectRole.project_role.project.name)
+          .filter(
+            (element, position, array) => array.indexOf(element) == position
+          );
       } else {
         return [];
       }
