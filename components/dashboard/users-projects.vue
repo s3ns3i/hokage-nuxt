@@ -28,7 +28,11 @@
         </v-chip>
       </template>
       <template v-slot:item.projects="{ item }">
-        <v-chip v-for="project in item.projects" :key="project.id" class="ma-1">
+        <v-chip
+          v-for="project in assignedProjects(item.projects)"
+          :key="project.id"
+          class="ma-1"
+        >
           {{ project }}
         </v-chip>
       </template>
@@ -65,18 +69,21 @@ export default {
   },
   beforeMount() {
     this.$store.dispatch("users-projects/find", { query: {} });
+  },
+  methods: {
+    assignedProjects(projects) {
+      return projects.filter(
+        (element, position, array) => array.indexOf(element) == position
+      );
+      //     if (user.user_project_roles) {
+      //       return user.user_project_roles.map(
+      //         userProjectRole => userProjectRole.project_role.project.name
+      //       );
+      //     } else {
+      //       return [];
+      //     }
+    }
   }
-  // methods: {
-  //   assignedProjects(user) {
-  //     if (user.user_project_roles) {
-  //       return user.user_project_roles.map(
-  //         userProjectRole => userProjectRole.project_role.project.name
-  //       );
-  //     } else {
-  //       return [];
-  //     }
-  //   }
-  // }
 };
 </script>
 
