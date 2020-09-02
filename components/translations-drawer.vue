@@ -49,10 +49,13 @@ export default {
     }),
     ...mapGetters("auth", ["user"]),
     tasks() {
-      return this.listTasksFromStore.filter(
-        task =>
-          task && (task.userId === this.user.id || this.isTaskAvailable(task))
-      );
+      return this.listTasksFromStore
+        .filter(task => task && this.isUserAssignedToProject(task))
+        .filter(
+          task =>
+            task &&
+            (this.isTaskAssignedToUser(task) || this.isTaskAvailable(task))
+        );
     }
   },
   watch: {
@@ -63,11 +66,20 @@ export default {
     }
   },
   methods: {
+    isUserAssignedToProject(task) {
+      return this.user.user_project_roles
+        .map(userProjectRole => userProjectRole.project_role.projectId)
+        .includes(task.projectId);
+    },
+    isTaskAssignedToUser(task) {
+      const rolesIds = this.user.roles.map(role => role.id);
+      return task.userId === this.user.id && rolesIds.includes(task.roleId);
+    },
     isTaskAvailable(task) {
       const role = this.user.roles.find(role => role.id === task.roleId);
-      return task.userId === null && task.roleId && task.roleId === role
-        ? role.id
-        : null;
+      return task.userId === null && !!task.roleId && task.roleId === role
+        ? !!role.id
+        : false;
     }
   }
 };
