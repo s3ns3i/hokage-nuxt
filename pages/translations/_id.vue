@@ -11,7 +11,8 @@ export default {
   name: "Translation",
   data() {
     return {
-      translation: ""
+      translation: "",
+      saverInterval: null
     };
   },
   computed: {
@@ -36,11 +37,13 @@ export default {
   },
   watch: {
     isTaskInProgress(value) {
-      if (!value) {
-        this.$store.dispatch("task/patch", [
-          this.task.id,
-          { translation: this.translation }
-        ]);
+      if (value) {
+        this.saverInterval = setInterval(() => {
+          this.saveTranslation();
+        }, 10000);
+      } else {
+        clearInterval(this.saverInterval);
+        this.saveTranslation();
       }
     },
     task(task) {
@@ -62,6 +65,12 @@ export default {
       this.translation = translations.length
         ? translations[translations.length - 1].translation
         : "";
+    },
+    saveTranslation() {
+      this.$store.dispatch("task/patch", [
+        this.task.id,
+        { translation: this.translation }
+      ]);
     }
   }
 };
