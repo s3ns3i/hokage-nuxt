@@ -26,6 +26,16 @@
               `${task.project.name} ${task.chapterNo}`
             }}</v-list-item-subtitle>
           </v-list-item-content>
+          <v-list-item-action>
+            <v-dialog v-model="dialog" persistent max-width="600">
+              <template v-slot:activator="{ on }">
+                <v-btn icon @click.prevent="dialog = true" v-on="on">
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+              </template>
+              <tasks-modal :task="task" @close="dialog = false" />
+            </v-dialog>
+          </v-list-item-action>
         </v-list-item>
       </v-list-item-group>
     </v-list>
@@ -34,12 +44,15 @@
 
 <script>
 import { mapGetters } from "vuex";
+import TasksModal from "@/components/tasks-modal.vue";
 
 export default {
   name: "TranslationsDrawer",
+  components: { TasksModal },
   data() {
     return {
-      item: 0
+      item: 0,
+      dialog: false
     };
   },
   computed: {

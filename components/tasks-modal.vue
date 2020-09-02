@@ -6,6 +6,7 @@
     <v-card-text>
       <v-form v-model="valid">
         <v-autocomplete
+          v-if="!taskTemp.id"
           v-model="clone.projectId"
           :items="projects"
           :rules="projectRules"
@@ -42,9 +43,18 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "TasksModal",
+  props: {
+    task: {
+      type: Object,
+      required: false,
+      default() {
+        return null;
+      }
+    }
+  },
   data() {
     return {
-      task: null,
+      taskTemp: null,
       clone: null,
       valid: false,
       projectRules: [v => !!v || "Trzeba wybrać projekt!"],
@@ -69,6 +79,11 @@ export default {
       );
     }
   },
+  watch: {
+    task() {
+      this.resetForm();
+    }
+  },
   created() {
     this.resetForm();
   },
@@ -88,8 +103,12 @@ export default {
     },
     resetForm() {
       const Task = this.$FeathersVuex.api.byServicePath.task;
-      this.task = new Task({});
-      this.clone = this.task.clone();
+      if (this.task) {
+        this.taskTemp = new Task(this.task);
+      } else {
+        this.taskTemp = new Task({});
+      }
+      this.clone = this.taskTemp.clone();
     },
     async onProjectChange() {
       try {
