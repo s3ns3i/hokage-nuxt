@@ -10,49 +10,61 @@
       </v-list-item>
     </v-list>
     <v-divider />
-    <v-list v-model="tasks" :disabled="isTaskInProgress">
-      <v-list-item-group v-model="item" color="primary">
+    <v-list v-if="!compact" :disabled="isTaskInProgress">
+      <v-list-item-group v-model="selectedItemIndex" color="primary">
         <v-list-item
-          v-for="(task, index) in tasks"
+          v-for="(item, index) in items"
           :key="index"
           two-line
-          link
-          nuxt
-          :to="`/translations/${task.id}`"
+          @click="onItemClick(item)"
         >
-          <v-list-item-content>
-            <v-list-item-title>{{ task.name }}</v-list-item-title>
-            <v-list-item-subtitle>{{
-              `${task.project.name} ${task.chapterNo}`
-            }}</v-list-item-subtitle>
-          </v-list-item-content>
-          <v-list-item-action>
-            <v-dialog v-model="dialog" persistent max-width="600">
-              <template v-slot:activator="{ on }">
-                <v-btn icon @click.prevent="dialog = true" v-on="on">
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-              </template>
-              <tasks-modal :task="task" @close="dialog = false" />
-            </v-dialog>
-          </v-list-item-action>
+          <custom-list-item-content :task="item" />
+          <custom-list-item-action :task="tasks[index]" />
         </v-list-item>
       </v-list-item-group>
     </v-list>
+    <v-select
+      v-else
+      v-model="selectedItem"
+      :items="items"
+      @change="onItemSelect"
+    >
+      <template v-slot:selection="data">
+        <custom-list-item-content :task="data.item" />
+        <custom-list-item-action :task="data.item" />
+      </template>
+      <template v-slot:item="data">
+        <template v-if="typeof data.item !== 'object'">
+          <v-list-item-content v-text="data.item"></v-list-item-content>
+        </template>
+        <template v-else>
+          <custom-list-item-content :task="data.item" />
+          <custom-list-item-action :task="data.item" />
+        </template>
+      </template>
+    </v-select>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import TasksModal from "@/components/tasks-modal.vue";
+import CustomListItemContent from "@/components/translations-drawer/custom-list-item-content";
+import CustomListItemAction from "@/components/translations-drawer/custom-list-item-action";
 
 export default {
   name: "TranslationsDrawer",
-  components: { TasksModal },
+  components: { CustomListItemContent, CustomListItemAction },
+  props: {
+    compact: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
   data() {
     return {
-      item: 0,
-      dialog: false
+      selectedItem: null,
+      selectedItemIndex: -1
     };
   },
   computed: {
@@ -69,6 +81,13 @@ export default {
             task &&
             (this.isTaskAssignedToUser(task) || this.isTaskAvailable(task))
         );
+    },
+    items() {
+      return this.tasks.map(task => ({
+        value: task.id,
+        text: task.name,
+        description: `${task.project.name} ${task.chapterNo}`
+      }));
     }
   },
   watch: {
@@ -76,6 +95,12 @@ export default {
       if (this.tasks.length) {
         this.$router.push(`/translations/${this.tasks[0].id}`);
       }
+    }
+  },
+  mounted() {
+    if (this.tasks.length) {
+      this.$router.push(`/translations/${this.tasks[0].id}`);
+      this.selectedTask = 0;
     }
   },
   methods: {
@@ -93,6 +118,18 @@ export default {
       return task.userId === null && !!task.roleId && task.roleId === role
         ? !!role.id
         : false;
+    },
+    onItemClick(item) {
+      console.log(item);
+      this.$router.push(`/translations/${item.value}`);
+      this.selectedItem = item;
+    },
+    onItemSelect(value) {
+      console.log(value);
+      const index = this.items.findIndex(item => item.value === value);
+      console.log(index);
+      this.$router.push(`/translations/${value}`);
+      this.selectedItemIndex = index;
     }
   }
 };

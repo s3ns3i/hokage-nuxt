@@ -6,10 +6,10 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col md="3" lg="2">
-        <translations-drawer />
+      <v-col sm="12" md="3" lg="3" xl="2">
+        <translations-drawer :compact="$vuetify.breakpoint.smAndDown" />
       </v-col>
-      <v-col md="9" lg="10">
+      <v-col sm="12" md="9" lg="9" xl="10">
         <nuxt-child :key="$route.params.id" />
       </v-col>
     </v-row>
