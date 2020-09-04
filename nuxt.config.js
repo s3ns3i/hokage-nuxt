@@ -33,7 +33,6 @@ export default {
     }
   },
   router: {
-    base: "/hokage/",
     middleware: ["auth"]
   },
   plugins: [
