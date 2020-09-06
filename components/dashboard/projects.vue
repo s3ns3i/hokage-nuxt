@@ -128,7 +128,6 @@ export default {
           new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
       )[0];
       if (latestTask) {
-        console.log(latestTask.updatedAt);
         return latestTask.updatedAt;
       }
       return "";

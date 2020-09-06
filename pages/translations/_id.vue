@@ -1,6 +1,11 @@
 <template>
   <v-card flat>
-    <vue-editor v-model="translation" :disabled="!isTaskInProgress" />
+    <vue-editor
+      v-model="translation"
+      class="editor"
+      :style="cssVars"
+      :disabled="!isTaskInProgress"
+    />
   </v-card>
 </template>
 
@@ -12,7 +17,8 @@ export default {
   data() {
     return {
       translation: "",
-      saverInterval: null
+      saverInterval: null,
+      editorHeight: 0
     };
   },
   computed: {
@@ -33,6 +39,13 @@ export default {
       } else {
         return null;
       }
+    },
+    cssVars() {
+      return {
+        "--editor-height": `calc(100vh -
+        ${this.editorHeight}px
+        )`
+      };
     }
   },
   watch: {
@@ -54,10 +67,16 @@ export default {
       }
     }
   },
+  created() {
+    window.addEventListener("resize", () => {
+      this.calculateEditorHeight();
+    });
+  },
   mounted() {
     if (this.task) {
       this.getLatestTranslation();
     }
+    this.calculateEditorHeight();
   },
   methods: {
     getLatestTranslation() {
@@ -71,9 +90,24 @@ export default {
         this.task.id,
         { translation: this.translation }
       ]);
+    },
+    calculateEditorHeight() {
+      const parentRefs = this.$parent.$refs;
+
+      if (parentRefs) {
+        this.editorHeight = parentRefs.translationsMenu.clientHeight + 262;
+        if (this.$vuetify.breakpoint.smAndDown) {
+          this.editorHeight += parentRefs.translationsDrawer.clientHeight;
+        }
+      }
     }
   }
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.editor {
+  min-height: var(--editor-height);
+  height: var(--editor-height);
+}
+</style>

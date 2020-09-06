@@ -1,28 +1,30 @@
 <template>
   <div>
-    <v-list>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title class="title">
-            Rozdziały
-          </v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
-    <v-divider />
-    <v-list v-if="!compact" :disabled="isTaskInProgress">
-      <v-list-item-group v-model="selectedItemIndex" color="primary">
-        <v-list-item
-          v-for="(item, index) in items"
-          :key="index"
-          two-line
-          @click="onItemClick(item)"
-        >
-          <custom-list-item-content :task="item" />
-          <custom-list-item-action :task="tasks[index]" />
+    <template v-if="!compact">
+      <v-list>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title class="title">
+              Rozdziały
+            </v-list-item-title>
+          </v-list-item-content>
         </v-list-item>
-      </v-list-item-group>
-    </v-list>
+      </v-list>
+      <v-divider />
+      <v-list :disabled="isTaskInProgress">
+        <v-list-item-group v-model="selectedItemIndex" color="primary">
+          <v-list-item
+            v-for="(item, index) in items"
+            :key="index"
+            two-line
+            @click="onItemClick(item)"
+          >
+            <custom-list-item-content :task="item" />
+            <custom-list-item-action :task="tasks[index]" />
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </template>
     <v-select
       v-else
       v-model="selectedItem"
@@ -92,16 +94,11 @@ export default {
   },
   watch: {
     tasks() {
-      if (this.tasks.length) {
-        this.$router.push(`/translations/${this.tasks[0].id}`);
-      }
+      this.initDrawer();
     }
   },
   mounted() {
-    if (this.tasks.length) {
-      this.$router.push(`/translations/${this.tasks[0].id}`);
-      this.selectedTask = 0;
-    }
+    this.initDrawer();
   },
   methods: {
     isUserAssignedToProject(task) {
@@ -120,16 +117,20 @@ export default {
         : false;
     },
     onItemClick(item) {
-      console.log(item);
       this.$router.push(`/translations/${item.value}`);
       this.selectedItem = item;
     },
     onItemSelect(value) {
-      console.log(value);
       const index = this.items.findIndex(item => item.value === value);
-      console.log(index);
       this.$router.push(`/translations/${value}`);
       this.selectedItemIndex = index;
+    },
+    initDrawer() {
+      if (this.tasks.length) {
+        this.$router.push(`/translations/${this.tasks[0].id}`);
+        this.selectedItemIndex = 0;
+        this.selectedItem = this.items[0];
+      }
     }
   }
 };
