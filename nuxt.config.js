@@ -1,4 +1,6 @@
 import pl from "vuetify/es5/locale/pl";
+import path from "path";
+import fs from "fs";
 
 export default {
   dev: process.env.NODE_ENV !== "production",
@@ -22,7 +24,7 @@ export default {
       });
     }
   },
-  buildModules: ["@nuxtjs/vuetify"],
+  buildModules: ["@nuxtjs/vuetify", "@nuxtjs/dotenv"],
   vuetify: {
     lang: {
       locales: { pl },
@@ -43,10 +45,20 @@ export default {
   generate: {
     fallback: "/translations"
   },
-  env: {
-    SOCKET_HOST: "localhost",
-    SOCKET_PORT: "3030"
-    // SOCKET_HOST: "68.66.226.86", // production
-    // SOCKET_PORT: "30001" // production
+  server: {
+    https: {
+      key: fs.readFileSync(
+        path.resolve(
+          "../ssl/keys",
+          "969cd_c3acb_e02d5936dbece98a4c9ebb23f6453167.key"
+        )
+      ),
+      cert: fs.readFileSync(
+        path.resolve(
+          "../ssl/certs",
+          "hokage_onepiecenakama_pl_969cd_c3acb_1607212799_0e3e7effb14cbe406076db0b710bba56.crt"
+        )
+      )
+    }
   }
 };
