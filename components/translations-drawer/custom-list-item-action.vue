@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import TasksModal from "@/components/tasks-modal.vue";
+import TasksModal from "@/components/modals/tasks-modal.vue";
 
 export default {
   name: "CustomListItemAction",

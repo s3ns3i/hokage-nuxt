@@ -125,7 +125,7 @@ export default {
           this.resetForm();
           this.$emit("close");
         } catch (error) {
-          console.error(error);
+          console.error({ error });
         }
       }
     },

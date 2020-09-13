@@ -65,7 +65,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import ProjectsModal from "@/components/projects-modal.vue";
+import ProjectsModal from "@/components/modals/projects-modal.vue";
 
 export default {
   name: "Projects",

@@ -50,7 +50,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import RolesModal from "@/components/roles-modal.vue";
+import RolesModal from "@/components/modals/roles-modal.vue";
 
 export default {
   name: "Roles",

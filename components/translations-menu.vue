@@ -87,8 +87,8 @@
 
 <script>
 import { mapGetters } from "vuex";
-import ConfirmationModal from "@/components/confirmation-modal.vue";
-import RejectionModal from "@/components/rejection-modal.vue";
+import ConfirmationModal from "@/components/modals/confirmation-modal.vue";
+import RejectionModal from "@/components/modals/rejection-modal.vue";
 
 export default {
   name: "TranslationsMenu",
