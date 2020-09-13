@@ -5,13 +5,10 @@ import io from "socket.io-client";
 import { iff, discard } from "feathers-hooks-common";
 import feathersVuex from "feathers-vuex";
 
-const socket = io(
-  `${process.env.VUE_APP_SOCKET_HOST}:${process.env.VUE_APP_SOCKET_PORT}`,
-  {
-    transports: ["websocket"],
-    secure: process.env.VUE_APP_SOCKET_SECURE
-  }
-);
+const socket = io(`${process.env.SOCKET_HOST}:${process.env.SOCKET_PORT}`, {
+  transports: ["websocket"],
+  secure: process.env.SOCKET_SECURE
+});
 
 const feathersClient = feathers()
   .configure(socketio(socket))
