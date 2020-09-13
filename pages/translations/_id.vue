@@ -18,7 +18,8 @@ export default {
     return {
       translation: "",
       saverInterval: null,
-      editorHeight: 0
+      editorHeight: 0,
+      resizeListener: null
     };
   },
   computed: {
@@ -68,7 +69,7 @@ export default {
     }
   },
   created() {
-    window.addEventListener("resize", () => {
+    this.resizeListener = window.addEventListener("resize", () => {
       this.calculateEditorHeight();
     });
   },
@@ -77,6 +78,13 @@ export default {
       this.getLatestTranslation();
     }
     this.calculateEditorHeight();
+  },
+  beforeDestroy() {
+    if (this.isTaskInProgress) {
+      this.saveTranslation();
+      clearInterval(this.saverInterval);
+    }
+    window.removeEventListener("resize", this.resizeListener);
   },
   methods: {
     getLatestTranslation() {
