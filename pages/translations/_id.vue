@@ -1,6 +1,7 @@
 <template>
   <v-card flat :style="cssVars">
     <v-card-title>{{ currentProjectRoleName }}</v-card-title>
+    <v-card-subtitle>{{ `Obecnie u: ${currentUser}` }}</v-card-subtitle>
     <vue-editor
       v-model="translation"
       class="editor"
@@ -31,6 +32,9 @@ export default {
     ...mapGetters("project", {
       getProjectFromStore: "get"
     }),
+    ...mapGetters("user", {
+      getUserFromStore: "get"
+    }),
     projectRoles() {
       if (this.task) {
         return this.getProjectFromStore(this.task.projectId).project_roles;
@@ -54,12 +58,18 @@ export default {
     currentProjectRoleName() {
       let projectRoleName = "Obecny etap: ";
       if (this.projectRoles) {
-        console.log(this.projectRoles);
         projectRoleName += this.projectRoles.find(
           projectRole => projectRole.order === this.task.projectRoleOrder
         ).role.name;
       }
       return projectRoleName;
+    },
+    currentUser() {
+      const user = this.getUserFromStore(this.task.userId);
+      if (user) {
+        return user.nickname;
+      }
+      return "";
     },
     cssVars() {
       return {
