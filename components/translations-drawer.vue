@@ -161,6 +161,8 @@ export default {
         this.$router.push(`/translations/${this.tasks[0].id}`);
         this.selectedItemIndex = 0;
         this.selectedItem = this.items[0];
+      } else {
+        this.$router.push("/translations");
       }
     }
   }
