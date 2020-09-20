@@ -186,7 +186,7 @@ export default {
     getNextProjectRole() {
       const nextRoleIndex =
         this.currentProject.project_roles.findIndex(
-          projectRole => projectRole.roleId === this.currentTask.roleId
+          projectRole => projectRole.order === this.currentTask.projectRoleOrder
         ) + 1;
       return nextRoleIndex < this.currentProject.project_roles.length
         ? this.currentProject.project_roles[nextRoleIndex].role
@@ -267,11 +267,16 @@ export default {
     },
     getUserIdIfOne(roleId) {
       const projectRoles = this.currentProject.project_roles;
-      const projectRoleIndex = projectRoles.findIndex(
-        projectRole => projectRole.roleId === roleId
-      );
-      if (projectRoles[projectRoleIndex].users.length === 1) {
-        return projectRoles[projectRoleIndex].users[0].id;
+      if (projectRoles) {
+        const projectRoleIndex = projectRoles.findIndex(
+          projectRole => projectRole.roleId === roleId
+        );
+        if (
+          projectRoleIndex > -1 &&
+          projectRoles[projectRoleIndex].users.length === 1
+        ) {
+          return projectRoles[projectRoleIndex].users[0].id;
+        }
       }
       return null;
     }
