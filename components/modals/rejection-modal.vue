@@ -7,7 +7,11 @@
       Wybierz, gdzie ma trafić zadanie:
     </v-card-text>
     <v-card-text>
-      <v-select v-model="roleId" :items="roles" label="Wybierz rolę" />
+      <v-select
+        v-model="projectRoleId"
+        :items="projectRoles"
+        label="Wybierz krok:"
+      />
     </v-card-text>
     <v-card-actions>
       <v-spacer />
@@ -25,15 +29,18 @@
 export default {
   name: "RejectionModal",
   props: {
-    roles: {
+    projectRoles: {
       type: Array,
       required: true
     }
   },
   data() {
     return {
-      roleId: null
+      projectRoleId: null
     };
+  },
+  mounted() {
+    console.log(this.projectRoles);
   }
 };
 </script>

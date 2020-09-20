@@ -62,13 +62,11 @@
     <v-dialog v-model="dialogReject" persistent max-width="600">
       <template v-slot:activator="{ on }">
         <v-btn
-          v-if="getPreviousProjectRoles().length"
+          v-if="isMoreThanOneProjectRole"
           color="error"
           class="ma-3"
           :disabled="
-            isTaskInProgress ||
-              !isTaskTaken ||
-              !getPreviousProjectRoles().length
+            isTaskInProgress || !isTaskTaken || !isMoreThanOneProjectRole
           "
           v-on="on"
           @click="dialogReject = true"
@@ -77,7 +75,7 @@
         </v-btn>
       </template>
       <rejection-modal
-        :roles="getPreviousProjectRoles()"
+        :project-roles="getPreviousProjectRoles()"
         @close="dialogReject = false"
         @confirm="onRejectTask"
       />
@@ -195,24 +193,34 @@ export default {
         : null;
     },
     getPreviousProjectRoles() {
-      if (!this.$route.params.id || !this.currentProject) {
+      if (
+        !this.$route.params.id ||
+        !this.currentProject ||
+        this.currentTask.projectRoleOrder === 1
+      ) {
         return [];
       }
       const projectRoles = this.currentProject.project_roles.map(
-        projectRole => ({
-          id: projectRole.role.id,
-          name: projectRole.role.name
-        })
+        (projectRole, index, projectRoles) => {
+          let name = `${projectRole.role.name}`;
+          if (index < projectRoles.length - 1) {
+            name += ` -> ${projectRoles[index + 1].role.name}`;
+          }
+          return {
+            value: projectRole.role.id,
+            text: name
+          };
+        }
       );
-      const currentRoleIndex = this.currentProject.project_roles.findIndex(
-        projectRole => projectRole.roleId === this.currentTask.roleId
-      );
-      if (currentRoleIndex) {
-        return projectRoles
-          .slice(0, currentRoleIndex)
-          .map(role => ({ value: role.id, text: role.name }));
+      return projectRoles.slice(0, this.currentTask.projectRoleOrder - 1);
+    },
+    isMoreThanOneProjectRole() {
+      if (this.currentTask) {
+        console.log(this.currentTask.projectRoleOrder > 1);
+        console.log(this.currentTask.projectRoleOrder);
+        return +this.currentTask.projectRoleOrder > 1;
       } else {
-        return [];
+        return false;
       }
     },
     getNextUserIdIfOne() {
