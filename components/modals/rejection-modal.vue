@@ -18,7 +18,7 @@
       <v-btn text @click="$emit('close')">
         Anuluj
       </v-btn>
-      <v-btn color="primary" @click="$emit('confirm', { roleId })">
+      <v-btn color="primary" @click="$emit('confirm', { projectRoleId })">
         Odrzuć
       </v-btn>
     </v-card-actions>
@@ -38,9 +38,6 @@ export default {
     return {
       projectRoleId: null
     };
-  },
-  mounted() {
-    console.log(this.projectRoles);
   }
 };
 </script>
