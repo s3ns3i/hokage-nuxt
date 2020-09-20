@@ -1,9 +1,9 @@
 <template>
-  <v-card flat>
+  <v-card flat :style="cssVars">
+    <v-card-title>{{ currentProjectRoleName }}</v-card-title>
     <vue-editor
       v-model="translation"
       class="editor"
-      :style="cssVars"
       :disabled="!isTaskInProgress"
     />
   </v-card>
@@ -28,6 +28,16 @@ export default {
       getTaskFromStore: "get",
       isTaskInProgress: "getIsTaskInProgress"
     }),
+    ...mapGetters("project", {
+      getProjectFromStore: "get"
+    }),
+    projectRoles() {
+      if (this.task) {
+        return this.getProjectFromStore(this.task.projectId).project_roles;
+      } else {
+        return null;
+      }
+    },
     tasks() {
       return this.findTasksInStore({ query: {} }).data;
     },
@@ -41,11 +51,19 @@ export default {
         return null;
       }
     },
+    currentProjectRoleName() {
+      let projectRoleName = "Obecny etap: ";
+      if (this.projectRoles) {
+        console.log(this.projectRoles);
+        projectRoleName += this.projectRoles.find(
+          projectRole => projectRole.order === this.task.projectRoleOrder
+        ).role.name;
+      }
+      return projectRoleName;
+    },
     cssVars() {
       return {
-        "--editor-height": `calc(100vh -
-        ${this.editorHeight}px
-        )`
+        "--editor-height": `calc(100vh - ${this.editorHeight}px)`
       };
     }
   },
@@ -103,7 +121,7 @@ export default {
       const parentRefs = this.$parent.$refs;
 
       if (parentRefs) {
-        this.editorHeight = parentRefs.translationsMenu.clientHeight + 262;
+        this.editorHeight = parentRefs.translationsMenu.clientHeight + 250;
         if (this.$vuetify.breakpoint.smAndDown) {
           this.editorHeight += parentRefs.translationsDrawer.clientHeight;
         }
@@ -117,5 +135,7 @@ export default {
 .editor {
   min-height: var(--editor-height);
   height: var(--editor-height);
+  display: flex;
+  flex-direction: column;
 }
 </style>
