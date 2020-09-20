@@ -1,9 +1,8 @@
 <template>
   <v-row class="px-3">
     <v-btn
-      v-if="!isTaskTaken"
+      v-if="!isTaskTaken && isTaskAvailable"
       class="ma-3"
-      :disabled="!$route.params.id || !currentTask"
       @click="onTakeTask"
     >
       Przejmij zadanie
@@ -106,9 +105,27 @@ export default {
       isTaskInProgress: "getIsTaskInProgress"
     }),
     ...mapGetters("project", { getProjectFromStore: "get" }),
+    ...mapGetters("auth", { getUserFromStore: "user" }),
     isTaskTaken() {
       if (this.currentTask) {
-        return this.currentTask.userId !== null;
+        return (
+          this.currentTask.roleId ===
+            this.getUserFromStore.roles.find(
+              role => role.id === this.currentTask.roleId
+            ) && this.currentTask.userId === this.getUserFromStore.id
+        );
+      } else {
+        return false;
+      }
+    },
+    isTaskAvailable() {
+      if (this.currentTask) {
+        return (
+          this.currentTask.roleId ===
+            this.getUserFromStore.roles.find(
+              role => role.id === this.currentTask.roleId
+            ) && this.currentTask.userId === null
+        );
       } else {
         return false;
       }
