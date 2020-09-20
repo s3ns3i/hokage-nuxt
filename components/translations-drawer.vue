@@ -7,6 +7,7 @@
             <v-list-item-title class="title">
               Rozdziały
             </v-list-item-title>
+            <v-select v-model="selectedFilter" :items="filters"></v-select>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -23,6 +24,13 @@
             <custom-list-item-action :task="tasks[index]" />
           </v-list-item>
         </v-list-item-group>
+        <v-list-item>
+          <v-list-item-content v-if="!items.length">
+            <v-list-item-subtitle>
+              Brak rozdziałów
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </template>
     <v-select
@@ -66,7 +74,22 @@ export default {
   data() {
     return {
       selectedItem: null,
-      selectedItemIndex: -1
+      selectedItemIndex: -1,
+      filters: [
+        {
+          value: "mine",
+          text: "Moje"
+        },
+        {
+          value: "all",
+          text: "Wszyskie"
+        },
+        {
+          value: "done",
+          text: "Zakończone"
+        }
+      ],
+      selectedFilter: "mine"
     };
   },
   computed: {
@@ -76,13 +99,21 @@ export default {
     }),
     ...mapGetters("auth", ["user"]),
     tasks() {
-      return this.listTasksFromStore
-        .filter(task => task && this.isUserAssignedToProject(task))
-        .filter(
+      const tasks = this.listTasksFromStore;
+      let filteredTasks = tasks.filter(
+        task => task && this.isUserAssignedToProject(task)
+      );
+      if (this.selectedFilter === "mine") {
+        filteredTasks = filteredTasks.filter(
           task =>
             task &&
             (this.isTaskAssignedToUser(task) || this.isTaskAvailable(task))
         );
+      }
+      if (this.selectedFilter === "done") {
+        filteredTasks = filteredTasks.filter(task => task && !task.roleId);
+      }
+      return filteredTasks;
     },
     items() {
       return this.tasks.map(task => ({

@@ -61,12 +61,9 @@ export default {
   },
   methods: {
     fetchTasks() {
-      // this.$store.commit("task/clearAll");
       this.$store.dispatch("task/find", {
         query: {
-          roleId: { $in: this.roleIds },
           projectId: { $in: this.projectIds },
-          $or: [{ userId: this.user.id }, { userId: null }],
           $sort: {
             projectId: 1,
             chapterNo: 1
