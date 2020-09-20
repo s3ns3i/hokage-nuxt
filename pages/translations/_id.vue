@@ -37,10 +37,12 @@ export default {
     }),
     projectRoles() {
       if (this.task) {
-        return this.getProjectFromStore(this.task.projectId).project_roles;
-      } else {
-        return null;
+        const project = this.getProjectFromStore(this.task.projectId);
+        if (project) {
+          return project.project_roles;
+        }
       }
+      return null;
     },
     tasks() {
       return this.findTasksInStore({ query: {} }).data;
@@ -57,7 +59,7 @@ export default {
     },
     currentProjectRoleName() {
       let projectRoleName = "Obecny etap: ";
-      if (this.projectRoles) {
+      if (this.projectRoles && this.task) {
         projectRoleName += this.projectRoles.find(
           projectRole => projectRole.order === this.task.projectRoleOrder
         ).role.name;
@@ -65,9 +67,11 @@ export default {
       return projectRoleName;
     },
     currentUser() {
-      const user = this.getUserFromStore(this.task.userId);
-      if (user) {
-        return user.nickname;
+      if (this.task) {
+        const user = this.getUserFromStore(this.task.userId);
+        if (user) {
+          return user.nickname;
+        }
       }
       return "";
     },
@@ -130,7 +134,7 @@ export default {
     calculateEditorHeight() {
       const parentRefs = this.$parent.$refs;
 
-      if (parentRefs) {
+      if (parentRefs && parentRefs.translationsMenu) {
         this.editorHeight = parentRefs.translationsMenu.clientHeight + 250;
         if (this.$vuetify.breakpoint.smAndDown) {
           this.editorHeight += parentRefs.translationsDrawer.clientHeight;
