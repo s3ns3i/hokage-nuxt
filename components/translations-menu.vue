@@ -184,7 +184,12 @@ export default {
       this.$store
         .dispatch("task/patch", [this.$route.params.id, { userId: null }])
         .then(() => (this.dialogAbandon = false))
-        .catch(error => console.error(error));
+        .catch(error => {
+          console.error(error);
+          this.$store.dispatch("error-handler/addErrorMessage", {
+            message: "Nie udało się porzucić zadania!"
+          });
+        });
     },
     onDialogPassOpen() {
       const nextRole = this.getNextProjectRole();
@@ -265,7 +270,13 @@ export default {
         ])
         .then(() =>
           this.$store.commit("task/removeItem", this.$route.params.id)
-        );
+        )
+        .catch(error => {
+          console.error(error);
+          this.$store.dispatch("error-handler/addErrorMessage", {
+            message: "Nie udało się przekazać zadania!"
+          });
+        });
       this.dialogPass = false;
     },
     onRejectTask({ roleId }) {
@@ -279,7 +290,13 @@ export default {
         ])
         .then(() =>
           this.$store.commit("task/removeItem", this.$route.params.id)
-        );
+        )
+        .catch(error => {
+          console.error(error);
+          this.$store.dispatch("error-handler/addErrorMessage", {
+            message: "Nie udało się odrzucić zadania!"
+          });
+        });
       this.dialogReject = false;
     },
     getUserIdIfOne(roleId) {

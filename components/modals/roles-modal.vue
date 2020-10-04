@@ -56,6 +56,9 @@ export default {
         this.$emit("close");
       } catch (error) {
         console.error(error);
+        this.$store.dispatch("error-handler/addErrorMessage", {
+          message: "Nie udało się utworzyć roli!"
+        });
       }
     },
     resetForm() {

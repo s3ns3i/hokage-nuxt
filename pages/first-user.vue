@@ -103,6 +103,9 @@ export default {
           this.$router.push("/translations");
         } catch (error) {
           console.error(error);
+          this.$store.dispatch("error-handler/addErrorMessage", {
+            message: "Nie udało się utworzyć użytkownika!"
+          });
         }
       }
     }

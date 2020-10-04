@@ -49,18 +49,6 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-snackbar
-      v-model="snackbar"
-      color="error"
-      :timeout="3000"
-      bottom
-      absolute
-    >
-      {{ "Coś poszło nie tak przy zapisywaniu!" }}
-      <v-btn dark text @click="snackbar = false">
-        Zamknij
-      </v-btn>
-    </v-snackbar>
   </v-container>
 </template>
 
@@ -72,7 +60,6 @@ export default {
       clone: null,
       valid: false,
       dirty: false,
-      snackbar: false,
       nicknameRules: [v => !!v || "Ksywka jest wymagana!"],
       emailRules: [
         v => !!v || "E-mail jest wymagany!",
@@ -117,7 +104,9 @@ export default {
         this.dirty = false;
       } catch (error) {
         console.error(error);
-        this.snackbar = true;
+        this.$store.dispatch("error-handler/addErrorMessage", {
+          message: "Coś poszło nie tak przy zapisywaniu!"
+        });
       }
     }
   }

@@ -98,6 +98,9 @@ export default {
           this.$emit("close");
         } catch (error) {
           console.error(error);
+          this.$store.dispatch("error-handler/addErrorMessage", {
+            message: "Nie udało się utworzyć zadania!"
+          });
         }
       }
     },
@@ -127,6 +130,9 @@ export default {
           this.clone.chapterNo = Math.floor(latestTask.chapterNo) + 1;
         } else {
           this.clone.chapterNo = 1;
+          this.$store.dispatch("error-handler/addErrorMessage", {
+            message: "Nie udało się zmienić projektu!"
+          });
         }
       } catch (error) {
         console.error(error);

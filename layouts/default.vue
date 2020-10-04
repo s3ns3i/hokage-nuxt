@@ -5,6 +5,20 @@
     <v-content>
       <nuxt />
     </v-content>
+    <v-snackbar
+      :value="snackbar"
+      :timeout="3000"
+      color="error"
+      bottom
+      @input="onSnackbarClose"
+    >
+      {{ errorMessage }}
+      <template v-slot:action="{ attrs }">
+        <v-btn text v-bind="attrs" @click="onSnackbarClose(false)">
+          Zamknij
+        </v-btn>
+      </template>
+    </v-snackbar>
     <v-footer app inset>
       Aplikacja Hokage wykonana przez s3ns3i (2020)
     </v-footer>
@@ -23,7 +37,8 @@ export default {
   layout: "default",
   data() {
     return {
-      user: this.$store.getters["auth/user"]
+      user: this.$store.getters["auth/user"],
+      snackbar: false
     };
   },
   computed: {
@@ -37,12 +52,20 @@ export default {
     },
     isTaskPatchPending() {
       return this.$store.state.task.isPatchPending;
+    },
+    errorMessage() {
+      return this.$store.getters["error-handler/getErrorMessage"];
     }
   },
   watch: {
     isTaskPatchPending(value) {
       if (!value) {
         this.fetchTasks();
+      }
+    },
+    errorMessage(value) {
+      if (value) {
+        this.snackbar = true;
       }
     }
   },
@@ -58,6 +81,9 @@ export default {
     } else {
       console.log("User is not authorized!");
     }
+    if (this.errorMessage) {
+      this.snackbar = true;
+    }
   },
   methods: {
     fetchTasks() {
@@ -70,6 +96,10 @@ export default {
           }
         }
       });
+    },
+    onSnackbarClose(event) {
+      this.snackbar = event;
+      this.$store.dispatch("error-handler/removeErrorMessage");
     }
   }
 };
