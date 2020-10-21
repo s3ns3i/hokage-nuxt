@@ -5,7 +5,7 @@ const auth = makeAuthPlugin({
   userService: "user",
   entityIdField: "id",
   state: {
-    publicPages: ["login", "first-user"]
+    publicPages: ["login", "first-user", "error"]
   },
   actions: {
     // Handles initial authentication

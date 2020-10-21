@@ -108,15 +108,17 @@ export default {
     ...mapGetters("auth", { getUserFromStore: "user" }),
     isTaskTaken() {
       if (this.currentTask) {
-        return (
-          this.currentTask.roleId ===
-            this.getUserFromStore.roles.find(
-              role => role.id === this.currentTask.roleId
-            ) && this.currentTask.userId === this.getUserFromStore.id
+        const matchingRole = this.getUserFromStore.roles.find(
+          role => role.id === this.currentTask.roleId
         );
-      } else {
-        return false;
+        if (matchingRole) {
+          return (
+            this.currentTask.roleId === matchingRole.id &&
+            this.currentTask.userId === this.getUserFromStore.id
+          );
+        }
       }
+      return false;
     },
     isTaskAvailable() {
       if (this.currentTask) {
@@ -238,8 +240,6 @@ export default {
     },
     isMoreThanOneProjectRole() {
       if (this.currentTask) {
-        console.log(this.currentTask.projectRoleOrder > 1);
-        console.log(this.currentTask.projectRoleOrder);
         return +this.currentTask.projectRoleOrder > 1;
       } else {
         return false;
@@ -258,19 +258,29 @@ export default {
       }
       return null;
     },
+    getNextOrder() {
+      const projectRolesNo = this.currentProject.project_roles.length;
+      const currentOrder = this.currentTask.projectRoleOrder;
+      if (currentOrder < projectRolesNo) {
+        return currentOrder + 1;
+      } else {
+        return null;
+      }
+    },
     async onPassOnTask() {
       const nextRole = this.getNextProjectRole();
+      const userId = this.getNextUserIdIfOne();
+      const projectRoleOrder = this.getNextOrder();
       this.$store
         .dispatch("task/patch", [
           this.$route.params.id,
           {
-            userId: this.getNextUserIdIfOne(),
-            roleId: nextRole ? nextRole.id : null
+            userId,
+            roleId: nextRole ? nextRole.id : null,
+            projectRoleOrder,
+            projectId: this.currentProject.id
           }
         ])
-        .then(() =>
-          this.$store.commit("task/removeItem", this.$route.params.id)
-        )
         .catch(error => {
           console.error(error);
           this.$store.dispatch("error-handler/addErrorMessage", {
@@ -288,9 +298,6 @@ export default {
             roleId
           }
         ])
-        .then(() =>
-          this.$store.commit("task/removeItem", this.$route.params.id)
-        )
         .catch(error => {
           console.error(error);
           this.$store.dispatch("error-handler/addErrorMessage", {

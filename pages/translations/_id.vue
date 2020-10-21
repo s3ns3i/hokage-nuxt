@@ -59,10 +59,12 @@ export default {
     },
     currentProjectRoleName() {
       let projectRoleName = "Obecny etap: ";
-      if (this.projectRoles && this.task) {
+      if (this.projectRoles && this.task && this.task.projectRoleOrder) {
         projectRoleName += this.projectRoles.find(
           projectRole => projectRole.order === this.task.projectRoleOrder
         ).role.name;
+      } else {
+        projectRoleName += "ZAKOŃCZONE";
       }
       return projectRoleName;
     },
