@@ -5,7 +5,7 @@
         v-for="(usersByRole, index) in usersByRoles"
         :key="usersByRole.role"
         md="12"
-        lg="6"
+        lg="12"
       >
         <projects-by-user
           :profession="usersByRole.role"

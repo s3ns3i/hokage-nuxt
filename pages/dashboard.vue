@@ -17,7 +17,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col lg="6">
+      <v-col lg="12">
         <users-by-roles />
       </v-col>
     </v-row>

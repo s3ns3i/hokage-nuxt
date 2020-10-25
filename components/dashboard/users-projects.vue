@@ -73,7 +73,6 @@ export default {
   },
   beforeMount() {
     this.$store.dispatch("users-projects/find", { query: {} });
-    console.log(this.items);
   },
   methods: {
     assignedProjects(projects) {
