@@ -12,7 +12,7 @@
         >
           <v-card>
             <v-card-title class="subtitle-1 primary lighten-1">{{
-              role.name
+              `${role.name} (${role.users.length})`
             }}</v-card-title>
             <v-divider />
             <v-list v-if="role.users.length" dense>
