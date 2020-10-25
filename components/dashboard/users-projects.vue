@@ -49,8 +49,12 @@ export default {
       headers: [
         { text: "Ksywka", value: "nickname" },
         { text: "Ostatnia aktywność", value: "latestTask" },
-        { text: "Role", value: "roles", sortable: false },
-        { text: "Projekty", value: "projects", sortable: false }
+        { text: "Role", value: "roles", sort: (a, b) => b.length - a.length },
+        {
+          text: "Projekty",
+          value: "projects",
+          sort: (a, b) => b.length - a.length
+        }
       ]
     };
   },
@@ -69,6 +73,7 @@ export default {
   },
   beforeMount() {
     this.$store.dispatch("users-projects/find", { query: {} });
+    console.log(this.items);
   },
   methods: {
     assignedProjects(projects) {
