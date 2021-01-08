@@ -2,9 +2,15 @@ import pl from "vuetify/es5/locale/pl";
 import path from "path";
 import fs from "fs";
 
+const result = require("dotenv").config();
+
+if (result.error) {
+  throw result.error;
+}
+
 export default {
   dev: process.env.NODE_ENV !== "production",
-  mode: "spa",
+  ssr: false,
   build: {
     transpile: ["feathers-vuex"],
     loaders: {
@@ -50,33 +56,15 @@ export default {
     fallback: "/translations"
   },
   ...(process.env.NODE_ENV === "production" && {
-    env: {
-      SOCKET_HOST: "https://hokage.onepiecenakama.pl", // production
-      SOCKET_PORT: "30001", // production
-      SOCKET_SECURE: true // production
-    },
     server: {
       https: {
         key: fs.readFileSync(
-          path.resolve(
-            "../ssl/keys",
-            "969cd_c3acb_e02d5936dbece98a4c9ebb23f6453167.key"
-          )
+          path.resolve(process.env.SSL_KEY_PATH, process.env.SSL_KEY)
         ),
         cert: fs.readFileSync(
-          path.resolve(
-            "../ssl/certs",
-            "hokage_onepiecenakama_pl_969cd_c3acb_1607212799_0e3e7effb14cbe406076db0b710bba56.crt"
-          )
+          path.resolve(process.env.SSL_CERT_PATH, process.env.SSL_CERT)
         )
       }
-    }
-  }),
-  ...(process.env.NODE_ENV = "dev" && {
-    env: {
-      SOCKET_HOST: "http://localhost",
-      SOCKET_PORT: "3030",
-      SOCKET_SECURE: false
     }
   })
 };
